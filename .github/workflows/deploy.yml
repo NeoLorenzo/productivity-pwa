@@ -1,0 +1,44 @@
+# .github/workflows/deploy.yml
+
+name: Deploy to GitHub Pages
+
+# Run this workflow every time a change is pushed to the 'main' branch
+on:
+  push:
+    branches: [ "main" ]
+
+# Allow this job to clone the repo and create a page deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Use the latest version of Ubuntu
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Step 1: Get the code from your repo
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4 # Step 2: Set up the Node.js environment
+        with:
+          node-version: 20 # Use Node.js version 20
+
+      - name: Install dependencies
+        run: npm install # Step 3: Install all project dependencies
+
+      - name: Build the project
+        run: npm run build # Step 4: Run the build script, which creates the 'dist' folder
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5 # Step 5: Prepare for deployment
+
+      - name: Upload production-ready build files
+        uses: actions/upload-pages-artifact@v3 # Step 6: Upload the 'dist' folder
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # Step 7: Deploy the uploaded files
