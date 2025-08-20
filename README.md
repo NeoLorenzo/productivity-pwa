@@ -4,6 +4,14 @@ A minimalist React-based Progressive Web App designed to gamify productivity usi
 
 ---
 
+## 🚀 Live Demo
+
+**[Access the live application here](https://neolorenzo.github.io/productivity-pwa/)**
+
+_(Note: Replace with your actual GitHub Pages URL)_
+
+---
+
 ## 🧠 Project Vision
 
 This app is designed to be a **frictionless productivity system** — one that feels rewarding, customizable, and genuinely fun to use. Unlike rigid task managers or gamified to-do lists that hand out arbitrary badges or XP, this app lets users define their **own reward logic** and convert effort into **meaningful personal incentives** (e.g. gaming time, social media use, etc.).
@@ -36,26 +44,35 @@ Future features may include:
 - **Vite** – Build tool
 - **VS Code** – Development environment
 - **GitHub** – Source control
-- **PWA support** (planned)
+- **PWA Support** – via `vite-plugin-pwa`
+- **GitHub Actions** – For Continuous Integration & Deployment (CI/CD)
+- **GitHub Pages** – For hosting
 - **Firebase integration** (planned – for auth, data sync, push notifications)
 
 ---
 
 ## 🗂️ Current Folder Structure
 
+.github/
+└── workflows/
+  └── deploy.yml → Automated deployment workflow
+public/
+├── index.html → App shell
+├── pwa-192x192.png → PWA icon
+└── pwa-512x512.png → PWA icon
 src/
 ├── App.jsx → Root component
 ├── main.jsx → Entry point
+├── constants.js → App-level constants
 ├── pages/
 │ └── Home.jsx → Main working page
-├── components/ → Reusable UI components (empty for now)
-├── features/ → Self-contained feature logic (empty for now)
-├── hooks/ → Custom React hooks (empty for now)
-├── utils/ → Helper functions (empty for now)
+├── components/
+│ └── ScoreDisplay.jsx → Displays the current score
+├── hooks/
+│ └── useScore.js → Manages score state and persistence
 ├── styles/
 │ └── App.css → Global styling
-public/
-└── index.html → App shell
+└── vite.config.js → Vite configuration for build and PWA
 
 ---
 
@@ -75,7 +92,7 @@ These files are currently open and will be the main ones touched during developm
 
 ## 🔜 Upcoming Features
 
-- Customizable point system
+- Core Point System (✅ Implemented)
 - Timer/deep work tracker
 - Streak logic and display
 - Push notifications
@@ -107,10 +124,10 @@ The following have been removed:
 - **Framework**: This project uses React with functional components only (no class components).
 - **State management**: Currently using React’s built-in `useState` and `useEffect`. No external state libraries yet.
 - **File structure philosophy**:
-  - `components/` → Reusable presentational elements (e.g. `Button`, `Card`)
+  - `components/` → Reusable presentational elements (e.g. `ScoreDisplay`)
   - `features/` → Self-contained feature logic (e.g. `StreakTracker`, `TimerLogic`)
   - `pages/` → Page-level components for routing and layout
-  - `hooks/` → Custom logic abstractions (e.g. `useTimer`, `usePoints`)
+  - `hooks/` → Custom logic abstractions (e.g. `useScore`)
   - `utils/` → Pure utility functions (e.g. formatting, calculations)
 - **Styling**: Plain CSS (`App.css`), no CSS modules or Tailwind yet
 - **Routing**: Not yet added (may use `react-router-dom` later)
@@ -135,3 +152,11 @@ The following have been removed:
 - **User-defined structure** – Users define what counts as productivity and what earns rewards.
 - **Composable features** – Each feature (e.g. streaks, timers, scores) should work independently and together.
 - **No bloated gamification** – Avoid unnecessary points, badges, or dopamine loops that don’t reflect real value.
+
+---
+
+## 🚀 Deployment
+
+This project uses **GitHub Actions** for automated deployment. Any push to the `main` branch will trigger a workflow that builds the application and deploys it to GitHub Pages.
+
+The live version is automatically updated upon merging changes.
