@@ -2,6 +2,7 @@
 
 import { useScore } from '../hooks/useScore';
 import ScoreDisplay from '../components/ScoreDisplay';
+import Timer from '../features/Timer'; // Import the new Timer feature
 import { DEFAULTS } from '../constants';
 
 export default function Home() {
@@ -20,6 +21,11 @@ export default function Home() {
       <button onClick={handleCompleteTask}>
         Complete a Task (+{DEFAULTS.SCORE_INCREMENT} Points)
       </button>
+
+      <hr />
+
+      {/* The new Timer feature is added here */}
+      <Timer />
     </div>
   );
 }

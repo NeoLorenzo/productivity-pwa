@@ -6,6 +6,7 @@
  */
 export const LOCAL_STORAGE_KEYS = {
   SCORE: 'productivity-app-score',
+  SESSIONS: 'productivity-app-sessions', // Key for storing timer sessions
 };
 
 /**
