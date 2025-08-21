@@ -42,12 +42,12 @@ Future features may include:
 - **React** (via Vite) – Frontend framework
 - **JavaScript** – Language
 - **Vite** – Build tool
+- **Firebase** – For authentication (Auth) and data persistence (Firestore)
 - **VS Code** – Development environment
 - **GitHub** – Source control
 - **PWA Support** – via `vite-plugin-pwa`
 - **GitHub Actions** – For Continuous Integration & Deployment (CI/CD)
 - **GitHub Pages** – For hosting
-- **Firebase integration** (planned – for auth, data sync, push notifications)
 
 ---
 
@@ -55,24 +55,41 @@ Future features may include:
 
 .github/
 └── workflows/
-  └── deploy.yml → Automated deployment workflow
+    └── deploy.yml
 public/
-├── index.html → App shell
-├── pwa-192x192.png → PWA icon
-└── pwa-512x512.png → PWA icon
+├── pwa-192x192.png
+└── pwa-512x512.png
 src/
-├── App.jsx → Root component
-├── main.jsx → Entry point
-├── constants.js → App-level constants
-├── pages/
-│ └── Home.jsx → Main working page
 ├── components/
-│ └── ScoreDisplay.jsx → Displays the current score
+│   ├── Auth.jsx
+│   ├── DisplaySettings.jsx
+│   ├── ScoreDisplay.jsx
+│   ├── SessionNotesModal.jsx
+│   └── SettingsManager.jsx
+├── features/
+│   └── Timer/
+│       ├── index.jsx
+│       ├── SessionImporter.jsx
+│       ├── SessionLog.jsx
+│       ├── TimerControls.jsx
+│       └── TimerDisplay.jsx
 ├── hooks/
-│ └── useScore.js → Manages score state and persistence
+│   ├── useAuth.jsx
+│   ├── useScore.jsx
+│   ├── useSettings.jsx
+│   └── useTimer.jsx
+├── pages/
+│   └── Home.jsx
 ├── styles/
-│ └── App.css → Global styling
-└── vite.config.js → Vite configuration for build and PWA
+│   └── App.css
+├── utils/
+│   ├── csvParser.jsx
+│   └── formatters.js
+├── App.jsx
+├── constants.js
+├── firebase.js
+├── main.jsx
+└── vite.config.js
 
 ---
 
@@ -90,12 +107,20 @@ These files are currently open and will be the main ones touched during developm
 
 ---
 
+## ✅ Implemented Features
+
+- **Firebase Authentication**: Users can sign in with their Google account.
+- **Cloud-Synced Score**: Score is tied to the user's account and synced with Firestore.
+- **Focus Timer**: A full-featured timer to track work sessions with start, pause, and stop functionality.
+- **Session Logging**: All completed timer sessions are logged with duration, breaks, and user notes.
+- **Session Import**: Users can import past sessions from a CSV file.
+- **Customizable Display**: Date and time formats can be changed in the settings.
+- **Data Management**: Users can clear their score or session history.
+
 ## 🔜 Upcoming Features
 
-- Core Point System (✅ Implemented)
-- Timer/deep work tracker
 - Streak logic and display
-- Push notifications
+- Push notifications for reminders
 - User-defined reward system
 
 ---
@@ -122,13 +147,13 @@ The following have been removed:
 ## 🧪 Development Notes
 
 - **Framework**: This project uses React with functional components only (no class components).
-- **State management**: Currently using React’s built-in `useState` and `useEffect`. No external state libraries yet.
+- **State management**: Uses a combination of React's built-in hooks (`useState`, `useEffect`) for component-level state and **Firebase (Firestore)** for persistent, cloud-synced data like the user's score. Session data is currently persisted to `localStorage`.
 - **File structure philosophy**:
-  - `components/` → Reusable presentational elements (e.g. `ScoreDisplay`)
-  - `features/` → Self-contained feature logic (e.g. `StreakTracker`, `TimerLogic`)
-  - `pages/` → Page-level components for routing and layout
-  - `hooks/` → Custom logic abstractions (e.g. `useScore`)
-  - `utils/` → Pure utility functions (e.g. formatting, calculations)
+  - `components/` → Reusable, often stateless UI components used across the app (e.g., `Button`, `Modal`).
+  - `features/` → Self-contained modules that represent a major piece of functionality, complete with their own components and logic (e.g., `Timer`).
+  - `pages/` → Top-level components that compose features and components into a full view (e.g., `Home`).
+  - `hooks/` → Custom hooks that encapsulate complex, reusable logic (e.g., `useAuth`, `useTimer`).
+  - `utils/` → Pure, shared utility functions that have no state or side effects (e.g., `formatDate`, `parseCSV`).
 - **Styling**: Plain CSS (`App.css`), no CSS modules or Tailwind yet
 - **Routing**: Not yet added (may use `react-router-dom` later)
 - **Testing**: Not a priority right now — no test suite or test runners installed
