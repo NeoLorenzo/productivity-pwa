@@ -1,19 +1,22 @@
-// src/hooks/useTimer.js
-
 import { useState, useEffect, useRef } from 'react';
 import { LOCAL_STORAGE_KEYS } from '../constants';
+import { parseCSV } from '../utils/csvParser'; // Import the new parser utility
 
 /**
- * @description A custom hook to manage a timer and log work sessions, including breaks.
+ * @description A custom hook to manage a timer and log work sessions, including breaks and notes.
  *
  * @returns {{
  *   elapsedTime: number,
  *   isActive: boolean,
  *   isPaused: boolean,
  *   sessions: Array<object>,
+ *   pendingSession: object | null,
  *   startTimer: () => void,
  *   pauseTimer: () => void,
- *   stopTimer: () => void
+ *   stopTimer: () => void,
+ *   saveSessionWithNotes: (notes: string) => void,
+ *   discardPendingSession: () => void,
+ *   importSessions: (csvText: string) => void
  * }}
  */
 export function useTimer() {
@@ -25,6 +28,8 @@ export function useTimer() {
     const savedSessions = localStorage.getItem(LOCAL_STORAGE_KEYS.SESSIONS);
     return savedSessions ? JSON.parse(savedSessions) : [];
   });
+
+  const [pendingSession, setPendingSession] = useState(null);
 
   const startTimeRef = useRef(null);
   const breakStartTimeRef = useRef(null);
@@ -46,20 +51,17 @@ export function useTimer() {
   }, [isActive, startTimeRef]);
 
   const startTimer = () => {
-    // This function now handles both starting and resuming.
     if (isPaused) {
-      // Resuming from a pause.
       const breakDuration = Date.now() - breakStartTimeRef.current;
-      startTimeRef.current += breakDuration; // Push start time forward by break duration.
+      startTimeRef.current += breakDuration;
 
       setCurrentBreaks([
         ...currentBreaks,
         { startTime: breakStartTimeRef.current, endTime: Date.now() },
       ]);
     } else {
-      // Starting fresh.
       startTimeRef.current = Date.now();
-      setCurrentBreaks([]); // Clear any previous breaks.
+      setCurrentBreaks([]);
     }
 
     setIsActive(true);
@@ -76,8 +78,6 @@ export function useTimer() {
     const endTime = Date.now();
     let finalBreaks = [...currentBreaks];
 
-    // FIX: Check if the timer was stopped while it was paused.
-    // If so, the final pause period needs to be manually captured and added as a break.
     if (isPaused) {
       finalBreaks.push({
         startTime: breakStartTimeRef.current,
@@ -88,24 +88,78 @@ export function useTimer() {
     setIsActive(false);
     setIsPaused(false);
 
-    // We check the elapsed time *after* handling the final break logic.
     if (Math.floor(elapsedTime) < 1) {
       setElapsedTime(0);
       setCurrentBreaks([]);
-      return; // Don't log sessions with less than 1 second of work.
+      return;
     }
 
-    const newSession = {
+    const sessionData = {
       startTime: startTimeRef.current,
       endTime: endTime,
-      duration: Math.floor(elapsedTime), // This is correct, as elapsedTime freezes on pause.
-      breaks: finalBreaks, // Use the corrected breaks array.
+      duration: Math.floor(elapsedTime),
+      breaks: finalBreaks,
+      notes: '', // Initialize notes property
     };
 
-    setSessions((prevSessions) => [newSession, ...prevSessions]);
+    setPendingSession(sessionData);
     setElapsedTime(0);
     setCurrentBreaks([]);
   };
 
-  return { elapsedTime, isActive, isPaused, sessions, startTimer, pauseTimer, stopTimer };
+  const saveSessionWithNotes = (notes) => {
+    if (!pendingSession) return;
+
+    const newSession = {
+      ...pendingSession,
+      notes: notes.trim(),
+    };
+
+    setSessions((prevSessions) => [newSession, ...prevSessions]);
+    setPendingSession(null);
+  };
+
+  const discardPendingSession = () => {
+    setPendingSession(null);
+  };
+
+  /**
+   * @description Parses a CSV string, merges the result with existing sessions, and sorts them.
+   * @param {string} csvText - The raw text from the uploaded CSV file.
+   */
+  const importSessions = (csvText) => {
+    try {
+      const imported = parseCSV(csvText);
+      if (imported.length === 0) {
+        alert('No valid sessions found in the file.');
+        return;
+      }
+
+      setSessions((prevSessions) => {
+        // Combine and sort all sessions to ensure the log remains in chronological order.
+        const combined = [...prevSessions, ...imported];
+        // Sort by end time, descending (newest first)
+        return combined.sort((a, b) => b.endTime - a.endTime);
+      });
+
+      alert(`${imported.length} session(s) imported successfully!`);
+    } catch (error) {
+      // Catch errors from the parser (e.g., bad headers) and show them to the user.
+      alert(`Error importing sessions: ${error.message}`);
+    }
+  };
+
+  return {
+    elapsedTime,
+    isActive,
+    isPaused,
+    sessions,
+    pendingSession,
+    startTimer,
+    pauseTimer,
+    stopTimer,
+    saveSessionWithNotes,
+    discardPendingSession,
+    importSessions, // Expose the new function
+  };
 }

@@ -1,16 +1,14 @@
-// src/features/Timer/SessionLog.jsx
-
 import React from 'react';
 import {
   formatDate,
   formatTime,
   formatDuration,
-  calculateTotalBreakDuration, // Import the new utility
+  calculateTotalBreakDuration,
 } from '../../utils/formatters';
 
 /**
- * @description Displays a log of past timer sessions, including break data.
- * @param {{ sessions: Array<{startTime: number, endTime: number, duration: number, breaks: Array<object>}> }} props
+ * @description Displays a log of past timer sessions, including break data and notes.
+ * @param {{ sessions: Array<{startTime: number, endTime: number, duration: number, breaks: Array<object>, notes: string}> }} props
  * @returns {JSX.Element}
  */
 export default function SessionLog({ sessions }) {
@@ -29,6 +27,7 @@ export default function SessionLog({ sessions }) {
             <th>End Time</th>
             <th>Work Duration</th>
             <th>Breaks</th>
+            <th>Notes</th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +44,8 @@ export default function SessionLog({ sessions }) {
                     ? `${session.breaks.length} (${formatDuration(totalBreakSeconds)})`
                     : '—'}
                 </td>
+                {/* Gemini Note: Display the session notes, or a dash if empty. */}
+                <td>{session.notes || '—'}</td>
               </tr>
             );
           })}
