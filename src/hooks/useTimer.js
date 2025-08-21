@@ -1,3 +1,5 @@
+// src/hooks/useTimer.jsx
+
 import { useState, useEffect, useRef } from 'react';
 import { LOCAL_STORAGE_KEYS } from '../constants';
 import { parseCSV } from '../utils/csvParser'; // Import the new parser utility
@@ -124,6 +126,13 @@ export function useTimer() {
   };
 
   /**
+   * @description Deletes all logged sessions from state and localStorage.
+   */
+  const clearSessions = () => {
+    setSessions([]);
+  };
+
+  /**
    * @description Parses a CSV string, merges the result with existing sessions, and sorts them.
    * @param {string} csvText - The raw text from the uploaded CSV file.
    */
@@ -160,6 +169,7 @@ export function useTimer() {
     stopTimer,
     saveSessionWithNotes,
     discardPendingSession,
-    importSessions, // Expose the new function
+    importSessions,
+    clearSessions,
   };
 }

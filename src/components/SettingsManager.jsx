@@ -1,3 +1,5 @@
+// src/components/SettingsManager.jsx
+
 import React from 'react';
 
 /**

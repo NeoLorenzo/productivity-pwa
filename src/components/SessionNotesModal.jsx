@@ -1,3 +1,5 @@
+// src/components/SessionNotesModal.jsx
+
 import React from 'react';
 import { useState, useEffect } from 'react';
 

@@ -1,29 +1,32 @@
+// src/features/Timer/index.jsx
+
 import React from 'react';
-import { useTimer } from '../../hooks/useTimer';
+// No longer imports useTimer
 import TimerDisplay from './TimerDisplay';
 import TimerControls from './TimerControls';
 import SessionLog from './SessionLog';
 import SessionNotesModal from '../../components/SessionNotesModal';
-import SessionImporter from './SessionImporter'; // Import the new component
+import SessionImporter from './SessionImporter';
 
 /**
  * @description A self-contained feature component for the timer system.
+ * It receives all state and handlers as props from a parent component.
  */
-export default function Timer() {
-  const {
-    elapsedTime,
-    isActive,
-    isPaused,
-    sessions,
-    startTimer,
-    pauseTimer,
-    stopTimer,
-    pendingSession,
-    saveSessionWithNotes,
-    discardPendingSession,
-    importSessions, // Get the new import function from the hook
-  } = useTimer();
-
+export default function Timer({
+  elapsedTime,
+  isActive,
+  isPaused,
+  sessions,
+  dateFormat,
+  timeFormat,
+  pendingSession,
+  startTimer,
+  pauseTimer,
+  stopTimer,
+  saveSessionWithNotes,
+  discardPendingSession,
+  importSessions,
+}) {
   const handleSaveSession = (notes) => {
     saveSessionWithNotes(notes);
   };
@@ -43,10 +46,12 @@ export default function Timer() {
         />
       )}
 
-      <SessionLog sessions={sessions} />
+      <SessionLog
+        sessions={sessions}
+        dateFormat={dateFormat}
+        timeFormat={timeFormat}
+      />
 
-      {/* Gemini Note: The new importer component is placed here. */}
-      {/* It receives the `importSessions` function to update the state. */}
       <div className="importer-container">
         <SessionImporter onImport={importSessions} />
       </div>

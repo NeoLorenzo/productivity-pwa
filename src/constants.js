@@ -1,17 +1,23 @@
 // src/constants.js
 
-/**
- * @description Centralized object for all localStorage keys.
- * This prevents typos and ensures consistency when accessing localStorage.
- */
 export const LOCAL_STORAGE_KEYS = {
   SCORE: 'productivity-app-score',
-  SESSIONS: 'productivity-app-sessions', // Key for storing timer sessions
+  SESSIONS: 'productivity-app-sessions',
+  SETTINGS: 'productivity-app-settings', // New key
 };
 
-/**
- * @description Default values for various app features.
- */
 export const DEFAULTS = {
-  SCORE_INCREMENT: 10, // The default number of points to add for a completed task.
+  SCORE_INCREMENT: 10,
+};
+
+// Gemini Note: Centralizing format options makes them easy to manage and reuse.
+export const DATE_FORMATS = {
+  DMY: 'DD/MM/YYYY',
+  MDY: 'MM/DD/YYYY',
+  YMD: 'YYYY/MM/DD',
+};
+
+export const TIME_FORMATS = {
+  H24: '24-hour',
+  H12: '12-hour',
 };

@@ -1,3 +1,5 @@
+// src/features/Timer/SessionLog.jsx
+
 import React from 'react';
 import {
   formatDate,
@@ -11,7 +13,7 @@ import {
  * @param {{ sessions: Array<{startTime: number, endTime: number, duration: number, breaks: Array<object>, notes: string}> }} props
  * @returns {JSX.Element}
  */
-export default function SessionLog({ sessions }) {
+export default function SessionLog({ sessions, dateFormat, timeFormat }) {
   if (sessions.length === 0) {
     return <p>No sessions logged yet.</p>;
   }
@@ -35,9 +37,9 @@ export default function SessionLog({ sessions }) {
             const totalBreakSeconds = calculateTotalBreakDuration(session.breaks);
             return (
               <tr key={session.endTime}>
-                <td>{formatDate(session.endTime)}</td>
-                <td>{formatTime(session.startTime)}</td>
-                <td>{formatTime(session.endTime)}</td>
+                <td>{formatDate(session.endTime, dateFormat)}</td>
+                <td>{formatTime(session.startTime, timeFormat)}</td>
+                <td>{formatTime(session.endTime, timeFormat)}</td>
                 <td>{formatDuration(session.duration)}</td>
                 <td>
                   {session.breaks?.length > 0

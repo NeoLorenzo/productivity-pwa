@@ -1,3 +1,5 @@
+// src/features/Timer/SessionImporter.jsx
+
 import React, { useRef } from 'react';
 
 /**

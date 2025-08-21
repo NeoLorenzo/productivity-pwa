@@ -1,3 +1,5 @@
+// src/hooks/useScore.jsx
+
 import { useState, useEffect } from 'react';
 import { LOCAL_STORAGE_KEYS } from '../constants';
 
