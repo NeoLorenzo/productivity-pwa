@@ -120,10 +120,13 @@ These files are currently open and will be the main ones touched during developm
 ## 🔜 Upcoming Features
 
 - Streak logic and display
-- Push notifications for reminders
+- Push notifications for reminders which will sound different based on selected motivator persona
 - User-defined reward system
 - More comprehensive task score system
-- Ability to start timer and leave it running while quitting application
+- Create page which serves as a resource on how to be more productive and / or have a more balanced work + play relationship.
+- Share button that allows to share certain stats to social media
+- Reflection prompt after completed session which will include location data, ask how the user felt, and maybe certain environment features (ex. were they with friends)
+- Basic fitness tracker / workout tracker which will also give rewards
 
 ---
 

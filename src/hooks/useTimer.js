@@ -10,6 +10,9 @@ import {
   writeBatch,
   getDocs,
   doc,
+  updateDoc,
+  setDoc,
+  deleteField,
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import { parseCSV } from '../utils/csvParser';
@@ -36,16 +39,74 @@ export function useTimer(userId) {
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
-  const [currentBreaks, setCurrentBreaks] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [pendingSession, setPendingSession] = useState(null);
 
-  const startTimeRef = useRef(null);
-  const breakStartTimeRef = useRef(null);
+  const timerStateRef = useRef(null);
   const intervalRef = useRef(null);
 
-  // Gemini Note: This effect sets up a real-time listener to Firestore.
-  // It fetches the user's sessions and updates the state whenever the data changes in the cloud.
+  // Gemini Note: This effect syncs the timer's state with Firestore.
+  // It listens to the user's document and updates the local state whenever the
+  // 'timerState' field changes in the database. This allows the timer to persist
+  // even if the user closes the app.
+  useEffect(() => {
+    if (!userId) {
+      setIsActive(false);
+      setIsPaused(false);
+      setElapsedTime(0);
+      timerStateRef.current = null;
+      return;
+    }
+
+    const userDocRef = doc(db, 'users', userId);
+    const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
+      const timerState = docSnap.data()?.timerState;
+      timerStateRef.current = timerState;
+
+      if (timerState && timerState.startTime) {
+        setIsActive(timerState.isActive);
+        setIsPaused(timerState.isPaused);
+
+        if (timerState.isPaused && timerState.pauseTime) {
+          const totalBreakDuration = (timerState.breaks || []).reduce(
+            (acc, br) => acc + (br.endTime - br.startTime),
+            0
+          );
+          const mainDuration = timerState.pauseTime - timerState.startTime;
+          setElapsedTime((mainDuration - totalBreakDuration) / 1000);
+        }
+      } else {
+        setIsActive(false);
+        setIsPaused(false);
+        setElapsedTime(0);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [userId]);
+
+  // Gemini Note: This effect runs the local timer interval for the UI display.
+  // It reads from a ref containing the Firestore state to calculate the correct
+  // elapsed time every second, preventing stale state issues.
+  useEffect(() => {
+    if (isActive) {
+      intervalRef.current = setInterval(() => {
+        const timerState = timerStateRef.current;
+        if (timerState && timerState.startTime) {
+          const totalBreakDuration = (timerState.breaks || []).reduce(
+            (acc, br) => acc + (br.endTime - br.startTime),
+            0
+          );
+          const currentDuration = Date.now() - timerState.startTime;
+          setElapsedTime(Math.max(0, (currentDuration - totalBreakDuration) / 1000));
+        }
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+    return () => clearInterval(intervalRef.current);
+  }, [isActive]);
+
   useEffect(() => {
     if (!userId) {
       setSessions([]);
@@ -66,72 +127,86 @@ export function useTimer(userId) {
     return () => unsubscribe();
   }, [userId]);
 
-  useEffect(() => {
-    if (isActive) {
-      intervalRef.current = setInterval(() => {
-        setElapsedTime((Date.now() - startTimeRef.current) / 1000);
-      }, 1000);
-    } else {
-      clearInterval(intervalRef.current);
-    }
-    return () => clearInterval(intervalRef.current);
-  }, [isActive, startTimeRef]);
+  const startTimer = async () => {
+    if (!userId) return;
+    const userDocRef = doc(db, 'users', userId);
+    const currentState = timerStateRef.current;
 
-  const startTimer = () => {
-    if (isPaused) {
-      const breakDuration = Date.now() - breakStartTimeRef.current;
-      startTimeRef.current += breakDuration;
-
-      setCurrentBreaks([
-        ...currentBreaks,
-        { startTime: breakStartTimeRef.current, endTime: Date.now() },
-      ]);
-    } else {
-      startTimeRef.current = Date.now();
-      setCurrentBreaks([]);
-    }
-
-    setIsActive(true);
-    setIsPaused(false);
-  };
-
-  const pauseTimer = () => {
-    setIsActive(false);
-    setIsPaused(true);
-    breakStartTimeRef.current = Date.now();
-  };
-
-  const stopTimer = () => {
-    const endTime = Date.now();
-    let finalBreaks = [...currentBreaks];
-
-    if (isPaused) {
-      finalBreaks.push({
-        startTime: breakStartTimeRef.current,
-        endTime: endTime,
+    if (currentState?.isPaused) {
+      const updatedBreaks = [
+        ...(currentState.breaks || []),
+        { startTime: currentState.pauseTime, endTime: Date.now() },
+      ];
+      await updateDoc(userDocRef, {
+        'timerState.isActive': true,
+        'timerState.isPaused': false,
+        'timerState.pauseTime': null,
+        'timerState.breaks': updatedBreaks,
       });
+    } else {
+      const newTimerState = {
+        timerState: {
+          startTime: Date.now(),
+          isActive: true,
+          isPaused: false,
+          breaks: [],
+          pauseTime: null,
+        },
+      };
+      await setDoc(userDocRef, newTimerState, { merge: true });
+    }
+  };
+
+  const pauseTimer = async () => {
+    if (!userId) return;
+    const userDocRef = doc(db, 'users', userId);
+    await updateDoc(userDocRef, {
+      'timerState.isActive': false,
+      'timerState.isPaused': true,
+      'timerState.pauseTime': Date.now(),
+    });
+  };
+
+  const stopTimer = async () => {
+    if (!userId) return;
+    const userDocRef = doc(db, 'users', userId);
+    const finalState = timerStateRef.current;
+
+    if (!finalState) return;
+
+    const endTime = Date.now();
+    let finalBreaks = finalState.breaks || [];
+
+    if (finalState.isPaused) {
+      finalBreaks = [
+        ...finalBreaks,
+        { startTime: finalState.pauseTime, endTime: endTime },
+      ];
     }
 
-    setIsActive(false);
-    setIsPaused(false);
+    const totalBreakDurationMs = finalBreaks.reduce(
+      (acc, br) => acc + (br.endTime - br.startTime),
+      0
+    );
 
-    if (Math.floor(elapsedTime) < 1) {
-      setElapsedTime(0);
-      setCurrentBreaks([]);
+    const totalDurationMs = endTime - finalState.startTime;
+    const workDurationSeconds = Math.floor((totalDurationMs - totalBreakDurationMs) / 1000);
+
+    await updateDoc(userDocRef, { timerState: deleteField() });
+
+    if (workDurationSeconds < 1) {
       return;
     }
 
     const sessionData = {
-      startTime: startTimeRef.current,
+      startTime: finalState.startTime,
       endTime: endTime,
-      duration: Math.floor(elapsedTime),
+      duration: workDurationSeconds,
       breaks: finalBreaks,
       notes: '',
     };
 
     setPendingSession(sessionData);
-    setElapsedTime(0);
-    setCurrentBreaks([]);
   };
 
   const saveSessionWithNotes = async (notes) => {
