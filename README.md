@@ -122,6 +122,8 @@ These files are currently open and will be the main ones touched during developm
 - Streak logic and display
 - Push notifications for reminders
 - User-defined reward system
+- More comprehensive task score system
+- Ability to start timer and leave it running while quitting application
 
 ---
 

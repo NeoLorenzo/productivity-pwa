@@ -1,12 +1,22 @@
 // src/hooks/useTimer.jsx
 
 import { useState, useEffect, useRef } from 'react';
-import { LOCAL_STORAGE_KEYS } from '../constants';
-import { parseCSV } from '../utils/csvParser'; // Import the new parser utility
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  addDoc,
+  writeBatch,
+  getDocs,
+  doc,
+} from 'firebase/firestore';
+import { db } from '../firebase';
+import { parseCSV } from '../utils/csvParser';
 
 /**
  * @description A custom hook to manage a timer and log work sessions, including breaks and notes.
- *
+ * @param {string | null} userId - The ID of the currently authenticated user.
  * @returns {{
  *   elapsedTime: number,
  *   isActive: boolean,
@@ -18,28 +28,43 @@ import { parseCSV } from '../utils/csvParser'; // Import the new parser utility
  *   stopTimer: () => void,
  *   saveSessionWithNotes: (notes: string) => void,
  *   discardPendingSession: () => void,
- *   importSessions: (csvText: string) => void
+ *   importSessions: (csvText: string) => void,
+ *   clearSessions: () => void
  * }}
  */
-export function useTimer() {
+export function useTimer(userId) {
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [currentBreaks, setCurrentBreaks] = useState([]);
-  const [sessions, setSessions] = useState(() => {
-    const savedSessions = localStorage.getItem(LOCAL_STORAGE_KEYS.SESSIONS);
-    return savedSessions ? JSON.parse(savedSessions) : [];
-  });
-
+  const [sessions, setSessions] = useState([]);
   const [pendingSession, setPendingSession] = useState(null);
 
   const startTimeRef = useRef(null);
   const breakStartTimeRef = useRef(null);
   const intervalRef = useRef(null);
 
+  // Gemini Note: This effect sets up a real-time listener to Firestore.
+  // It fetches the user's sessions and updates the state whenever the data changes in the cloud.
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEYS.SESSIONS, JSON.stringify(sessions));
-  }, [sessions]);
+    if (!userId) {
+      setSessions([]);
+      return;
+    }
+
+    const sessionsColRef = collection(db, 'users', userId, 'sessions');
+    const q = query(sessionsColRef, orderBy('endTime', 'desc'));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const userSessions = [];
+      querySnapshot.forEach((doc) => {
+        userSessions.push({ id: doc.id, ...doc.data() });
+      });
+      setSessions(userSessions);
+    });
+
+    return () => unsubscribe();
+  }, [userId]);
 
   useEffect(() => {
     if (isActive) {
@@ -101,7 +126,7 @@ export function useTimer() {
       endTime: endTime,
       duration: Math.floor(elapsedTime),
       breaks: finalBreaks,
-      notes: '', // Initialize notes property
+      notes: '',
     };
 
     setPendingSession(sessionData);
@@ -109,15 +134,17 @@ export function useTimer() {
     setCurrentBreaks([]);
   };
 
-  const saveSessionWithNotes = (notes) => {
-    if (!pendingSession) return;
+  const saveSessionWithNotes = async (notes) => {
+    if (!pendingSession || !userId) return;
 
     const newSession = {
       ...pendingSession,
       notes: notes.trim(),
     };
 
-    setSessions((prevSessions) => [newSession, ...prevSessions]);
+    const sessionsColRef = collection(db, 'users', userId, 'sessions');
+    await addDoc(sessionsColRef, newSession);
+
     setPendingSession(null);
   };
 
@@ -125,18 +152,25 @@ export function useTimer() {
     setPendingSession(null);
   };
 
-  /**
-   * @description Deletes all logged sessions from state and localStorage.
-   */
-  const clearSessions = () => {
-    setSessions([]);
+  const clearSessions = async () => {
+    if (!userId) return;
+
+    const sessionsColRef = collection(db, 'users', userId, 'sessions');
+    const querySnapshot = await getDocs(sessionsColRef);
+
+    if (querySnapshot.empty) return;
+
+    const batch = writeBatch(db);
+    querySnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
   };
 
-  /**
-   * @description Parses a CSV string, merges the result with existing sessions, and sorts them.
-   * @param {string} csvText - The raw text from the uploaded CSV file.
-   */
-  const importSessions = (csvText) => {
+  const importSessions = async (csvText) => {
+    if (!userId) return;
+
     try {
       const imported = parseCSV(csvText);
       if (imported.length === 0) {
@@ -144,16 +178,18 @@ export function useTimer() {
         return;
       }
 
-      setSessions((prevSessions) => {
-        // Combine and sort all sessions to ensure the log remains in chronological order.
-        const combined = [...prevSessions, ...imported];
-        // Sort by end time, descending (newest first)
-        return combined.sort((a, b) => b.endTime - a.endTime);
+      const sessionsColRef = collection(db, 'users', userId, 'sessions');
+      const batch = writeBatch(db);
+
+      imported.forEach((session) => {
+        const newDocRef = doc(sessionsColRef);
+        batch.set(newDocRef, session);
       });
+
+      await batch.commit();
 
       alert(`${imported.length} session(s) imported successfully!`);
     } catch (error) {
-      // Catch errors from the parser (e.g., bad headers) and show them to the user.
       alert(`Error importing sessions: ${error.message}`);
     }
   };
