@@ -1,10 +1,9 @@
 // src/features/Timer/index.jsx
 
 import React from 'react';
-// No longer imports useTimer
 import TimerDisplay from './TimerDisplay';
 import TimerControls from './TimerControls';
-import DailySummary from './DailySummary'; // Import the new component
+import DailySummary from './DailySummary';
 import SessionLog from './SessionLog';
 import SessionNotesModal from '../../components/SessionNotesModal';
 import SessionImporter from './SessionImporter';
@@ -18,7 +17,7 @@ export default function Timer({
   isActive,
   isPaused,
   sessions,
-  dailySummary, // Add new prop
+  dailySummary,
   dateFormat,
   timeFormat,
   pendingSession,
@@ -35,7 +34,6 @@ export default function Timer({
 
   return (
     <div className="timer-feature">
-      <h2>Focus Timer</h2>
       <TimerDisplay elapsedTime={elapsedTime} />
 
       {!pendingSession && (
@@ -48,7 +46,6 @@ export default function Timer({
         />
       )}
 
-      {/* Render the new DailySummary component */}
       <DailySummary dailySummary={dailySummary} dateFormat={dateFormat} />
 
       <SessionLog

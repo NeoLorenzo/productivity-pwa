@@ -1,16 +1,20 @@
 // src/pages/Home.jsx
 
-import { useAuth } from '../hooks/useAuth'; // Import the new auth hook
+import { useAuth } from '../hooks/useAuth';
 import { useScore } from '../hooks/useScore';
 import { useTimer } from '../hooks/useTimer';
 import { useSettings } from '../hooks/useSettings';
-import { aggregateSessionsByDay } from '../utils/sessionAggregators'; // Import the new utility
+import { aggregateSessionsByDay } from '../utils/sessionAggregators';
+import { DEFAULTS } from '../constants';
+
+// Import new and existing components
+import Header from '../components/Header';
+import Card from '../components/Card';
 import ScoreDisplay from '../components/ScoreDisplay';
 import Timer from '../features/Timer';
 import SettingsManager from '../components/SettingsManager';
 import DisplaySettings from '../components/DisplaySettings';
-import Auth from '../components/Auth'; // Import the new Auth component
-import { DEFAULTS } from '../constants';
+import Auth from '../components/Auth';
 
 export default function Home() {
   const { user, isLoading } = useAuth();
@@ -24,69 +28,74 @@ export default function Home() {
     addPoints(DEFAULTS.SCORE_INCREMENT);
   };
 
-  // Gemini Note: This is where we process the session data for the new summary component.
-  // This calculation is done here so the Timer feature itself remains a pure display component.
   const dailySummary = aggregateSessionsByDay(timer.sessions);
 
-  // Gemini Note: While Firebase is checking the auth state, we can show a loader.
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="loading-screen">Loading...</div>;
   }
 
-  // If not loading and no user, show a login prompt.
   if (!user) {
     return (
-      <div className="home-container">
+      <div className="login-container">
         <div className="login-prompt">
-          <h2>Welcome to Productivity Tracker</h2>
-          <p>Please sign in to continue.</p>
-          <Auth />
+          <Card title="Welcome to Productivity Tracker">
+            <p>Please sign in to continue.</p>
+            <Auth />
+          </Card>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="home-container">
-      <Auth />
-      <h1>Productivity Tracker</h1>
-      <ScoreDisplay score={score} />
-      <button onClick={handleCompleteTask}>
-        Complete a Task (+{DEFAULTS.SCORE_INCREMENT} Points)
-      </button>
+    <div className="app-container">
+      <Header />
+      <div className="app-layout">
+        <main className="main-content">
+          <Card title="Focus Timer">
+            <Timer
+              elapsedTime={timer.elapsedTime}
+              isActive={timer.isActive}
+              isPaused={timer.isPaused}
+              sessions={timer.sessions}
+              dailySummary={dailySummary}
+              pendingSession={timer.pendingSession}
+              startTimer={timer.startTimer}
+              pauseTimer={timer.pauseTimer}
+              stopTimer={timer.stopTimer}
+              saveSessionWithNotes={timer.saveSessionWithNotes}
+              discardPendingSession={timer.discardPendingSession}
+              importSessions={timer.importSessions}
+              dateFormat={settings.dateFormat}
+              timeFormat={settings.timeFormat}
+            />
+          </Card>
+        </main>
 
-      <hr />
+        <aside className="sidebar">
+          <Card title="Score">
+            <ScoreDisplay score={score} />
+            <button onClick={handleCompleteTask} className="button-full-width">
+              Complete a Task (+{DEFAULTS.SCORE_INCREMENT} Points)
+            </button>
+          </Card>
 
-      <Timer
-        elapsedTime={timer.elapsedTime}
-        isActive={timer.isActive}
-        isPaused={timer.isPaused}
-        sessions={timer.sessions}
-        dailySummary={dailySummary} // Pass the new data as a prop
-        pendingSession={timer.pendingSession}
-        startTimer={timer.startTimer}
-        pauseTimer={timer.pauseTimer}
-        stopTimer={timer.stopTimer}
-        saveSessionWithNotes={timer.saveSessionWithNotes}
-        discardPendingSession={timer.discardPendingSession}
-        importSessions={timer.importSessions}
-        dateFormat={settings.dateFormat}
-        timeFormat={settings.timeFormat}
-      />
+          <Card title="Display Options">
+            <DisplaySettings
+              currentDateFormat={settings.dateFormat}
+              currentTimeFormat={settings.timeFormat}
+              onDateFormatChange={updateDateFormat}
+              onTimeFormatChange={updateTimeFormat}
+            />
+          </Card>
 
-      <hr />
-
-      <div className="settings-group">
-        <DisplaySettings
-          currentDateFormat={settings.dateFormat}
-          currentTimeFormat={settings.timeFormat}
-          onDateFormatChange={updateDateFormat}
-          onTimeFormatChange={updateTimeFormat}
-        />
-        <SettingsManager
-          onClearScore={clearScore}
-          onClearSessions={timer.clearSessions}
-        />
+          <Card title="Manage Data">
+            <SettingsManager
+              onClearScore={clearScore}
+              onClearSessions={timer.clearSessions}
+            />
+          </Card>
+        </aside>
       </div>
     </div>
   );
