@@ -79,6 +79,10 @@ hr {
   background-color: #c53030;
 }
 
+.daily-summary {
+  margin-bottom: 2.5rem; /* Add space between the two tables */
+}
+
 .session-log {
   margin-top: 2rem;
   text-align: left;

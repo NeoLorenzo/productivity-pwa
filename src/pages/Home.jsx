@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth'; // Import the new auth hook
 import { useScore } from '../hooks/useScore';
 import { useTimer } from '../hooks/useTimer';
 import { useSettings } from '../hooks/useSettings';
+import { aggregateSessionsByDay } from '../utils/sessionAggregators'; // Import the new utility
 import ScoreDisplay from '../components/ScoreDisplay';
 import Timer from '../features/Timer';
 import SettingsManager from '../components/SettingsManager';
@@ -22,6 +23,10 @@ export default function Home() {
   const handleCompleteTask = () => {
     addPoints(DEFAULTS.SCORE_INCREMENT);
   };
+
+  // Gemini Note: This is where we process the session data for the new summary component.
+  // This calculation is done here so the Timer feature itself remains a pure display component.
+  const dailySummary = aggregateSessionsByDay(timer.sessions);
 
   // Gemini Note: While Firebase is checking the auth state, we can show a loader.
   if (isLoading) {
@@ -57,6 +62,7 @@ export default function Home() {
         isActive={timer.isActive}
         isPaused={timer.isPaused}
         sessions={timer.sessions}
+        dailySummary={dailySummary} // Pass the new data as a prop
         pendingSession={timer.pendingSession}
         startTimer={timer.startTimer}
         pauseTimer={timer.pauseTimer}

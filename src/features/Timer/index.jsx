@@ -4,6 +4,7 @@ import React from 'react';
 // No longer imports useTimer
 import TimerDisplay from './TimerDisplay';
 import TimerControls from './TimerControls';
+import DailySummary from './DailySummary'; // Import the new component
 import SessionLog from './SessionLog';
 import SessionNotesModal from '../../components/SessionNotesModal';
 import SessionImporter from './SessionImporter';
@@ -17,6 +18,7 @@ export default function Timer({
   isActive,
   isPaused,
   sessions,
+  dailySummary, // Add new prop
   dateFormat,
   timeFormat,
   pendingSession,
@@ -45,6 +47,9 @@ export default function Timer({
           onStop={stopTimer}
         />
       )}
+
+      {/* Render the new DailySummary component */}
+      <DailySummary dailySummary={dailySummary} dateFormat={dateFormat} />
 
       <SessionLog
         sessions={sessions}
