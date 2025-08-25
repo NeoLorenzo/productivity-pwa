@@ -126,6 +126,16 @@ These files are currently open and will be the main ones touched during developm
 - Share button that allows to share certain stats to social media
 - Reflection prompt after completed session which will include location data, ask how the user felt, and maybe certain environment features (ex. were they with friends)
 - Basic fitness tracker / workout tracker which will also give rewards
+- Remove zoom from mobile app
+- Make daily summary a calendar view with different view modes (one for total sessions, one for total work duration)
+- Hide settings in settings page which can be accessed by clicking settings button in the corner
+- Create profile view which shows stats
+- Replace text buttons with icons (if possible.)
+- Fix logo not appearing in PWA
+- Add a new button in settings which allows user to export data
+- Improve app color scheme
+- Add dark mode light mode switch in settings
+- Move display options to settings
 
 ---
 

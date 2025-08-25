@@ -3,8 +3,6 @@
 import React from 'react';
 import TimerDisplay from './TimerDisplay';
 import TimerControls from './TimerControls';
-import DailySummary from './DailySummary';
-import SessionLog from './SessionLog';
 import SessionNotesModal from '../../components/SessionNotesModal';
 import SessionImporter from './SessionImporter';
 
@@ -16,10 +14,6 @@ export default function Timer({
   elapsedTime,
   isActive,
   isPaused,
-  sessions,
-  dailySummary,
-  dateFormat,
-  timeFormat,
   pendingSession,
   startTimer,
   pauseTimer,
@@ -45,14 +39,6 @@ export default function Timer({
           onStop={stopTimer}
         />
       )}
-
-      <DailySummary dailySummary={dailySummary} dateFormat={dateFormat} />
-
-      <SessionLog
-        sessions={sessions}
-        dateFormat={dateFormat}
-        timeFormat={timeFormat}
-      />
 
       <div className="importer-container">
         <SessionImporter onImport={importSessions} />

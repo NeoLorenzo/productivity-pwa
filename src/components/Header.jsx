@@ -1,6 +1,7 @@
 // src/components/Header.jsx
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Auth from './Auth';
 
 /**
@@ -11,7 +12,9 @@ export default function Header() {
   return (
     <header className="app-header">
       <div className="header-content">
-        <h1>Productivity Tracker</h1>
+        <h1>
+          <Link to="/" className="header-link">Productivity Tracker</Link>
+        </h1>
         <Auth />
       </div>
     </header>

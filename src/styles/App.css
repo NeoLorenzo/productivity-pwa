@@ -301,3 +301,26 @@ button:hover {
   justify-content: flex-end;
   gap: var(--spacing-sm);
 }
+
+/* Header Link */
+.header-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* History Page & Links */
+.history-link-container {
+  margin-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--spacing-md);
+}
+
+.history-page-controls {
+  margin-bottom: var(--spacing-lg);
+}
+
+.importer-container {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+}
