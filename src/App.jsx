@@ -1,5 +1,6 @@
 {/*src/App.jsx*/}
 
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import { useScore } from './hooks/useScore';
@@ -11,6 +12,7 @@ import Home from './pages/Home';
 import History from './pages/History';
 import Card from './components/Card';
 import Auth from './components/Auth';
+import SettingsModal from './components/SettingsModal';
 
 function App() {
   const { user, isLoading } = useAuth();
@@ -19,6 +21,8 @@ function App() {
   const { score, addPoints, clearScore } = useScore(userId);
   const timer = useTimer(userId);
   const { settings, updateDateFormat, updateTimeFormat } = useSettings();
+
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   const dailySummary = aggregateSessionsByDay(timer.sessions);
 
@@ -40,36 +44,44 @@ function App() {
   }
 
   return (
-    <BrowserRouter basename="/productivity-pwa/">
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              user={user}
-              score={score}
-              addPoints={addPoints}
-              clearScore={clearScore}
-              timer={timer}
-              settings={settings}
-              updateDateFormat={updateDateFormat}
-              updateTimeFormat={updateTimeFormat}
-            />
-          }
-        />
-        <Route
-          path="/history"
-          element={
-            <History
-              sessions={timer.sessions}
-              dailySummary={dailySummary}
-              dateFormat={settings.dateFormat}
-              timeFormat={settings.timeFormat}
-            />
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter basename="/productivity-pwa/">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Home
+                score={score}
+                addPoints={addPoints}
+                timer={timer}
+                onOpenSettings={() => setIsSettingsModalOpen(true)}
+              />
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <History
+                sessions={timer.sessions}
+                dailySummary={dailySummary}
+                dateFormat={settings.dateFormat}
+                timeFormat={settings.timeFormat}
+                onOpenSettings={() => setIsSettingsModalOpen(true)}
+              />
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        settings={settings}
+        updateDateFormat={updateDateFormat}
+        updateTimeFormat={updateTimeFormat}
+        onClearScore={clearScore}
+        onClearSessions={timer.clearSessions}
+      />
+    </>
   );
 }
 

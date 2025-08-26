@@ -8,10 +8,10 @@ import SessionLog from '../features/Timer/SessionLog';
 /**
  * @description A page dedicated to displaying session history and summaries.
  */
-export default function History({ sessions, dailySummary, dateFormat, timeFormat }) {
+export default function History({ sessions, dailySummary, dateFormat, timeFormat, onOpenSettings }) {
   return (
     <div className="app-container">
-      <Header />
+      <Header onOpenSettings={onOpenSettings} />
       <main className="main-content" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', padding: '1.5rem' }}>
         <Card title="Session History">
           <div className="history-page-controls">
