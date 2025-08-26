@@ -7,6 +7,7 @@ import { useScore } from './hooks/useScore';
 import { useTimer } from './hooks/useTimer';
 import { useSettings } from './hooks/useSettings';
 import { aggregateSessionsByDay } from './utils/sessionAggregators';
+import { exportSessionsToCSV } from './utils/csvGenerator';
 
 import Home from './pages/Home';
 import History from './pages/History';
@@ -25,6 +26,31 @@ function App() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   const dailySummary = aggregateSessionsByDay(timer.sessions);
+
+  const handleExportSessions = () => {
+    if (timer.sessions.length === 0) {
+      alert('There are no sessions to export.');
+      return;
+    }
+
+    const csvData = exportSessionsToCSV(
+      timer.sessions,
+      settings.dateFormat,
+      settings.timeFormat
+    );
+
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'session_history.csv');
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   if (isLoading) {
     return <div className="loading-screen">Loading...</div>;
@@ -80,6 +106,7 @@ function App() {
         updateTimeFormat={updateTimeFormat}
         onClearScore={clearScore}
         onClearSessions={timer.clearSessions}
+        onExportSessions={handleExportSessions}
       />
     </>
   );

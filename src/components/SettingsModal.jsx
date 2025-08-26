@@ -14,7 +14,8 @@ import SettingsManager from './SettingsManager';
  *   updateDateFormat: (format: string) => void,
  *   updateTimeFormat: (format: string) => void,
  *   onClearScore: () => void,
- *   onClearSessions: () => void
+ *   onClearSessions: () => void,
+ *   onExportSessions: () => void
  * }} props
  * @returns {JSX.Element | null}
  */
@@ -26,6 +27,7 @@ export default function SettingsModal({
   updateTimeFormat,
   onClearScore,
   onClearSessions,
+  onExportSessions,
 }) {
   if (!isOpen) {
     return null;
@@ -50,6 +52,7 @@ export default function SettingsModal({
             <SettingsManager
               onClearScore={onClearScore}
               onClearSessions={onClearSessions}
+              onExportSessions={onExportSessions}
             />
           </Card>
         </div>

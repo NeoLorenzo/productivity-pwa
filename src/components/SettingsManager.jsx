@@ -6,11 +6,12 @@ import React from 'react';
  * @description A component that provides buttons for app-wide settings, like clearing data.
  * @param {{
  *   onClearScore: () => void,
- *   onClearSessions: () => void
+ *   onClearSessions: () => void,
+ *   onExportSessions: () => void
  * }} props
  * @returns {JSX.Element}
  */
-export default function SettingsManager({ onClearScore, onClearSessions }) {
+export default function SettingsManager({ onClearScore, onClearSessions, onExportSessions }) {
   const handleClearScore = () => {
     // Gemini Note: window.confirm() is a simple way to ask for user confirmation.
     // The action only proceeds if the user clicks "OK".
@@ -27,8 +28,11 @@ export default function SettingsManager({ onClearScore, onClearSessions }) {
 
   return (
     <div className="settings-manager">
-      <h3>Settings</h3>
+      <h3>Data Management</h3>
       <div className="settings-actions">
+        <button onClick={onExportSessions} className="button-secondary">
+          Export Session History
+        </button>
         <button onClick={handleClearScore} className="button-danger">
           Clear Score
         </button>
