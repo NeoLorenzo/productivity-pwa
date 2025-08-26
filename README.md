@@ -124,7 +124,7 @@ These files are currently open and will be the main ones touched during developm
 - User-defined reward system
 - Create page which serves as a resource on how to be more productive and / or have a more balanced work + play relationship.
 - Share button that allows to share certain stats to social media
-- Reflection prompt after completed session which will include location data, ask how the user felt, and maybe certain environment features (ex. were they with friends)
+- Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
 - Basic fitness tracker / workout tracker which will also give rewards
 - Remove zoom from mobile app
 - Make daily summary a calendar view with different view modes (one for total sessions, one for total work duration)

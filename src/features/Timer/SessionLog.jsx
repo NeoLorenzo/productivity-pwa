@@ -10,7 +10,7 @@ import {
 
 /**
  * @description Displays a log of past timer sessions, including break data and notes.
- * @param {{ sessions: Array<{startTime: number, endTime: number, duration: number, breaks: Array<object>, notes: string}> }} props
+ * @param {{ sessions: Array<{startTime: number, endTime: number, duration: number, breaks: Array<object>, notes: string, location?: {lat: number, lon: number}}> }} props
  * @returns {JSX.Element}
  */
 export default function SessionLog({ sessions, dateFormat, timeFormat }) {
@@ -30,6 +30,7 @@ export default function SessionLog({ sessions, dateFormat, timeFormat }) {
             <th>Work Duration</th>
             <th>Breaks</th>
             <th>Notes</th>
+            <th>Location</th>
           </tr>
         </thead>
         <tbody>
@@ -46,8 +47,20 @@ export default function SessionLog({ sessions, dateFormat, timeFormat }) {
                     ? `${session.breaks.length} (${formatDuration(totalBreakSeconds)})`
                     : '—'}
                 </td>
-                {/* Gemini Note: Display the session notes, or a dash if empty. */}
                 <td>{session.notes || '—'}</td>
+                <td>
+                  {session.location ? (
+                    <a
+                      href={`https://www.google.com/maps?q=${session.location.lat},${session.location.lon}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Map
+                    </a>
+                  ) : (
+                    '—'
+                  )}
+                </td>
               </tr>
             );
           })}

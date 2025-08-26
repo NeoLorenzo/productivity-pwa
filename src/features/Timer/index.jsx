@@ -22,10 +22,6 @@ export default function Timer({
   discardPendingSession,
   importSessions,
 }) {
-  const handleSaveSession = (notes) => {
-    saveSessionWithNotes(notes);
-  };
-
   return (
     <div className="timer-feature">
       <TimerDisplay elapsedTime={elapsedTime} />
@@ -46,7 +42,7 @@ export default function Timer({
 
       <SessionNotesModal
         isOpen={!!pendingSession}
-        onSubmit={handleSaveSession}
+        onSubmit={saveSessionWithNotes}
         onClose={discardPendingSession}
       />
     </div>

@@ -209,12 +209,15 @@ export function useTimer(userId) {
     setPendingSession(sessionData);
   };
 
-  const saveSessionWithNotes = async (notes) => {
+  const saveSessionWithNotes = async (sessionData) => {
     if (!pendingSession || !userId) return;
+
+    const { notes, location } = sessionData;
 
     const newSession = {
       ...pendingSession,
       notes: notes.trim(),
+      location: location || null, // Add location, defaulting to null if not provided
     };
 
     const sessionsColRef = collection(db, 'users', userId, 'sessions');

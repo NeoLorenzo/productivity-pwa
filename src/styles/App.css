@@ -296,6 +296,38 @@ button:hover {
   margin-bottom: var(--spacing-md);
   box-sizing: border-box;
 }
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--color-border);
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  /* margin-bottom: var(--spacing-md); */ /* This is being replaced by the location controls margin */
+  box-sizing: border-box;
+}
+.location-controls {
+  margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  align-items: flex-start;
+}
+.location-controls button {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+.location-status {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  margin: 0;
+  padding-top: var(--spacing-xs);
+}
+.location-status.error {
+  color: var(--color-danger);
+}
 .modal-actions {
   display: flex;
   justify-content: flex-end;
