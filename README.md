@@ -43,6 +43,7 @@ Future features may include:
 - **JavaScript** – Language
 - **Vite** – Build tool
 - **Firebase** – For authentication (Auth) and data persistence (Firestore)
+- **React Router** – For client-side routing (`react-router-dom`)
 - **VS Code** – Development environment
 - **GitHub** – Source control
 - **PWA Support** – via `vite-plugin-pwa`
@@ -62,12 +63,15 @@ public/
 src/
 ├── components/
 │   ├── Auth.jsx
+│   ├── Card.jsx
 │   ├── DisplaySettings.jsx
+│   ├── Header.jsx
 │   ├── ScoreDisplay.jsx
 │   ├── SessionNotesModal.jsx
 │   └── SettingsManager.jsx
 ├── features/
 │   └── Timer/
+│       ├── DailySummary.jsx
 │       ├── index.jsx
 │       ├── SessionImporter.jsx
 │       ├── SessionLog.jsx
@@ -79,12 +83,14 @@ src/
 │   ├── useSettings.jsx
 │   └── useTimer.jsx
 ├── pages/
-│   └── Home.jsx
+│   ├── Home.jsx
+│   └── History.jsx
 ├── styles/
 │   └── App.css
 ├── utils/
 │   ├── csvParser.jsx
-│   └── formatters.js
+│   ├── formatters.js
+│   └── sessionAggregators.js
 ├── App.jsx
 ├── constants.js
 ├── firebase.js
@@ -110,9 +116,11 @@ These files are currently open and will be the main ones touched during developm
 ## ✅ Implemented Features
 
 - **Firebase Authentication**: Users can sign in with their Google account.
-- **Cloud-Synced Score**: Score is tied to the user's account and synced with Firestore.
+- **Cloud-Synced Score & Sessions**: Score and session data are tied to the user's account and synced with Firestore.
+- **Multi-Page Navigation**: Uses React Router to provide separate pages for the timer and session history.
 - **Focus Timer**: A full-featured timer to track work sessions with start, pause, and stop functionality.
-- **Session Logging**: All completed timer sessions are logged with duration, breaks, and user notes.
+- **Session Logging & History**: All completed timer sessions are logged and displayed on a dedicated history page.
+- **Daily Summary**: The history page includes a summary of total work duration and session counts per day.
 - **Session Import**: Users can import past sessions from a CSV file.
 - **Customizable Display**: Date and time formats can be changed in the settings.
 - **Data Management**: Users can clear their score or session history.
@@ -161,16 +169,16 @@ The following have been removed:
 ## 🧪 Development Notes
 
 - **Framework**: This project uses React with functional components only (no class components).
-- **State management**: Uses a combination of React's built-in hooks (`useState`, `useEffect`) for component-level state and **Firebase (Firestore)** for persistent, cloud-synced data like the user's score. Session data is currently persisted to `localStorage`.
+- **State management**: Uses a combination of React's built-in hooks (`useState`, `useEffect`) for component-level state. **Firebase (Firestore)** is used for persistent, cloud-synced data like the user's score and session history. UI settings are persisted to `localStorage`.
 - **File structure philosophy**:
   - `components/` → Reusable, often stateless UI components used across the app (e.g., `Button`, `Modal`).
   - `features/` → Self-contained modules that represent a major piece of functionality, complete with their own components and logic (e.g., `Timer`).
   - `pages/` → Top-level components that compose features and components into a full view (e.g., `Home`).
   - `hooks/` → Custom hooks that encapsulate complex, reusable logic (e.g., `useAuth`, `useTimer`).
   - `utils/` → Pure, shared utility functions that have no state or side effects (e.g., `formatDate`, `parseCSV`).
-- **Styling**: Plain CSS (`App.css`), no CSS modules or Tailwind yet
-- **Routing**: Not yet added (may use `react-router-dom` later)
-- **Testing**: Not a priority right now — no test suite or test runners installed
+- **Styling**: Plain CSS (`App.css`), no CSS modules or Tailwind yet.
+- **Routing**: Handled by `react-router-dom` to manage different pages like Home and History.
+- **Testing**: Not a priority right now — no test suite or test runners installed.
 - **Gemini note**: AI has access to all open files listed in "📌 Active Files", so keep critical logic in those files or folders
 
 ---
