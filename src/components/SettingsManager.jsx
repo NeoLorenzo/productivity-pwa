@@ -1,6 +1,7 @@
 // src/components/SettingsManager.jsx
 
 import React from 'react';
+import { FEEDBACK_FORM_URL } from '../constants';
 
 /**
  * @description A component that provides buttons for app-wide settings, like clearing data.
@@ -28,8 +29,17 @@ export default function SettingsManager({ onClearScore, onClearSessions, onExpor
 
   return (
     <div className="settings-manager">
-      <h3>Data Management</h3>
+      <h3>Data Management & Feedback</h3>
       <div className="settings-actions">
+        <a
+          href={FEEDBACK_FORM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="button-secondary"
+          style={{ textAlign: 'center' }}
+        >
+          Submit Feedback or a Bug
+        </a>
         <button onClick={onExportSessions} className="button-secondary">
           Export Session History
         </button>

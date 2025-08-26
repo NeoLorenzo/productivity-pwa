@@ -136,10 +136,9 @@ These files are currently open and will be the main ones touched during developm
 - Make daily summary a calendar view with different view modes (one for total sessions, one for total work duration)
 - Create profile view which shows stats
 - Replace text buttons with icons (if possible.)
-- Fix logo not appearing in PWA
-- Add a new button in settings which allows user to export data
 - Improve app color scheme
 - Add dark mode light mode switch in settings
+- Add a way to select session and delete them
 
 ---
 

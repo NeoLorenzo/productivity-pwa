@@ -21,3 +21,5 @@ export const TIME_FORMATS = {
   H24: '24-hour',
   H12: '12-hour',
 };
+
+export const FEEDBACK_FORM_URL = 'https://forms.gle/BA9ZQ4KC7YptJWBq7';
