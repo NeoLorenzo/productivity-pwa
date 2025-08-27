@@ -97,20 +97,6 @@ src/
 
 ---
 
-## 📌 Active Files in VS Code
-
-These files are currently open and will be the main ones touched during development:
-- `App.jsx`
-- `main.jsx`
-- `pages/Home.jsx`
-- `styles/App.css`
-- `components/` (folder)
-- `features/` (folder)
-- `hooks/` (folder)
-- `utils/` (folder)
-
----
-
 ## ✅ Implemented Features
 
 - **Firebase Authentication**: Users can sign in with their Google account.
@@ -148,16 +134,6 @@ These files are currently open and will be the main ones touched during developm
 npm install
 npm run dev
 ```
-
-Open http://localhost:5173
- to view it in the browser.
-
-## 🧹 Cleaned Up
-
-The following have been removed:
-
-- Vite/React default assets (e.g. react.svg, vite.svg)
-- README boilerplate
 
 ---
 
