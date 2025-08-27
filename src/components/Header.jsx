@@ -1,7 +1,7 @@
 // src/components/Header.jsx
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Auth from './Auth';
 
 /**
@@ -10,6 +10,9 @@ import Auth from './Auth';
  * @returns {JSX.Element}
  */
 export default function Header({ onOpenSettings }) {
+  const location = useLocation();
+  const { pathname } = location;
+
   return (
     <header className="app-header">
       <div className="header-content">
@@ -17,6 +20,13 @@ export default function Header({ onOpenSettings }) {
           <Link to="/" className="header-link">Productivity Tracker</Link>
         </h1>
         <div className="header-actions">
+          {/* Gemini Note: The History button is now in the header and is hidden
+              when the user is already on the /history page. */}
+          {pathname !== '/history' && (
+            <Link to="/history" className="button-secondary">
+              History
+            </Link>
+          )}
           <button onClick={onOpenSettings} className="button-secondary">
             Settings
           </button>

@@ -88,6 +88,7 @@ function App() {
               <Home
                 score={score}
                 dailyScore={dailyScore}
+                dailySummary={dailySummary}
                 timer={timer}
                 onOpenSettings={() => setIsSettingsModalOpen(true)}
               />
@@ -119,6 +120,7 @@ function App() {
         updateTimeFormat={updateTimeFormat}
         onClearSessions={timer.clearSessions}
         onExportSessions={handleExportSessions}
+        onImportSessions={timer.importSessions}
       />
     </>
   );

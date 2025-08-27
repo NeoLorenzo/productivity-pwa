@@ -4,8 +4,18 @@ import {
   formatDate,
   formatTime,
   formatDuration,
-  calculateTotalBreakDuration,
 } from './formatters';
+
+/**
+ * @description Safely wraps a string in double quotes for CSV export, escaping existing quotes.
+ * @param {any} value - The value to format.
+ * @returns {string}
+ */
+const formatCSVField = (value) => {
+  const stringValue = String(value || '');
+  // Escape double quotes by doubling them, then wrap the whole string in double quotes.
+  return `"${stringValue.replace(/"/g, '""')}"`;
+};
 
 /**
  * @description Converts an array of session objects into a CSV formatted string.
@@ -20,31 +30,31 @@ export function exportSessionsToCSV(sessions, dateFormat, timeFormat) {
     'Start Time',
     'End Time',
     'Work Duration',
-    'Breaks Count',
-    'Break Duration',
+    'Session Score',
+    'Completed Tasks',
     'Notes',
     'Location (Lat,Lon)',
   ];
 
   const rows = sessions.map((session) => {
-    const totalBreakSeconds = calculateTotalBreakDuration(session.breaks);
-    
-    // Gemini Note: To prevent commas within the notes from breaking the CSV structure,
-    // we wrap the notes in double quotes and escape any existing double quotes inside them.
-    const notes = `"${(session.notes || '').replace(/"/g, '""')}"`;
-    
+    const completedTasks = session.completedTasks
+      ?.map(task => `${task.name} (${task.score})`)
+      .join('; ') || '';
+      
     const location = session.location 
       ? `${session.location.lat},${session.location.lon}` 
       : '';
 
+    // Gemini Note: Each field is now safely formatted to handle commas and quotes,
+    // ensuring the CSV structure remains intact.
     return [
       formatDate(session.endTime, dateFormat),
       formatTime(session.startTime, timeFormat),
       formatTime(session.endTime, timeFormat),
       formatDuration(session.duration),
-      session.breaks?.length || 0,
-      formatDuration(totalBreakSeconds),
-      notes,
+      session.sessionScore || 0,
+      formatCSVField(completedTasks),
+      formatCSVField(session.notes),
       location,
     ].join(',');
   });

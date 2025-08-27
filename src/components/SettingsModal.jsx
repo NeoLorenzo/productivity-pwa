@@ -4,6 +4,7 @@ import React from 'react';
 import Card from './Card';
 import DisplaySettings from './DisplaySettings';
 import SettingsManager from './SettingsManager';
+import SessionImporter from '../features/Timer/SessionImporter';
 
 /**
  * @description A modal for managing all application settings.
@@ -14,7 +15,8 @@ import SettingsManager from './SettingsManager';
  *   updateDateFormat: (format: string) => void,
  *   updateTimeFormat: (format: string) => void,
  *   onClearSessions: () => void,
- *   onExportSessions: () => void
+ *   onExportSessions: () => void,
+ *   onImportSessions: (csvText: string) => void
  * }} props
  * @returns {JSX.Element | null}
  */
@@ -26,6 +28,7 @@ export default function SettingsModal({
   updateTimeFormat,
   onClearSessions,
   onExportSessions,
+  onImportSessions,
 }) {
   if (!isOpen) {
     return null;
@@ -51,6 +54,10 @@ export default function SettingsModal({
               onClearSessions={onClearSessions}
               onExportSessions={onExportSessions}
             />
+          </Card>
+
+          <Card title="Import Data">
+            <SessionImporter onImport={onImportSessions} />
           </Card>
         </div>
 

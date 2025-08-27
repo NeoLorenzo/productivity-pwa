@@ -15,9 +15,13 @@ export default defineConfig({
         short_name: 'ProdTrack',
         description: 'A minimalist app to gamify your productivity.',
         theme_color: '#ffffff',
-        display: 'standalone', // This is the key property to remove the browser UI
-        start_url: '.', // Ensures the app starts at the root, relative to its path
-        background_color: '#ffffff', // The splash screen color before the app loads
+        display: 'standalone',
+        // Gemini Note: These two lines are the fix.
+        // 'scope' tells the PWA which URLs are part of the app.
+        // 'start_url' is made explicit to match the base path.
+        scope: '/productivity-pwa/',
+        start_url: '/productivity-pwa/',
+        background_color: '#ffffff',
         icons: [
           {
             src: 'pwa-192x192.png',

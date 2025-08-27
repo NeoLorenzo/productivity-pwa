@@ -58,27 +58,32 @@ This is a **framework for customizing motivation** rather than enforcing someone
 
 ## 🔜 Upcoming Features
 
-- Streak logic and display
-- Push notifications for reminders which will sound different based on selected motivator persona
 - Create page which serves as a resource on how to be more productive and / or have a more balanced work + play relationship.
-- Share button that allows to share certain stats to social media
-- Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
+
 - Basic fitness tracker / workout tracker which will also give rewards
-- History in mobile app doesnt look clean, its not sized to fit the screen horizontally causing the text to overflow and expand past the edge of the session history card.
-- Make daily summary a calendar view with different view modes (one for total sessions, one for total work duration)
+
 - Create profile view which shows stats
-- Replace text buttons with icons (if possible.)
-- Improve app color scheme
-- Add dark mode light mode switch in settings
+- Share button that allows to share certain stats to social media
+
 - Add a way to select session and delete them
 - Clicking history in ios app looks like it opens a new tab. A header pops up that has the link of the website, and a done button and at the bottom navigation options come up too, whereas the dashboard/main screen is fully clean. fix this.
-- App logo still not showing.
-- GitHub/Macrofactor style heat map view of history
+- History in mobile app doesnt look clean, its not sized to fit the screen horizontally causing the text to overflow and expand past the edge of the session history card.
+
+- Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
 - Add reflection tags rate sleep out of 5, etc.
+
 - Add functionality to save to local first and sync to firebase after, just in case users lose connection or something. App should work offline.
+
+- Allow the user to set a goal in terms of task score or time worked for the day/week/month and show a goal percentage in the dashboard
+
+- Push notifications for reminders which will sound different based on selected motivator persona
 - Flexible nudges
   - Time-boxed reminders: “If no session by 14:00, nudge me.”
   - Contextual nags: “If 2+ pauses in a 25m, suggest shorter block.”
+
+- Replace text buttons with icons (if possible.)
+- Improve app color scheme
+- Add dark mode light mode switch in settings
 
 ---
 

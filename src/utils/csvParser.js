@@ -18,11 +18,46 @@ function durationToSeconds(timeStr) {
  * @returns {Date} A JavaScript Date object.
  */
 function createDateFromParts(dateStr, timeStr) {
-  const [day, month, year] = dateStr.split('/').map(Number);
+  // Handle multiple date formats by replacing '-' with '/'
+  const sanitizedDateStr = dateStr.replace(/-/g, '/');
+  const parts = sanitizedDateStr.split('/');
+  if (parts.length !== 3) return new Date(NaN); // Invalid date format
+
+  // Assuming either MM/DD/YYYY or DD/MM/YYYY. We can be more robust, but this covers most cases.
+  // A common ambiguity. Let's assume DD/MM/YYYY as it's more common internationally.
+  const [day, month, year] = parts.map(Number);
   const [hours, minutes, seconds] = timeStr.split(':').map(Number);
-  // Gemini Note: We subtract 1 from the month because JavaScript months are 0-indexed (0 = January).
-  // This is the key to correctly parsing the DD/MM/YYYY format.
+  
   return new Date(year, month - 1, day, hours, minutes, seconds);
+}
+
+/**
+ * @description A robust CSV line parser that handles quoted fields.
+ * @param {string} line - A single line from a CSV file.
+ * @returns {string[]} An array of field values.
+ */
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"'; // Escaped quote
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === ',' && !inQuotes) {
+      result.push(current);
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  result.push(current);
+  return result;
 }
 
 /**
@@ -35,37 +70,60 @@ export function parseCSV(csvText) {
   const lines = csvText.trim().split('\n');
   const headerLine = lines.shift().trim();
 
-  const expectedHeaders = ['Date', 'Start Time', 'End Time', 'Work Duration', 'Breaks', 'Notes'];
+  const expectedHeaders = [
+    'Date', 'Start Time', 'End Time', 'Work Duration', 'Session Score', 
+    'Completed Tasks', 'Notes', 'Location (Lat,Lon)'
+  ];
   const actualHeaders = headerLine.split(',').map(h => h.trim());
 
-  if (JSON.stringify(expectedHeaders) !== JSON.stringify(actualHeaders)) {
+  // A simple check for the first few headers is often sufficient and more flexible
+  if (expectedHeaders.slice(0, 4).join() !== actualHeaders.slice(0, 4).join()) {
     throw new Error(
-      `Invalid CSV headers. Expected: "${expectedHeaders.join(', ')}". Received: "${actualHeaders.join(', ')}"`
+      `Invalid CSV headers. Expected headers to start with: "${expectedHeaders.slice(0, 4).join(', ')}".`
     );
   }
 
   const sessions = lines.map((line) => {
-    const values = line.split(',');
-    const notesIndex = expectedHeaders.indexOf('Notes');
-    const notes = values.slice(notesIndex).join(',').trim().replace(/^"|"$/g, ''); // Handle quoted notes
+    const values = parseCSVLine(line);
+    
+    const date = values[0]?.trim();
+    const startTimeStr = values[1]?.trim();
+    const endTimeStr = values[2]?.trim();
+    const durationStr = values[3]?.trim();
+    const sessionScore = parseInt(values[4], 10) || 0;
+    const completedTasksStr = values[5]?.trim();
+    const notesStr = values[6]?.trim();
+    const locationStr = values[7]?.trim();
 
-    const date = values[0].trim();
-    const startTimeStr = values[1].trim();
-    const endTimeStr = values[2].trim();
-    const durationStr = values[3].trim();
-
-    // Gemini Note: This is the updated, robust logic.
-    // We now use our helper function to build the date correctly.
     const startTime = createDateFromParts(date, startTimeStr).getTime();
     const endTime = createDateFromParts(date, endTimeStr).getTime();
     const duration = durationToSeconds(durationStr);
+
+    let location = null;
+    if (locationStr) {
+      const [lat, lon] = locationStr.split(',').map(Number);
+      if (!isNaN(lat) && !isNaN(lon)) {
+        location = { lat, lon };
+      }
+    }
+
+    // Gemini Note: We combine the notes and completed tasks fields for preservation,
+    // as we cannot re-link tasks to the database.
+    let combinedNotes = notesStr;
+    if (completedTasksStr && completedTasksStr !== '""') {
+      const taskInfo = `[Imported Tasks: ${completedTasksStr}]`;
+      combinedNotes = notesStr ? `${notesStr} ${taskInfo}` : taskInfo;
+    }
 
     return {
       startTime,
       endTime,
       duration,
-      breaks: [],
-      notes,
+      sessionScore,
+      notes: combinedNotes,
+      location,
+      breaks: [], // Imported sessions don't have detailed break data
+      completedTasks: [], // We store task info in notes
     };
   });
 

@@ -46,7 +46,7 @@ export default function SessionImporter({ onImport }) {
     <div className="session-importer">
       <p>Have old sessions? Import them from a CSV file.</p>
       <small>
-        Required columns: <strong>Date, Start Time, End Time, Work Duration, Breaks, Notes</strong>
+        Required columns: <strong>Date, Start Time, End Time, Work Duration, Session Score, Completed Tasks, Notes, Location (Lat,Lon)</strong>
       </small>
       <br />
       <button onClick={handleClick} className="button-secondary">

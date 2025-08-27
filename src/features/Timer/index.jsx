@@ -4,7 +4,6 @@ import React from 'react';
 import TimerDisplay from './TimerDisplay';
 import TimerControls from './TimerControls';
 import SessionNotesModal from '../../components/SessionNotesModal';
-import SessionImporter from './SessionImporter';
 
 /**
  * @description A self-contained feature component for the timer system.
@@ -21,7 +20,6 @@ export default function Timer({
   stopTimer,
   saveSession,
   discardPendingSession,
-  importSessions,
 }) {
   return (
     <div className="timer-feature">
@@ -36,10 +34,6 @@ export default function Timer({
           onStop={stopTimer}
         />
       )}
-
-      <div className="importer-container">
-        <SessionImporter onImport={importSessions} />
-      </div>
 
       <SessionNotesModal
         isOpen={!!pendingSession}
