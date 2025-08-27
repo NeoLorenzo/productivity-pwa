@@ -20,6 +20,7 @@ import { parseCSV } from '../utils/csvParser';
 /**
  * @description A custom hook to manage a timer and log work sessions, including breaks and notes.
  * @param {string | null} userId - The ID of the currently authenticated user.
+ * @param {{ addPoints: (amount: number) => void }} scoreManager - The addPoints function from useScore.
  * @returns {{
  *   elapsedTime: number,
  *   isActive: boolean,
@@ -29,13 +30,13 @@ import { parseCSV } from '../utils/csvParser';
  *   startTimer: () => void,
  *   pauseTimer: () => void,
  *   stopTimer: () => void,
- *   saveSessionWithNotes: (notes: string) => void,
+ *   saveSession: (sessionData: object) => void,
  *   discardPendingSession: () => void,
  *   importSessions: (csvText: string) => void,
  *   clearSessions: () => void
  * }}
  */
-export function useTimer(userId) {
+export function useTimer(userId, { addPoints }) {
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -204,24 +205,34 @@ export function useTimer(userId) {
       duration: workDurationSeconds,
       breaks: finalBreaks,
       notes: '',
+      completedTasks: [],
+      sessionScore: 0,
     };
 
     setPendingSession(sessionData);
   };
 
-  const saveSessionWithNotes = async (sessionData) => {
+  const saveSession = async (sessionData) => {
     if (!pendingSession || !userId) return;
 
-    const { notes, location } = sessionData;
+    const { notes, location, completedTasks } = sessionData;
+
+    const sessionScore = completedTasks.reduce((total, task) => total + task.score, 0);
 
     const newSession = {
       ...pendingSession,
       notes: notes.trim(),
-      location: location || null, // Add location, defaulting to null if not provided
+      location: location || null,
+      completedTasks: completedTasks || [],
+      sessionScore: sessionScore,
     };
 
     const sessionsColRef = collection(db, 'users', userId, 'sessions');
     await addDoc(sessionsColRef, newSession);
+
+    if (sessionScore > 0) {
+      addPoints(sessionScore);
+    }
 
     setPendingSession(null);
   };
@@ -281,7 +292,7 @@ export function useTimer(userId) {
     startTimer,
     pauseTimer,
     stopTimer,
-    saveSessionWithNotes,
+    saveSession,
     discardPendingSession,
     importSessions,
     clearSessions,

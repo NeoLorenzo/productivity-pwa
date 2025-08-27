@@ -1,7 +1,8 @@
 // src/pages/Home.jsx
 
 import { Link } from 'react-router-dom';
-import { DEFAULTS } from '../constants';
+import { useTasks } from '../hooks/useTasks';
+import { useAuth } from '../hooks/useAuth';
 
 import Header from '../components/Header';
 import Card from '../components/Card';
@@ -9,14 +10,12 @@ import ScoreDisplay from '../components/ScoreDisplay';
 import Timer from '../features/Timer';
 
 export default function Home({
-  score,
-  addPoints,
+  dailyScore,
   timer,
   onOpenSettings,
 }) {
-  const handleCompleteTask = () => {
-    addPoints(DEFAULTS.SCORE_INCREMENT);
-  };
+  const { user } = useAuth();
+  const { tasks } = useTasks(user?.uid);
 
   return (
     <div className="app-container">
@@ -29,10 +28,11 @@ export default function Home({
               isActive={timer.isActive}
               isPaused={timer.isPaused}
               pendingSession={timer.pendingSession}
+              tasks={tasks}
               startTimer={timer.startTimer}
               pauseTimer={timer.pauseTimer}
               stopTimer={timer.stopTimer}
-              saveSessionWithNotes={timer.saveSessionWithNotes}
+              saveSession={timer.saveSession}
               discardPendingSession={timer.discardPendingSession}
               importSessions={timer.importSessions}
             />
@@ -45,11 +45,15 @@ export default function Home({
         </main>
 
         <aside className="sidebar">
-          <Card title="Score">
-            <ScoreDisplay score={score} />
-            <button onClick={handleCompleteTask} className="button-full-width">
-              Complete a Task (+{DEFAULTS.SCORE_INCREMENT} Points)
-            </button>
+          <Card title="Today's Score">
+            <ScoreDisplay score={dailyScore} />
+          </Card>
+          <Card title="Actions">
+            <div className="actions-container">
+              <Link to="/tasks" className="button-secondary">
+                Manage Tasks
+              </Link>
+            </div>
           </Card>
         </aside>
       </div>

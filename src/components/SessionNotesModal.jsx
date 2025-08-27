@@ -4,17 +4,19 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 
 /**
- * @description A modal to prompt the user for session notes and location.
+ * @description A modal to prompt for session notes, location, and completed tasks.
  * @param {{
  *   isOpen: boolean,
- *   onSubmit: (sessionData: { notes: string, location: object | null }) => void,
+ *   tasks: Array<{id: string, name: string, score: number}>,
+ *   onSubmit: (sessionData: { notes: string, location: object | null, completedTasks: Array<object> }) => void,
  *   onClose: () => void
  * }} props
  * @returns {JSX.Element | null}
  */
-export default function SessionNotesModal({ isOpen, onSubmit, onClose }) {
+export default function SessionNotesModal({ isOpen, tasks = [], onSubmit, onClose }) {
   const [notes, setNotes] = useState('');
   const [location, setLocation] = useState(null);
+  const [selectedTasks, setSelectedTasks] = useState(new Set());
   const [isFetchingLocation, setIsFetchingLocation] = useState(false);
   const [locationError, setLocationError] = useState('');
 
@@ -24,6 +26,7 @@ export default function SessionNotesModal({ isOpen, onSubmit, onClose }) {
     if (isOpen) {
       setNotes('');
       setLocation(null);
+      setSelectedTasks(new Set());
       setIsFetchingLocation(false);
       setLocationError('');
     }
@@ -32,6 +35,18 @@ export default function SessionNotesModal({ isOpen, onSubmit, onClose }) {
   if (!isOpen) {
     return null;
   }
+
+  const handleTaskToggle = (taskId) => {
+    setSelectedTasks((prevSelected) => {
+      const newSelected = new Set(prevSelected);
+      if (newSelected.has(taskId)) {
+        newSelected.delete(taskId);
+      } else {
+        newSelected.add(taskId);
+      }
+      return newSelected;
+    });
+  };
 
   const handleFetchLocation = () => {
     if (!navigator.geolocation) {
@@ -59,15 +74,35 @@ export default function SessionNotesModal({ isOpen, onSubmit, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ notes, location });
+    const completedTasks = tasks.filter(task => selectedTasks.has(task.id));
+    onSubmit({ notes, location, completedTasks });
   };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>Session Complete</h2>
-        <p>What did you work on during this session?</p>
+        
         <form onSubmit={handleSubmit}>
+          {tasks.length > 0 && (
+            <div className="task-selection-container">
+              <p>What tasks did you complete?</p>
+              <div className="task-checklist">
+                {tasks.map((task) => (
+                  <label key={task.id} className="task-checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={selectedTasks.has(task.id)}
+                      onChange={() => handleTaskToggle(task.id)}
+                    />
+                    {task.name} (+{task.score})
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <p>Add any additional notes for this session:</p>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}

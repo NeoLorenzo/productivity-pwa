@@ -13,7 +13,6 @@ import SettingsManager from './SettingsManager';
  *   settings: { dateFormat: string, timeFormat: string },
  *   updateDateFormat: (format: string) => void,
  *   updateTimeFormat: (format: string) => void,
- *   onClearScore: () => void,
  *   onClearSessions: () => void,
  *   onExportSessions: () => void
  * }} props
@@ -25,7 +24,6 @@ export default function SettingsModal({
   settings,
   updateDateFormat,
   updateTimeFormat,
-  onClearScore,
   onClearSessions,
   onExportSessions,
 }) {
@@ -50,7 +48,6 @@ export default function SettingsModal({
           
           <Card>
             <SettingsManager
-              onClearScore={onClearScore}
               onClearSessions={onClearSessions}
               onExportSessions={onExportSessions}
             />

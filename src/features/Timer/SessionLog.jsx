@@ -9,8 +9,8 @@ import {
 } from '../../utils/formatters';
 
 /**
- * @description Displays a log of past timer sessions, including break data and notes.
- * @param {{ sessions: Array<{startTime: number, endTime: number, duration: number, breaks: Array<object>, notes: string, location?: {lat: number, lon: number}}> }} props
+ * @description Displays a log of past timer sessions, including tasks, scores, and notes.
+ * @param {{ sessions: Array<object> }} props
  * @returns {JSX.Element}
  */
 export default function SessionLog({ sessions, dateFormat, timeFormat }) {
@@ -28,7 +28,8 @@ export default function SessionLog({ sessions, dateFormat, timeFormat }) {
             <th>Start Time</th>
             <th>End Time</th>
             <th>Work Duration</th>
-            <th>Breaks</th>
+            <th>Completed Tasks</th>
+            <th>Session Score</th>
             <th>Notes</th>
             <th>Location</th>
           </tr>
@@ -43,10 +44,11 @@ export default function SessionLog({ sessions, dateFormat, timeFormat }) {
                 <td>{formatTime(session.endTime, timeFormat)}</td>
                 <td>{formatDuration(session.duration)}</td>
                 <td>
-                  {session.breaks?.length > 0
-                    ? `${session.breaks.length} (${formatDuration(totalBreakSeconds)})`
+                  {session.completedTasks?.length > 0
+                    ? session.completedTasks.map(task => task.name).join(', ')
                     : '—'}
                 </td>
+                <td>{session.sessionScore > 0 ? session.sessionScore : '—'}</td>
                 <td>{session.notes || '—'}</td>
                 <td>
                   {session.location ? (

@@ -7,7 +7,7 @@ import { db } from '../firebase';
 /**
  * @description A custom hook to manage the user's score from Firestore.
  * @param {string | null} userId - The ID of the currently authenticated user.
- * @returns {{ score: number, addPoints: (amount: number) => void, clearScore: () => void }}
+ * @returns {{ score: number, addPoints: (amount: number) => void }}
  */
 export function useScore(userId) {
   const [score, setScore] = useState(0);
@@ -49,11 +49,5 @@ export function useScore(userId) {
     });
   };
 
-  const clearScore = async () => {
-    if (!userId) return;
-    const userDocRef = doc(db, 'users', userId);
-    await updateDoc(userDocRef, { score: 0 });
-  };
-
-  return { score, addPoints, clearScore };
+  return { score, addPoints };
 }

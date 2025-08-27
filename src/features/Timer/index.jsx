@@ -15,10 +15,11 @@ export default function Timer({
   isActive,
   isPaused,
   pendingSession,
+  tasks,
   startTimer,
   pauseTimer,
   stopTimer,
-  saveSessionWithNotes,
+  saveSession,
   discardPendingSession,
   importSessions,
 }) {
@@ -42,7 +43,8 @@ export default function Timer({
 
       <SessionNotesModal
         isOpen={!!pendingSession}
-        onSubmit={saveSessionWithNotes}
+        tasks={tasks}
+        onSubmit={saveSession}
         onClose={discardPendingSession}
       />
     </div>

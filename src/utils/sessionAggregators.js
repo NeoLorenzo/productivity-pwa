@@ -3,9 +3,9 @@
 import { formatDuration, formatDate } from './formatters';
 
 /**
- * @description Aggregates session data by day, calculating total duration and session count.
+ * @description Aggregates session data by day, calculating total duration, session count, and score.
  * @param {Array<object>} sessions - The array of session objects from useTimer.
- * @returns {Array<{date: number, totalDuration: number, sessionCount: number}>}
+ * @returns {Array<{date: number, totalDuration: number, sessionCount: number, totalScore: number}>}
  *          An array of objects, each representing a day with aggregated data, sorted by most recent.
  */
 export function aggregateSessionsByDay(sessions) {
@@ -24,11 +24,13 @@ export function aggregateSessionsByDay(sessions) {
         date: session.endTime,
         totalDuration: 0,
         sessionCount: 0,
+        totalScore: 0,
       };
     }
 
     acc[dateKey].totalDuration += session.duration;
     acc[dateKey].sessionCount += 1;
+    acc[dateKey].totalScore += session.sessionScore || 0; // Add session score, default to 0
 
     return acc;
   }, {});

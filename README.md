@@ -26,13 +26,6 @@ The app should:
 
 This is a **framework for customizing motivation** rather than enforcing someone else’s system.
 
-Future features may include:
-- Daily, weekly, or custom streak logic
-- Real-time timers for deep work
-- Push notifications as behavior nudges
-- Data syncing and profiles via Firebase
-- Competitions or collaborative tracking (long-term)
-
 ---
 
 ## 🛠️ Tech Stack
@@ -68,6 +61,10 @@ src/
 │   ├── SessionNotesModal.jsx
 │   └── SettingsManager.jsx
 ├── features/
+│   ├── Tasks/
+│   │   ├── index.jsx
+│   │   ├── TaskForm.jsx
+│   │   └── TaskList.jsx
 │   └── Timer/
 │       ├── DailySummary.jsx
 │       ├── index.jsx
@@ -79,10 +76,12 @@ src/
 │   ├── useAuth.jsx
 │   ├── useScore.jsx
 │   ├── useSettings.jsx
+│   ├── useTasks.jsx
 │   └── useTimer.jsx
 ├── pages/
 │   ├── Home.jsx
-│   └── History.jsx
+│   ├── History.jsx
+│   └── Tasks.jsx
 ├── styles/
 │   └── App.css
 ├── utils/
@@ -97,67 +96,42 @@ src/
 
 ---
 
-## 📌 Active Files in VS Code
-
-These files are currently open and will be the main ones touched during development:
-- `App.jsx`
-- `main.jsx`
-- `pages/Home.jsx`
-- `styles/App.css`
-- `components/` (folder)
-- `features/` (folder)
-- `hooks/` (folder)
-- `utils/` (folder)
-
----
-
 ## ✅ Implemented Features
 
 - **Firebase Authentication**: Users can sign in with their Google account.
-- **Cloud-Synced Score & Sessions**: Score and session data are tied to the user's account and synced with Firestore.
-- **Multi-Page Navigation**: Uses React Router to provide separate pages for the timer and session history.
-- **Focus Timer**: A full-featured timer to track work sessions with start, pause, and stop functionality.
-- **Session Logging & History**: All completed timer sessions are logged and displayed on a dedicated history page.
-- **Daily Summary**: The history page includes a summary of total work duration and session counts per day.
+- **User-Defined Task Rewards**: Users can create and manage a personal list of tasks, each with a custom point value.
+- **Cloud-Synced Data**: All session and task data is tied to the user's account and synced with Firestore.
+- **Focus Timer with Task Integration**: At the end of a timer session, users can select the tasks they completed to automatically calculate and log their score.
+- **Multi-Page Navigation**: Uses React Router to provide separate pages for the timer, session history, and task management.
+- **Session Logging & History**: All completed timer sessions are logged, showing work duration, completed tasks, and the score earned for that session.
+- **Daily Summary**: The history page includes a summary of total work duration, session counts, and total points earned per day.
 - **Session Import**: Users can import past sessions from a CSV file.
 - **Customizable Display**: Date and time formats can be changed in the settings.
-- **Data Management**: Users can clear their score or session history.
+- **Data Management**: Users can clear their entire session history.
 
 ## 🔜 Upcoming Features
 
 - Streak logic and display
 - Push notifications for reminders which will sound different based on selected motivator persona
-- User-defined reward system
 - Create page which serves as a resource on how to be more productive and / or have a more balanced work + play relationship.
 - Share button that allows to share certain stats to social media
 - Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
 - Basic fitness tracker / workout tracker which will also give rewards
-- Remove zoom from mobile app
+- History in mobile app doesnt look clean, its not sized to fit the screen horizontally causing the text to overflow and expand past the edge of the session history card.
 - Make daily summary a calendar view with different view modes (one for total sessions, one for total work duration)
 - Create profile view which shows stats
 - Replace text buttons with icons (if possible.)
 - Improve app color scheme
 - Add dark mode light mode switch in settings
 - Add a way to select session and delete them
-
----
-
-## 📦 Install & Run
-
-```bash
-npm install
-npm run dev
-```
-
-Open http://localhost:5173
- to view it in the browser.
-
-## 🧹 Cleaned Up
-
-The following have been removed:
-
-- Vite/React default assets (e.g. react.svg, vite.svg)
-- README boilerplate
+- Clicking history in ios app looks like it opens a new tab. A header pops up that has the link of the website, and a done button and at the bottom navigation options come up too, whereas the dashboard/main screen is fully clean. fix this.
+- App logo still not showing.
+- GitHub/Macrofactor style heat map view of history
+- Add reflection tags rate sleep out of 5, etc.
+- Add functionality to save to local first and sync to firebase after, just in case users lose connection or something. App should work offline.
+- Flexible nudges
+  - Time-boxed reminders: “If no session by 14:00, nudge me.”
+  - Contextual nags: “If 2+ pauses in a 25m, suggest shorter block.”
 
 ---
 

@@ -4,9 +4,9 @@ import React from 'react';
 import { formatDate, formatDuration } from '../../utils/formatters';
 
 /**
- * @description Displays a summary of total work time and session counts per day.
+ * @description Displays a summary of total work time, session counts, and score per day.
  * @param {{
- *   dailySummary: Array<{date: number, totalDuration: number, sessionCount: number}>,
+ *   dailySummary: Array<{date: number, totalDuration: number, sessionCount: number, totalScore: number}>,
  *   dateFormat: string
  * }} props
  * @returns {JSX.Element}
@@ -25,6 +25,7 @@ export default function DailySummary({ dailySummary, dateFormat }) {
             <th>Date</th>
             <th>Total Sessions</th>
             <th>Total Work Duration</th>
+            <th>Total Score Earned</th>
           </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@ export default function DailySummary({ dailySummary, dateFormat }) {
               <td>{formatDate(day.date, dateFormat)}</td>
               <td>{day.sessionCount}</td>
               <td>{formatDuration(day.totalDuration)}</td>
+              <td>{day.totalScore}</td>
             </tr>
           ))}
         </tbody>

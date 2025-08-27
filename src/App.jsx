@@ -11,6 +11,7 @@ import { exportSessionsToCSV } from './utils/csvGenerator';
 
 import Home from './pages/Home';
 import History from './pages/History';
+import Tasks from './pages/Tasks';
 import Card from './components/Card';
 import Auth from './components/Auth';
 import SettingsModal from './components/SettingsModal';
@@ -19,13 +20,21 @@ function App() {
   const { user, isLoading } = useAuth();
   const userId = user ? user.uid : null;
 
-  const { score, addPoints, clearScore } = useScore(userId);
-  const timer = useTimer(userId);
+  const { score, addPoints } = useScore(userId);
+  const timer = useTimer(userId, { addPoints });
   const { settings, updateDateFormat, updateTimeFormat } = useSettings();
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   const dailySummary = aggregateSessionsByDay(timer.sessions);
+
+  // Gemini Note: This logic finds the summary data for today.
+  // It compares the date part of the summary entry with today's date.
+  const todayString = new Date().toLocaleDateString('en-CA');
+  const todaysSummary = dailySummary.find(
+    (day) => new Date(day.date).toLocaleDateString('en-CA') === todayString
+  );
+  const dailyScore = todaysSummary ? todaysSummary.totalScore : 0;
 
   const handleExportSessions = () => {
     if (timer.sessions.length === 0) {
@@ -78,7 +87,7 @@ function App() {
             element={
               <Home
                 score={score}
-                addPoints={addPoints}
+                dailyScore={dailyScore}
                 timer={timer}
                 onOpenSettings={() => setIsSettingsModalOpen(true)}
               />
@@ -96,6 +105,10 @@ function App() {
               />
             }
           />
+          <Route
+            path="/tasks"
+            element={<Tasks onOpenSettings={() => setIsSettingsModalOpen(true)} />}
+          />
         </Routes>
       </BrowserRouter>
       <SettingsModal
@@ -104,7 +117,6 @@ function App() {
         settings={settings}
         updateDateFormat={updateDateFormat}
         updateTimeFormat={updateTimeFormat}
-        onClearScore={clearScore}
         onClearSessions={timer.clearSessions}
         onExportSessions={handleExportSessions}
       />
