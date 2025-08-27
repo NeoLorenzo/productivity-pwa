@@ -1,7 +1,7 @@
 {/*src/App.jsx*/}
 
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import { useScore } from './hooks/useScore';
 import { useTimer } from './hooks/useTimer';
@@ -80,7 +80,8 @@ function App() {
 
   return (
     <>
-      <BrowserRouter basename="/productivity-pwa/">
+      {/* Gemini Note: We now use HashRouter. The `basename` prop is removed as it's not needed. */}
+      <HashRouter>
         <Routes>
           <Route
             path="/"
@@ -111,7 +112,7 @@ function App() {
             element={<Tasks onOpenSettings={() => setIsSettingsModalOpen(true)} />}
           />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
       <SettingsModal
         isOpen={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}
