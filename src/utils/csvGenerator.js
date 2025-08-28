@@ -1,5 +1,3 @@
-// src/utils/csvGenerator.jsx
-
 import {
   formatDate,
   formatTime,
@@ -33,7 +31,7 @@ export function exportSessionsToCSV(sessions, dateFormat, timeFormat) {
     'Session Score',
     'Completed Tasks',
     'Notes',
-    'Location (Lat,Lon)',
+    'Location',
   ];
 
   const rows = sessions.map((session) => {
@@ -42,7 +40,7 @@ export function exportSessionsToCSV(sessions, dateFormat, timeFormat) {
       .join('; ') || '';
       
     const location = session.location 
-      ? `${session.location.lat},${session.location.lon}` 
+      ? `${session.location.lat}, ${session.location.lon}` 
       : '';
 
     // Gemini Note: Each field is now safely formatted to handle commas and quotes,

@@ -2,6 +2,8 @@
 
 <!doctype html>
 <html lang="en">
+  <!doctype html>
+<html lang="en">
   <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="/pwa-192x192.png" />
@@ -11,6 +13,7 @@
   <!-- PWA Tags -->
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="mobile-web-app-capable" content="yes">
 
   <!-- iOS-specific PWA tags -->
   <link rel="apple-touch-icon" href="/pwa-192x192.png">
@@ -19,6 +22,11 @@
   <meta name="apple-mobile-web-app-title" content="ProdTrack">
 
 </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>

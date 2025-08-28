@@ -92,9 +92,7 @@ This is a **framework for customizing motivation** rather than enforcing someone
 
 - Add feature which auto converts github lines written to task score
 
-- Fix location data not appearing after import
-
-- Detect if the user is on a mbile browser and show them how to install the app as a PWA.
+- Detect if the user is on a mobile browser and show them how to install the app as a PWA.
 
 ---
 

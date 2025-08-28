@@ -1,5 +1,3 @@
-// src/utils/csvParser.jsx
-
 /**
  * @description Converts a duration string in HH:MM:SS format to total seconds.
  * @param {string} timeStr - The time string (e.g., "00:45:30").
@@ -72,7 +70,7 @@ export function parseCSV(csvText) {
 
   const expectedHeaders = [
     'Date', 'Start Time', 'End Time', 'Work Duration', 'Session Score', 
-    'Completed Tasks', 'Notes', 'Location (Lat,Lon)'
+    'Completed Tasks', 'Notes', 'Location'
   ];
   const actualHeaders = headerLine.split(',').map(h => h.trim());
 
@@ -84,31 +82,46 @@ export function parseCSV(csvText) {
   }
 
   const sessions = lines.map((line) => {
-    const values = parseCSVLine(line);
+    const parsedValues = parseCSVLine(line);
     
-    const date = values[0]?.trim();
-    const startTimeStr = values[1]?.trim();
-    const endTimeStr = values[2]?.trim();
-    const durationStr = values[3]?.trim();
-    const sessionScore = parseInt(values[4], 10) || 0;
-    const completedTasksStr = values[5]?.trim();
-    const notesStr = values[6]?.trim();
-    const locationStr = values[7]?.trim();
+    // Gemini Note: This is the critical fix. We now clean each value by trimming whitespace
+    // and removing the surrounding quotes before we use them.
+    const values = parsedValues.map(val => val.trim().replace(/^"|"$/g, ''));
 
-    const startTime = createDateFromParts(date, startTimeStr).getTime();
-    const endTime = createDateFromParts(date, endTimeStr).getTime();
+    const date = values[0];
+    const startTimeStr = values[1];
+    const endTimeStr = values[2];
+    const durationStr = values[3];
+    const sessionScore = parseInt(values[4], 10) || 0;
+    const completedTasksStr = values[5];
+    const notesStr = values[6];
+    const locationStr = values[7];
+
+    let startTime, endTime;
+
+    if (startTimeStr && endTimeStr) {
+      startTime = createDateFromParts(date, startTimeStr).getTime();
+      endTime = createDateFromParts(date, endTimeStr).getTime();
+    } else {
+      const baseTimestamp = createDateFromParts(date, '12:00:00').getTime();
+      startTime = baseTimestamp;
+      endTime = baseTimestamp;
+    }
+
     const duration = durationToSeconds(durationStr);
 
     let location = null;
     if (locationStr) {
-      const [lat, lon] = locationStr.split(',').map(Number);
-      if (!isNaN(lat) && !isNaN(lon)) {
-        location = { lat, lon };
+      const parts = locationStr.split(',');
+      if (parts.length === 2) {
+        const lat = parseFloat(parts[0].trim());
+        const lon = parseFloat(parts[1].trim());
+        if (!isNaN(lat) && !isNaN(lon)) {
+          location = { lat, lon };
+        }
       }
     }
 
-    // Gemini Note: We combine the notes and completed tasks fields for preservation,
-    // as we cannot re-link tasks to the database.
     let combinedNotes = notesStr;
     if (completedTasksStr && completedTasksStr !== '""') {
       const taskInfo = `[Imported Tasks: ${completedTasksStr}]`;
@@ -122,11 +135,10 @@ export function parseCSV(csvText) {
       sessionScore,
       notes: combinedNotes,
       location,
-      breaks: [], // Imported sessions don't have detailed break data
-      completedTasks: [], // We store task info in notes
+      breaks: [],
+      completedTasks: [],
     };
   });
 
-  // Filter out any rows that might have resulted in invalid dates (NaN timestamps)
   return sessions.filter(session => !isNaN(session.startTime) && !isNaN(session.endTime));
 }
