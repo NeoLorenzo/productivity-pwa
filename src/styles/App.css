@@ -1,5 +1,6 @@
 /* src/styles/App.css */
 
+/* src/styles/App.css */
 /* 1. THEME & GLOBAL STYLES */
 :root {
   --color-primary: #4a90e2;
@@ -301,6 +302,10 @@ a[class*='button-']:hover {
   width: 90%;
   max-width: 500px;
   text-align: left;
+  /* Gemini Note: Added flex layout and max-height to make modal scrollable */
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
 }
 .modal-content h2 {
   margin-top: 0;
@@ -358,7 +363,10 @@ a[class*='button-']:hover {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  margin-bottom: var(--spacing-md);
+  /* Gemini Note: Made this section scrollable and removed margin */
+  overflow-y: auto;
+  flex: 1;
+  padding: var(--spacing-sm) 0;
 }
 
 /* Quick Add Modal Form */
