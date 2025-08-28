@@ -16,9 +16,6 @@ export default defineConfig({
         description: 'A minimalist app to gamify your productivity.',
         theme_color: '#ffffff',
         display: 'standalone',
-        // Gemini Note: These two lines are the fix.
-        // 'scope' tells the PWA which URLs are part of the app.
-        // 'start_url' is made explicit to match the base path.
         scope: '/productivity-pwa/',
         start_url: '/productivity-pwa/',
         background_color: '#ffffff',

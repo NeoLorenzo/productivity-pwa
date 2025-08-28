@@ -62,12 +62,18 @@ This is a **framework for customizing motivation** rather than enforcing someone
 
 - Basic fitness tracker / workout tracker which will also give rewards
 
-- Create profile view which shows stats
+- Create profile view which shows stats, such as streaks.
 - Share button that allows to share certain stats to social media
+- Move Sign Out button to profile.
 
 - Add a way to select session and delete them
-- Clicking history in ios app looks like it opens a new tab. A header pops up that has the link of the website, and a done button and at the bottom navigation options come up too, whereas the dashboard/main screen is fully clean. fix this.
+- Add a way to edit sessions in session history
+- Add a way to edit daily summary
 - History in mobile app doesnt look clean, its not sized to fit the screen horizontally causing the text to overflow and expand past the edge of the session history card.
+- Settings popup takes up entire screen, it should be its own page
+- The "Productivity Tracker" text in the header has to go, replace it with text that says "Dashboard" which includes the long form current date above it
+- On mobile move app navigation, such as history, settings, and sign out to the bottom.
+- Move current daily score to top of screen
 
 - Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
 - Add reflection tags rate sleep out of 5, etc.
@@ -84,6 +90,12 @@ This is a **framework for customizing motivation** rather than enforcing someone
 - Replace text buttons with icons (if possible.)
 - Improve app color scheme
 - Add dark mode light mode switch in settings
+
+- Add feature which auto converts github lines written to task score
+
+- Fix location data not appearing after import
+
+- Detect if the user is on a mbile browser and show them how to install the app as a PWA.
 
 ---
 
