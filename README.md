@@ -68,11 +68,8 @@ This is a **framework for customizing motivation** rather than enforcing someone
 
 - Add a way to select session and delete them
 - Add a way to edit sessions in session history
-- History in mobile app doesnt look clean, its not sized to fit the screen horizontally causing the text to overflow and expand past the edge of the session history card.
+- History on mobile is mega annoying to use.
 - Settings popup takes up entire screen, it should be its own page
-- The "Productivity Tracker" text in the header has to go, replace it with text that says "Dashboard" which includes the long form current date above it
-- On mobile move app navigation, such as history, settings, and sign out to the bottom.
-- Move current daily score to top of screen
 
 - Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
 - Add reflection tags rate sleep out of 5, etc.

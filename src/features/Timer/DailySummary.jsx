@@ -31,10 +31,10 @@ export default function DailySummary({ dailySummary, dateFormat }) {
         <tbody>
           {dailySummary.map((day) => (
             <tr key={day.date}>
-              <td>{formatDate(day.date, dateFormat)}</td>
-              <td>{day.sessionCount}</td>
-              <td>{formatDuration(day.totalDuration)}</td>
-              <td>{day.totalScore}</td>
+              <td data-label="Date">{formatDate(day.date, dateFormat)}</td>
+              <td data-label="Total Sessions">{day.sessionCount}</td>
+              <td data-label="Total Work Duration">{formatDuration(day.totalDuration)}</td>
+              <td data-label="Total Score Earned">{day.totalScore}</td>
             </tr>
           ))}
         </tbody>

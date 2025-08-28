@@ -43,61 +43,114 @@ export default function Home({
   return (
     <>
       <div className="app-container">
-        <Header onOpenSettings={onOpenSettings} />
+        <Header onOpenSettings={onOpenSettings} title="Home" />
         <div className="app-layout">
-          <main className="main-content">
-            <Card title="Focus Timer">
-              <Timer
-                elapsedTime={timer.elapsedTime}
-                isActive={timer.isActive}
-                isPaused={timer.isPaused}
-                pendingSession={timer.pendingSession}
-                tasks={tasks}
-                startTimer={timer.startTimer}
-                pauseTimer={timer.pauseTimer}
-                stopTimer={timer.stopTimer}
-                saveSession={timer.saveSession}
-                discardPendingSession={timer.discardPendingSession}
-              />
-            </Card>
-            
-            <Card title="Activity Overview">
-              <div className="activity-heatmaps">
-                <Heatmap
-                  title="Daily Work Duration"
-                  data={durationHeatmapData}
-                  valueKey="totalDuration"
-                  onClick={() => handleHeatmapClick('Daily Work Duration', 'totalDuration')}
+          {isMobile ? (
+            // Gemini Note: Mobile layout reordered to prioritize the score.
+            // The <main> and <aside> tags are omitted for a simple flex column.
+            <>
+              <Card title="Today's Score">
+                <ScoreDisplay score={dailyScore} />
+              </Card>
+              <Card title="Focus Timer">
+                <Timer
+                  elapsedTime={timer.elapsedTime}
+                  isActive={timer.isActive}
+                  isPaused={timer.isPaused}
+                  pendingSession={timer.pendingSession}
+                  tasks={tasks}
+                  startTimer={timer.startTimer}
+                  pauseTimer={timer.pauseTimer}
+                  stopTimer={timer.stopTimer}
+                  saveSession={timer.saveSession}
+                  discardPendingSession={timer.discardPendingSession}
                 />
-                <Heatmap
-                  title="Daily Score Earned"
-                  data={scoreHeatmapData}
-                  valueKey="totalScore"
-                  onClick={() => handleHeatmapClick('Daily Score Earned', 'totalScore')}
-                />
-              </div>
-            </Card>
-
-          </main>
-
-          <aside className="sidebar">
-            <Card title="Today's Score">
-              <ScoreDisplay score={dailyScore} />
-            </Card>
-            <Card title="Actions">
-              <div className="actions-container">
-                <button
-                  onClick={() => setIsQuickAddModalOpen(true)}
-                  className="button-secondary"
-                >
-                  Quick Add Session
-                </button>
-                <Link to="/tasks" className="button-secondary">
-                  Manage Tasks
-                </Link>
-              </div>
-            </Card>
-          </aside>
+              </Card>
+              <Card title="Actions">
+                <div className="actions-container">
+                  <button
+                    onClick={() => setIsQuickAddModalOpen(true)}
+                    className="button-secondary"
+                  >
+                    Quick Add Session
+                  </button>
+                  <Link to="/tasks" className="button-secondary">
+                    Manage Tasks
+                  </Link>
+                </div>
+              </Card>
+              <Card title="Activity Overview">
+                <div className="activity-heatmaps">
+                  <Heatmap
+                    title="Daily Work Duration"
+                    data={durationHeatmapData}
+                    valueKey="totalDuration"
+                    onClick={() => handleHeatmapClick('Daily Work Duration', 'totalDuration')}
+                  />
+                  <Heatmap
+                    title="Daily Score Earned"
+                    data={scoreHeatmapData}
+                    valueKey="totalScore"
+                    onClick={() => handleHeatmapClick('Daily Score Earned', 'totalScore')}
+                  />
+                </div>
+              </Card>
+            </>
+          ) : (
+            // Desktop layout remains the same
+            <>
+              <main className="main-content">
+                <Card title="Focus Timer">
+                  <Timer
+                    elapsedTime={timer.elapsedTime}
+                    isActive={timer.isActive}
+                    isPaused={timer.isPaused}
+                    pendingSession={timer.pendingSession}
+                    tasks={tasks}
+                    startTimer={timer.startTimer}
+                    pauseTimer={timer.pauseTimer}
+                    stopTimer={timer.stopTimer}
+                    saveSession={timer.saveSession}
+                    discardPendingSession={timer.discardPendingSession}
+                  />
+                </Card>
+                <Card title="Activity Overview">
+                  <div className="activity-heatmaps">
+                    <Heatmap
+                      title="Daily Work Duration"
+                      data={durationHeatmapData}
+                      valueKey="totalDuration"
+                      onClick={() => handleHeatmapClick('Daily Work Duration', 'totalDuration')}
+                    />
+                    <Heatmap
+                      title="Daily Score Earned"
+                      data={scoreHeatmapData}
+                      valueKey="totalScore"
+                      onClick={() => handleHeatmapClick('Daily Score Earned', 'totalScore')}
+                    />
+                  </div>
+                </Card>
+              </main>
+              <aside className="sidebar">
+                <Card title="Today's Score">
+                  <ScoreDisplay score={dailyScore} />
+                </Card>
+                <Card title="Actions">
+                  <div className="actions-container">
+                    <button
+                      onClick={() => setIsQuickAddModalOpen(true)}
+                      className="button-secondary"
+                    >
+                      Quick Add Session
+                    </button>
+                    <Link to="/tasks" className="button-secondary">
+                      Manage Tasks
+                    </Link>
+                  </div>
+                </Card>
+              </aside>
+            </>
+          )}
         </div>
       </div>
       <HeatmapModal

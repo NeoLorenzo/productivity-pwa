@@ -12,17 +12,17 @@ import TaskManager from '../features/Tasks';
 export default function Tasks({ onOpenSettings }) {
   return (
     <div className="app-container">
-      <Header onOpenSettings={onOpenSettings} />
-      <main className="main-content" style={{ width: '100%', maxWidth: '800px', margin: '0 auto', padding: '1.5rem' }}>
-        <Card title="Manage Your Tasks">
-          <div className="history-page-controls">
-            <Link to="/" className="button-secondary">
-              ← Back to Home
-            </Link>
-          </div>
-          <TaskManager />
-        </Card>
-      </main>
+      <Header onOpenSettings={onOpenSettings} title="Tasks" />
+      {/* Gemini Note: Replaced the custom <main> with the standard .app-layout div
+          to ensure consistent padding and responsive behavior across the app. */}
+      <div className="app-layout" style={{ maxWidth: '800px' }}>
+        <div className="history-page-controls">
+          <Link to="/" className="button-secondary">
+            ← Back to Home
+          </Link>
+        </div>
+        <TaskManager />
+      </div>
     </div>
   );
 }

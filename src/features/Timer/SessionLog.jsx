@@ -41,18 +41,18 @@ export default function SessionLog({ sessions, dateFormat, timeFormat }) {
 
             return (
               <tr key={session.endTime}>
-                <td>{formatDate(session.endTime, dateFormat)}</td>
-                <td>{isUntimed ? '—' : formatTime(session.startTime, timeFormat)}</td>
-                <td>{isUntimed ? '—' : formatTime(session.endTime, timeFormat)}</td>
-                <td>{isUntimed ? '—' : formatDuration(session.duration)}</td>
-                <td>
+                <td data-label="Date">{formatDate(session.endTime, dateFormat)}</td>
+                <td data-label="Start Time">{isUntimed ? '—' : formatTime(session.startTime, timeFormat)}</td>
+                <td data-label="End Time">{isUntimed ? '—' : formatTime(session.endTime, timeFormat)}</td>
+                <td data-label="Work Duration">{isUntimed ? '—' : formatDuration(session.duration)}</td>
+                <td data-label="Completed Tasks">
                   {session.completedTasks?.length > 0
                     ? session.completedTasks.map(task => task.name).join(', ')
                     : '—'}
                 </td>
-                <td>{session.sessionScore > 0 ? session.sessionScore : '—'}</td>
-                <td>{session.notes || '—'}</td>
-                <td>
+                <td data-label="Session Score">{session.sessionScore > 0 ? session.sessionScore : '—'}</td>
+                <td data-label="Notes">{session.notes || '—'}</td>
+                <td data-label="Location">
                   {session.location ? (
                     <a
                       href={`https://www.google.com/maps?q=${session.location.lat},${session.location.lon}`}

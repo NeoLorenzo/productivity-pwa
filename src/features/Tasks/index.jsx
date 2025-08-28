@@ -5,6 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useTasks } from '../../hooks/useTasks';
 import TaskForm from './TaskForm';
 import TaskList from './TaskList';
+import Card from '../../components/Card';
 
 /**
  * @description The main component for the task management feature.
@@ -40,16 +41,20 @@ export default function TaskManager() {
 
   return (
     <div className="task-manager">
-      <TaskForm
-        onSubmit={editingTask ? (name, score) => handleUpdateTask(editingTask.id, name, score) : handleAddTask}
-        editingTask={editingTask}
-        onCancelEdit={handleCancelEdit}
-      />
-      <TaskList
-        tasks={tasks}
-        onEdit={handleEdit}
-        onDelete={handleDeleteTask}
-      />
+      <Card title={editingTask ? 'Edit Task' : 'Add a New Task'}>
+        <TaskForm
+          onSubmit={editingTask ? (name, score) => handleUpdateTask(editingTask.id, name, score) : handleAddTask}
+          editingTask={editingTask}
+          onCancelEdit={handleCancelEdit}
+        />
+      </Card>
+      <Card title="Your Tasks">
+        <TaskList
+          tasks={tasks}
+          onEdit={handleEdit}
+          onDelete={handleDeleteTask}
+        />
+      </Card>
     </div>
   );
 }

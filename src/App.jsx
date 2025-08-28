@@ -1,11 +1,10 @@
-{/*src/App.jsx*/}
-
 import { useState } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import { useScore } from './hooks/useScore';
 import { useTimer } from './hooks/useTimer';
 import { useSettings } from './hooks/useSettings';
+import { useMediaQuery } from './hooks/useMediaQuery';
 import { aggregateSessionsByDay } from './utils/sessionAggregators';
 import { exportSessionsToCSV } from './utils/csvGenerator';
 
@@ -15,6 +14,7 @@ import Tasks from './pages/Tasks';
 import Card from './components/Card';
 import Auth from './components/Auth';
 import SettingsModal from './components/SettingsModal';
+import BottomNav from './components/BottomNav';
 
 function App() {
   const { user, isLoading } = useAuth();
@@ -23,6 +23,7 @@ function App() {
   const { score, addPoints } = useScore(userId);
   const timer = useTimer(userId, { addPoints });
   const { settings, updateDateFormat, updateTimeFormat } = useSettings();
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
@@ -112,6 +113,8 @@ function App() {
             element={<Tasks onOpenSettings={() => setIsSettingsModalOpen(true)} />}
           />
         </Routes>
+        {/* Gemini Note: Moved BottomNav inside HashRouter to provide routing context. */}
+        {isMobile && <BottomNav onOpenSettings={() => setIsSettingsModalOpen(true)} />}
       </HashRouter>
       <SettingsModal
         isOpen={isSettingsModalOpen}

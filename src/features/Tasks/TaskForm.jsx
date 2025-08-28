@@ -42,7 +42,6 @@ export default function TaskForm({ onSubmit, editingTask, onCancelEdit }) {
 
   return (
     <form onSubmit={handleSubmit} className="task-form">
-      <h3>{editingTask ? 'Edit Task' : 'Add a New Task'}</h3>
       <div className="form-controls">
         <input
           type="text"

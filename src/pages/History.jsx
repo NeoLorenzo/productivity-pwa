@@ -1,3 +1,5 @@
+// src/pages/History.jsx
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -11,8 +13,11 @@ import SessionLog from '../features/Timer/SessionLog';
 export default function History({ sessions, dailySummary, dateFormat, timeFormat, onOpenSettings }) {
   return (
     <div className="app-container">
-      <Header onOpenSettings={onOpenSettings} />
-      <main className="main-content" style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', padding: '1.5rem' }}>
+      <Header onOpenSettings={onOpenSettings} title="History" />
+      {/* Gemini Note: Replaced the custom <main> with the standard .app-layout div
+          to ensure consistent padding and responsive behavior across the app.
+          A max-width is applied to keep the content centered on large screens. */}
+      <div className="app-layout" style={{ maxWidth: '1000px' }}>
         <Card title="Session History">
           <div className="history-page-controls">
             <Link to="/" className="button-secondary">
@@ -26,7 +31,7 @@ export default function History({ sessions, dailySummary, dateFormat, timeFormat
             timeFormat={timeFormat}
           />
         </Card>
-      </main>
+      </div>
     </div>
   );
 }
