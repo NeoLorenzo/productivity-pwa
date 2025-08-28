@@ -5,7 +5,6 @@ import {
   formatDate,
   formatTime,
   formatDuration,
-  calculateTotalBreakDuration,
 } from '../../utils/formatters';
 
 /**
@@ -36,13 +35,16 @@ export default function SessionLog({ sessions, dateFormat, timeFormat }) {
         </thead>
         <tbody>
           {sessions.map((session) => {
-            const totalBreakSeconds = calculateTotalBreakDuration(session.breaks);
+            // Gemini Note: If a session's duration is 0, it was manually added
+            // without a start/end time. We should display '—' instead of default times.
+            const isUntimed = session.duration === 0;
+
             return (
               <tr key={session.endTime}>
                 <td>{formatDate(session.endTime, dateFormat)}</td>
-                <td>{formatTime(session.startTime, timeFormat)}</td>
-                <td>{formatTime(session.endTime, timeFormat)}</td>
-                <td>{formatDuration(session.duration)}</td>
+                <td>{isUntimed ? '—' : formatTime(session.startTime, timeFormat)}</td>
+                <td>{isUntimed ? '—' : formatTime(session.endTime, timeFormat)}</td>
+                <td>{isUntimed ? '—' : formatDuration(session.duration)}</td>
                 <td>
                   {session.completedTasks?.length > 0
                     ? session.completedTasks.map(task => task.name).join(', ')

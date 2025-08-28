@@ -262,12 +262,14 @@ a[class*='button-']:hover {
   font-size: 0.9rem;
   color: var(--color-text-light);
 }
-.setting-option select {
+.setting-option select,
+.setting-option input {
   padding: 8px 12px;
   border-radius: 5px;
   border: 1px solid var(--color-border);
   font-size: 1rem;
   background-color: var(--color-bg-card);
+  font-family: inherit;
 }
 
 /* Modal */
@@ -342,11 +344,20 @@ a[class*='button-']:hover {
   display: flex;
   justify-content: flex-end;
   gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
 }
 .settings-modal-content {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Quick Add Modal Form */
+.quick-add-form-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-sm);
   margin-bottom: var(--spacing-md);
 }
 
@@ -372,7 +383,7 @@ a[class*='button-']:hover {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  align-items: center; /* This will center the button horizontally */
+  align-items: stretch; /* This will make buttons full-width */
 }
 
 /* Task Management */
@@ -424,6 +435,7 @@ a[class*='button-']:hover {
 /* Task Selection in Modal */
 .task-selection-container {
   margin-bottom: var(--spacing-md);
+  margin-top: var(--spacing-md);
 }
 .task-selection-container p {
   margin-top: 0;

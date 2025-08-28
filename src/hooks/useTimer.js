@@ -32,6 +32,7 @@ import { parseCSV } from '../utils/csvParser';
  *   stopTimer: () => void,
  *   saveSession: (sessionData: object) => void,
  *   discardPendingSession: () => void,
+ *   addManualSession: (sessionData: object) => void,
  *   importSessions: (csvText: string) => void,
  *   clearSessions: () => void
  * }}
@@ -241,6 +242,48 @@ export function useTimer(userId, { addPoints }) {
     setPendingSession(null);
   };
 
+  // Gemini Note: This function allows adding a session manually from a form,
+  // calculating timestamps and duration based on user input.
+  const addManualSession = async (sessionData) => {
+    if (!userId) return;
+
+    const { date, startTime, endTime, notes, completedTasks } = sessionData;
+
+    let startTimestamp, endTimestamp, durationSeconds;
+
+    if (startTime && endTime) {
+      // If times are provided, create full Date objects
+      startTimestamp = new Date(`${date}T${startTime}`).getTime();
+      endTimestamp = new Date(`${date}T${endTime}`).getTime();
+      durationSeconds = Math.floor((endTimestamp - startTimestamp) / 1000);
+    } else {
+      // If no times are provided, set a default time (e.g., noon) and zero duration
+      startTimestamp = new Date(`${date}T12:00:00`).getTime();
+      endTimestamp = startTimestamp;
+      durationSeconds = 0;
+    }
+
+    const sessionScore = completedTasks.reduce((total, task) => total + task.score, 0);
+
+    const newSession = {
+      startTime: startTimestamp,
+      endTime: endTimestamp,
+      duration: durationSeconds,
+      breaks: [],
+      notes: notes.trim(),
+      location: null,
+      completedTasks: completedTasks || [],
+      sessionScore: sessionScore,
+    };
+
+    const sessionsColRef = collection(db, 'users', userId, 'sessions');
+    await addDoc(sessionsColRef, newSession);
+
+    if (sessionScore > 0) {
+      addPoints(sessionScore);
+    }
+  };
+
   const clearSessions = async () => {
     if (!userId) return;
 
@@ -294,6 +337,7 @@ export function useTimer(userId, { addPoints }) {
     stopTimer,
     saveSession,
     discardPendingSession,
+    addManualSession,
     importSessions,
     clearSessions,
   };

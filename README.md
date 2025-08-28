@@ -68,7 +68,6 @@ This is a **framework for customizing motivation** rather than enforcing someone
 
 - Add a way to select session and delete them
 - Add a way to edit sessions in session history
-- Add a way to edit daily summary
 - History in mobile app doesnt look clean, its not sized to fit the screen horizontally causing the text to overflow and expand past the edge of the session history card.
 - Settings popup takes up entire screen, it should be its own page
 - The "Productivity Tracker" text in the header has to go, replace it with text that says "Dashboard" which includes the long form current date above it

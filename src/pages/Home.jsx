@@ -13,6 +13,7 @@ import ScoreDisplay from '../components/ScoreDisplay';
 import Timer from '../features/Timer';
 import Heatmap from '../components/Heatmap';
 import HeatmapModal from '../components/HeatmapModal';
+import QuickAddSessionModal from '../components/QuickAddSessionModal';
 
 export default function Home({
   dailyScore,
@@ -24,8 +25,9 @@ export default function Home({
   const { tasks } = useTasks(user?.uid);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalData, setModalData] = useState({ title: '', data: {}, valueKey: '' });
+  const [isHeatmapModalOpen, setIsHeatmapModalOpen] = useState(false);
+  const [heatmapModalData, setHeatmapModalData] = useState({ title: '', data: {}, valueKey: '' });
+  const [isQuickAddModalOpen, setIsQuickAddModalOpen] = useState(false);
 
   // Generate responsive data for the dashboard
   const durationHeatmapData = generateHeatmapData(dailySummary, 'totalDuration', isMobile);
@@ -34,8 +36,8 @@ export default function Home({
   const handleHeatmapClick = (title, valueKey) => {
     // Always generate full-year data for the modal
     const fullYearData = generateHeatmapData(dailySummary, valueKey, false);
-    setModalData({ title, data: fullYearData, valueKey });
-    setIsModalOpen(true);
+    setHeatmapModalData({ title, data: fullYearData, valueKey });
+    setIsHeatmapModalOpen(true);
   };
 
   return (
@@ -84,6 +86,12 @@ export default function Home({
             </Card>
             <Card title="Actions">
               <div className="actions-container">
+                <button
+                  onClick={() => setIsQuickAddModalOpen(true)}
+                  className="button-secondary"
+                >
+                  Quick Add Session
+                </button>
                 <Link to="/tasks" className="button-secondary">
                   Manage Tasks
                 </Link>
@@ -93,11 +101,17 @@ export default function Home({
         </div>
       </div>
       <HeatmapModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={modalData.title}
-        data={modalData.data}
-        valueKey={modalData.valueKey}
+        isOpen={isHeatmapModalOpen}
+        onClose={() => setIsHeatmapModalOpen(false)}
+        title={heatmapModalData.title}
+        data={heatmapModalData.data}
+        valueKey={heatmapModalData.valueKey}
+      />
+      <QuickAddSessionModal
+        isOpen={isQuickAddModalOpen}
+        onClose={() => setIsQuickAddModalOpen(false)}
+        tasks={tasks}
+        onSubmit={timer.addManualSession}
       />
     </>
   );
