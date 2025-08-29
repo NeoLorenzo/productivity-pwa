@@ -1,3 +1,5 @@
+// src/App.jsx
+
 import { useState } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
@@ -11,6 +13,8 @@ import { exportSessionsToCSV } from './utils/csvGenerator';
 import Home from './pages/Home';
 import History from './pages/History';
 import Tasks from './pages/Tasks';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import Card from './components/Card';
 import Auth from './components/Auth';
 import SettingsModal from './components/SettingsModal';
@@ -111,6 +115,14 @@ function App() {
           <Route
             path="/tasks"
             element={<Tasks onOpenSettings={() => setIsSettingsModalOpen(true)} />}
+          />
+          <Route
+            path="/privacy"
+            element={<PrivacyPolicy onOpenSettings={() => setIsSettingsModalOpen(true)} />}
+          />
+          <Route
+            path="/terms"
+            element={<TermsOfService onOpenSettings={() => setIsSettingsModalOpen(true)} />}
           />
         </Routes>
         {/* Gemini Note: Moved BottomNav inside HashRouter to provide routing context. */}

@@ -1,6 +1,5 @@
 /* src/styles/App.css */
 
-/* src/styles/App.css */
 /* 1. THEME & GLOBAL STYLES */
 :root {
   --color-primary: #4a90e2;
@@ -753,6 +752,22 @@ a[class*='button-']:hover {
 .bottom-nav a.active {
   color: var(--color-primary);
   font-weight: 600;
+}
+
+/* Legal Pages Content */
+.legal-content {
+  line-height: 1.6;
+}
+
+.legal-content h3 {
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-xs);
+}
+
+.legal-content ul {
+  padding-left: var(--spacing-md);
 }
 
 /* Gemini Note: Responsive table styles for mobile */

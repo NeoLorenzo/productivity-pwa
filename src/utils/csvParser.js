@@ -1,3 +1,5 @@
+// src/utils/csvParser.js
+
 /**
  * @description Converts a duration string in HH:MM:SS format to total seconds.
  * @param {string} timeStr - The time string (e.g., "00:45:30").

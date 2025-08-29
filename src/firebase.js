@@ -1,4 +1,4 @@
-// firebase.js
+// src/firebase.js
 
 // Gemini Note: This file centralizes Firebase initialization.
 // It's a single source of truth for connecting to Firebase services.

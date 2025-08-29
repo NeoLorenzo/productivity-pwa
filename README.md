@@ -12,19 +12,20 @@ A minimalist React-based Progressive Web App designed to gamify productivity usi
 
 ## 🧠 Project Vision
 
-This app is designed to be a **frictionless productivity system** — one that feels rewarding, customizable, and genuinely fun to use. Unlike rigid task managers or gamified to-do lists that hand out arbitrary badges or XP, this app lets users define their **own reward logic** and convert effort into **meaningful personal incentives** (e.g. gaming time, social media use, etc.).
+In a world of digital distractions engineered to exploit our attention, this app is a tool to **reclaim your agency**. It's designed to be a frictionless system for anyone who feels their potential is being capped by the guilt of misplaced time or the friction of starting meaningful work.
 
-The core idea:  
+Our philosophy is built on three states of being: **Productivity, Play, and Rest.**
+
+-   **Productivity** is the focused, deep work that drives you toward your goals.
+-   **Play** is the rejuvenation and enjoyment you've earned, free from guilt.
+-   **Rest** is the deliberate, untracked disengagement necessary for recovery.
+
+By consciously tracking and balancing these states, you can engage more purposefully with your life. Think of it as a "time diet" tracker. Just as a food tracker gives you the awareness to build a healthy diet, this app provides the contextualized knowledge to build a healthy, balanced, and fulfilling life.
+
+The core idea:
 > **"Discipline isn't deprivation — it's earned freedom."**
 
-The app should:
-- Let users assign point values to tasks, deadlines, or deep work
-- Allow reward types to be user-defined (not hardcoded or gamified for its own sake)
-- Support streak tracking to reinforce habit-building
-- Minimize cognitive friction (logging should be near-effortless)
-- Feel modular, like a toolkit — not a one-size-fits-all system
-
-This is a **framework for customizing motivation** rather than enforcing someone else’s system.
+This is more than an app; it's a framework for an intentional lifestyle.
 
 ---
 
@@ -46,50 +47,76 @@ This is a **framework for customizing motivation** rather than enforcing someone
 ## ✅ Implemented Features
 
 - **Firebase Authentication**: Users can sign in with their Google account.
-- **User-Defined Task Rewards**: Users can create and manage a personal list of tasks, each with a custom point value.
 - **Cloud-Synced Data**: All session and task data is tied to the user's account and synced with Firestore.
+- **Responsive Mobile & Desktop Layouts**: The UI adapts for a seamless experience on any device size.
+- **Mobile-First Bottom Navigation**: A dedicated navigation bar on mobile provides quick access to all pages.
+- **Progressive Web App (PWA) Support**: The application can be installed on mobile and desktop devices for an app-like experience.
+- **User-Defined Task Rewards**: Users can create and manage a personal list of tasks, each with a custom point value.
 - **Focus Timer with Task Integration**: At the end of a timer session, users can select the tasks they completed to automatically calculate and log their score.
-- **Multi-Page Navigation**: Uses React Router to provide separate pages for the timer, session history, and task management.
+- **Manual Session Entry**: A "Quick Add" feature allows users to log sessions without using the live timer.
 - **Session Logging & History**: All completed timer sessions are logged, showing work duration, completed tasks, and the score earned for that session.
 - **Daily Summary**: The history page includes a summary of total work duration, session counts, and total points earned per day.
-- **Session Import**: Users can import past sessions from a CSV file.
+- **Activity Heatmaps**: The home page features GitHub-style heatmaps to visualize daily work duration and scores earned over time.
+- **Data Import/Export**: Users can import past sessions from a CSV file and export their entire session history.
 - **Customizable Display**: Date and time formats can be changed in the settings.
 - **Data Management**: Users can clear their entire session history.
 
 ## 🔜 Upcoming Features
 
-- Create page which serves as a resource on how to be more productive and / or have a more balanced work + play relationship.
+- When the user signs in the google sign in says "to continue to productivity-pwa-3780a.firebaseapp.com" change this so it isnt ugly.
 
-- Basic fitness tracker / workout tracker which will also give rewards
+- Add a way to select and delete sessions from the history page.
+- Add a way to edit sessions in session history.
+- Improve the mobile usability of the session history table.
 
-- Create profile view which shows stats, such as streaks.
-- Share button that allows to share certain stats to social media
-- Move Sign Out button to profile.
+- Add functionality to save to local storage first and sync to Firebase after, enabling offline mode.
 
-- Add a way to select session and delete them
-- Add a way to edit sessions in session history
-- History on mobile is mega annoying to use.
-- Settings popup takes up entire screen, it should be its own page
+- Create a profile view which shows stats, such as streaks.
+- Move sign out and settings buttons to the new profile view.
+
+- The bottom nav on mobile is far too short making it harder to click the buttons, add padding to the bottom.
+
+- Every time the user modifies a task (for example creates one, deletes one, or edits one) save the history to "task history" but hide it by default.
+
+- Rename "Tasks" to "Strategy".
+- Add a button with a + symbol to the top left corner of the "Your Tasks" card which will bring up a pop up card which is the current "Add a New Task" card. Do the same with the edit functionality.
+
+- Add a customizable formula to strategy which uses deep work time and task score to calculate prods (short for productivity points)
+- Add a display to the home page that displays total prods which takes into account the entire user history, this means that prods have to be calculated for each day and summed.
+
+- In the "Strategy" page allow the user to set a goal in terms of task score, time worked, or prods for the day/week/month.
+- Show the percentage to goal at the top of the "Strategy" page.
+
+- Move timer stuff to a new timer page.
+- Split the focus timer into 2 timers, the focus timer and the play timer.
+- When the timer is on the screen should change color to blue, if its pause it should change to yellow, and when it stops it should go back to grey.
+
+- Add a button in the center of the nav that has a + svg and when the user clicks it it should pop out a card of buttons.
+- Add a button to the + card that sends the user to the focus timer page.
+- Add a button to the + card that sends the user to the play timer page.
 
 - Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
-- Add reflection tags rate sleep out of 5, etc.
+- Add reflection tags rate sleep out of 5.
+- Add reflection tags rate energy out of 5.
+- Add reflection tags rate mood out of 5.
 
-- Add functionality to save to local first and sync to firebase after, just in case users lose connection or something. App should work offline.
+- Detect if the user is on a mobile browser and show them how to install the app as a PWA.
 
-- Allow the user to set a goal in terms of task score or time worked for the day/week/month and show a goal percentage in the dashboard
+- Add feature which auto converts github lines written to task score
+- Basic fitness tracker / workout tracker which will also give rewards
+- Add a button to the + card that sends the user to the workout page.
+- Create page which serves as a resource on how to be more productive and / or have a more balanced work + play relationship.
+
+- Continue replacing text buttons with icons for a cleaner UI.
+- Improve app color scheme
+- Add dark mode light mode switch in settings
 
 - Push notifications for reminders which will sound different based on selected motivator persona
 - Flexible nudges
   - Time-boxed reminders: “If no session by 14:00, nudge me.”
   - Contextual nags: “If 2+ pauses in a 25m, suggest shorter block.”
 
-- Replace text buttons with icons (if possible.)
-- Improve app color scheme
-- Add dark mode light mode switch in settings
-
-- Add feature which auto converts github lines written to task score
-
-- Detect if the user is on a mobile browser and show them how to install the app as a PWA.
+- Share button on profile that allows to share certain stats to social media
 
 ---
 
@@ -122,10 +149,10 @@ This is a **framework for customizing motivation** rather than enforcing someone
 
 ## 🧱 Design Principles
 
-- **Minimal friction** – The app should feel like a tool, not a chore.
-- **User-defined structure** – Users define what counts as productivity and what earns rewards.
-- **Composable features** – Each feature (e.g. streaks, timers, scores) should work independently and together.
-- **No bloated gamification** – Avoid unnecessary points, badges, or dopamine loops that don’t reflect real value.
+- **Minimal Friction** – The app must feel like a natural extension of the user's workflow, not a chore. Every core action should be achievable in two taps or less.
+- **User-Defined Structure** – Users define what counts as productivity and what earns rewards. The system provides the tools; the user provides the context.
+- **Balance Over Burnout** – The goal is sustainable performance. The app empowers guilt-free play and deliberate rest as critical components of a productive life.
+- **No Bloated Gamification** – Avoid unnecessary points, badges, or dopamine loops that don’t reflect real, user-defined value.
 
 ---
 
