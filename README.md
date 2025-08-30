@@ -63,7 +63,8 @@ This is more than an app; it's a framework for an intentional lifestyle.
 
 ## 🔜 Upcoming Features
 
-- When the user signs in the google sign in says "to continue to productivity-pwa-3780a.firebaseapp.com" change this so it isnt ugly.
+- When the user signs in the google sign in says "to continue to productivity-pwa-3780a.firebaseapp.com" change this so it isnt ugly. (still an issue).
+- Privacy Policy and TOS only viewable if the user is signed in which is a problem if they try to read it in the google sign in page before signing in.
 
 - Add a way to select and delete sessions from the history page.
 - Add a way to edit sessions in session history.
