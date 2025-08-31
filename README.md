@@ -63,21 +63,14 @@ This is more than an app; it's a framework for an intentional lifestyle.
 
 ## 🔜 Upcoming Features
 
-- When the user signs in the google sign in says "to continue to productivity-pwa-3780a.firebaseapp.com" change this so it isnt ugly. (still an issue).
-- Privacy Policy and TOS only viewable if the user is signed in which is a problem if they try to read it in the google sign in page before signing in.
-
 - Add a way to select and delete sessions from the history page.
 - Add a way to edit sessions in session history.
 - Improve the mobile usability of the session history table.
 
-- Add functionality to save to local storage first and sync to Firebase after, enabling offline mode.
-
 - Create a profile view which shows stats, such as streaks.
 - Move sign out and settings buttons to the new profile view.
 
-- The bottom nav on mobile is far too short making it harder to click the buttons, add padding to the bottom.
-
-- Every time the user modifies a task (for example creates one, deletes one, or edits one) save the history to "task history" but hide it by default.
+- Add functionality to save to local storage first and sync to Firebase after, enabling offline mode.
 
 - Rename "Tasks" to "Strategy".
 - Add a button with a + symbol to the top left corner of the "Your Tasks" card which will bring up a pop up card which is the current "Add a New Task" card. Do the same with the edit functionality.
@@ -88,6 +81,15 @@ This is more than an app; it's a framework for an intentional lifestyle.
 - In the "Strategy" page allow the user to set a goal in terms of task score, time worked, or prods for the day/week/month.
 - Show the percentage to goal at the top of the "Strategy" page.
 
+- Every time the user modifies a task (for example creates one, deletes one, or edits one) save the history to "task history" but hide it by default.
+
+- Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
+- Add reflection tags rate sleep out of 5.
+- Add reflection tags rate energy out of 5.
+- Add reflection tags rate mood out of 5.
+
+- The bottom nav on mobile is far too short making it harder to click the buttons, add padding to the bottom.
+
 - Move timer stuff to a new timer page.
 - Split the focus timer into 2 timers, the focus timer and the play timer.
 - When the timer is on the screen should change color to blue, if its pause it should change to yellow, and when it stops it should go back to grey.
@@ -95,11 +97,6 @@ This is more than an app; it's a framework for an intentional lifestyle.
 - Add a button in the center of the nav that has a + svg and when the user clicks it it should pop out a card of buttons.
 - Add a button to the + card that sends the user to the focus timer page.
 - Add a button to the + card that sends the user to the play timer page.
-
-- Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
-- Add reflection tags rate sleep out of 5.
-- Add reflection tags rate energy out of 5.
-- Add reflection tags rate mood out of 5.
 
 - Detect if the user is on a mobile browser and show them how to install the app as a PWA.
 
@@ -118,6 +115,9 @@ This is more than an app; it's a framework for an intentional lifestyle.
   - Contextual nags: “If 2+ pauses in a 25m, suggest shorter block.”
 
 - Share button on profile that allows to share certain stats to social media
+
+- When the user signs in the google sign in says "to continue to productivity-pwa-3780a.firebaseapp.com" change this so it isnt ugly. (still an issue).
+- Privacy Policy and TOS only viewable if the user is signed in which is a problem if they try to read it in the google sign in page before signing in.
 
 ---
 
