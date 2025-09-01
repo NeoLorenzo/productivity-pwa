@@ -70,85 +70,71 @@ This is more than an app; it's a framework for an intentional lifestyle.
 
 ## 🔜 Upcoming Features
 
-- Give users customizable full names and user names.
-- Allow users to send friend requests to each other and be able to view other profiles.
+This section outlines the planned features and improvements for the application, serving as a public roadmap.
 
-- Make the profile page shows stats, such as streaks.
-- Make the profile highly customizable, kinda like the steam profiles.
-- Add badges that are available in the profile.
-- Share button on profile that allows to share certain stats to social media
+### 🎯 Priority 1: The Harmony Update
+*This is a fundamental evolution of the app's core philosophy, shifting the focus from pure productivity to a holistic balance between focused work and guilt-free play. The central goal for the user will be to achieve "Harmony."*
 
+-   **Phase 1: Foundational Logic & Data Model**
+    -   [ ] **Evolve Session Data Model:** Add a `type` field to all session documents in Firestore. This field will accept one of two string values—`'productivity'` or `'play'`—to differentiate sessions at the database level.
+    -   [ ] **Implement Data Migration:** Ensure backward compatibility by retroactively assigning `type: 'productivity'` to all existing sessions. This will be handled via a logic check that updates any session document where the `type` field is missing.
+    -   [ ] **Introduce "Play Points" Formula:** Update the formula system to include a `playTimeDivisor`. This will be used to calculate "Play Points" based purely on the duration of 'play' sessions, creating a separate scoring system for leisure.
+    -   [ ] **Create the "Harmony Score":** Implement the app's new core metric, calculated as `Harmony = Total Productivity Points - Total Play Points`. The user's primary goal will be to keep this score near zero, representing a balanced lifestyle.
+    -   [ ] **Enhance Data Aggregation:** The `aggregateSessionsByDay` utility will be updated to track and return daily totals for play duration, play points, and the resulting daily harmony score.
 
+-   **Phase 2: New Timer Experience**
+    -   [ ] **Create a Dedicated Timer Page:** The app's landing page (`/`) for authenticated users will become a new, dedicated Timer page, making it the primary interaction point.
+    -   [ ] **Implement Timer Mode Toggle:** A prominent UI switch on the Timer page will allow users to toggle between 'Productivity' and 'Play' modes before starting a session.
+    -   [ ] **Dynamic UI Feedback:** The screen's background or key elements will change color to reflect the timer's state: a cool blue for active focus, a warm color for active play, yellow for paused, and neutral for stopped.
+    -   [ ] **Streamline the Play Session Flow:** The "Session Complete" modal for 'play' sessions will be simplified to only prompt for notes, hiding the task selection and location-tagging features to reduce friction.
 
-- Every time the user modifies a task (for example creates one, deletes one, or edits one) save the change to "task history" but hide it by default.
-- Add a button to settings to clear task change history like the rest of the clear buttons that also displays a warning.
+-   **Phase 3: Redesigned Dashboard & Strategy UI**
+    -   [ ] **Create a New Dashboard Page:** The current homepage content (heatmaps, stats, etc.) will be moved to a new, dedicated `/dashboard` page.
+    -   [ ] **Design a Central Harmony Card:** The dashboard's centerpiece will be a "Harmony" card that prominently displays the current Harmony score. It will also show the contributing Productivity and Play point totals as secondary metrics.
+    -   [ ] **Implement Dual Heatmaps:** The dashboard will feature two sets of activity heatmaps: one for visualizing Productivity metrics (duration/points) and another for visualizing Play duration.
+    -   [ ] **Update the Strategy Page:** The "Formula Settings" section will be updated with UI controls to manage the new `playTimeDivisor`, with clear explanations for each formula.
 
+-   **Phase 4: App-wide Integration & Polish**
+    -   [ ] **Enhance the History Page:** The session log will be updated to visually differentiate between 'productivity' and 'play' sessions (e.g., using colored tags). The daily summary view will include columns for play duration and harmony score.
+    -   [ ] **Update App Navigation:** The main navigation (header and bottom nav) will be reworked to link to the new Dashboard, with the Timer page serving as the implicit home.
 
+---
 
-- Allow the user to use the app locally without signing in, and put the sign in button in the profile page.
-- Add functionality to save to local storage first and sync to Firebase after, enabling offline mode.
+### 👥 Social & Profile Features
+-   [ ] **User Profiles & Identity:** Allow users to set a customizable display name and a unique username, moving beyond the default Google account name.
+-   [ ] **Profile Statistics:** Enhance the profile page to showcase key stats, achievements, and long-term trends, such as current streak, longest streak, and total hours focused.
+-   [ ] **Profile Customization:** Give users tools to personalize their public-facing profile with themes, featured stats, and earned badges, inspired by platforms like Steam.
+-   [ ] **Social Sharing:** Add a button to the profile that allows users to generate and share a summary of their stats or achievements to social media.
+-   [ ] **Friend System:** Implement functionality to send friend requests and view the (privacy-controlled) profiles and stats of friends.
 
+### ✍️ Journaling & Reflections
+-   [ ] **Post-Session Reflection Prompt:** After completing a session, prompt the user with optional fields to reflect on their experience, including rating their sleep, energy, and mood on a 1-5 scale.
+-   [ ] **Structured Note-Taking:** Evolve the "notes" field into two distinct prompts: "Note about self" (to capture feelings and mental state) and "Note to self" (to capture ideas and information to remember).
+-   [ ] **Dedicated Journaling Feature:** Create a separate, more robust journaling tracker for daily entries, independent of timed sessions.
 
+### 📊 New Trackers & Integrations
+-   [ ] **Task Modification History:** Log all changes to tasks (creations, edits, deletions) into a separate, viewable "Task History" log, with an option to clear this history in the settings.
+-   [ ] **GitHub Integration:** Implement an optional feature to connect a GitHub account and automatically award points or log tasks based on commit activity (e.g., lines of code written).
+-   [ ] **Basic Fitness Tracker:** Add a simple module to log workouts or physical activities, contributing to the overall life balance.
 
-- Add a way to turn location data into names and display those names in session history.
-- Create a heatmap using the location data where each location is color coded.
+### 🌐 Data, Offline & Location Services
+-   [ ] **Full Offline Mode:** Implement a "local-first" data strategy. All data will be saved to the device's local storage immediately and then synced with Firebase in the background when a connection is available.
+-   [ ] **Sign-in Flexibility:** Allow users to use the app in a limited, local-only mode without signing in. The option to sign in and sync data will be available on the profile page.
+-   [ ] **Location Intelligence:** Integrate a reverse geocoding API to convert raw location coordinates (latitude, longitude) into human-readable place names (e.g., "City Park Library") in the session history.
+-   [ ] **Location Heatmap:** Create a new map-based visualization that shows the locations where the user is most productive.
 
+### ✨ UI/UX Enhancements
+-   [ ] **Central Action Button:** Replace the static bottom navigation with a central `+` button (Floating Action Button style). Tapping it will reveal primary actions like "Start Focus," "Start Play," and "Log Activity," making core functions more accessible.
+-   [ ] **Visual Polish & Theming:** Continue replacing text-based buttons with intuitive icons, refine the overall color scheme, and implement a dark/light mode switch in the settings.
+-   [ ] **PWA Onboarding Prompt:** For users on a mobile browser, implement a non-intrusive UI element that explains the benefits of installing the app to their home screen and provides simple instructions.
 
+### 🔔 Notifications & Nudges
+-   [ ] **Customizable Push Notifications:** Implement opt-in push notifications for reminders. Users will be able to choose a "motivator persona" that changes the tone of the notifications.
+-   [ ] **Flexible Nudges:** Allow users to set intelligent reminders, such as time-boxed nudges ("If I haven't started a session by 2 PM, remind me") or contextual nags ("If I pause more than twice in a 25-minute session, suggest a shorter work block").
 
-- Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
-- Add reflection tags rate sleep out of 5.
-- Add reflection tags rate energy out of 5.
-- Add reflection tags rate mood out of 5.
-
-
-
-- Split history page into 2 sections, one session history section, and one play history section.
-- Add a way to easily select multiple session histories to delete.
-
-
-
-- Move timer stuff to a new timer page.
-- Split the focus timer into 2 timers, the focus timer and the play timer.
-- When the timer is on the screen should change color to blue, if its pause it should change to yellow, and when it stops it should go back to grey.
-
-
-
-- Add a button in the center of the nav that has a + svg and when the user clicks it it should pop out a card of buttons.
-- Add a button to the + card that sends the user to the focus timer page.
-- Add a button to the + card that sends the user to the play timer page.
-
-
-
-- Detect if the user is on a mobile browser and show them how to install the app as a PWA.
-
-
-
-- Add feature which auto converts github lines written to task score
-- Basic fitness tracker / workout tracker
-- Basic journaling tracker
-- Add a button to the + card that sends the user to the workout page, coding page, and jorurnaling page.
-
-
-
-- Create page which serves as a resource on how to be more productive and / or have a more balanced work + play relationship.
-
-
-
-- Continue replacing text buttons with icons for a cleaner UI.
-- Improve app color scheme
-- Add dark mode light mode switch in settings
-
-
-
-- Push notifications for reminders which will sound different based on selected motivator persona
-- Flexible nudges
-  - Time-boxed reminders: “If no session by 14:00, nudge me.”
-  - Contextual nags: “If 2+ pauses in a 25m, suggest shorter block.”
-
-
-
-- When the user signs in the google sign in says "to continue to productivity-pwa-3780a.firebaseapp.com" change this so it isnt ugly. (still an issue).
-- Privacy Policy and TOS only viewable if the user is signed in which is a problem if they try to read it in the google sign in page before signing in.
+### 🔧 Technical & Administrative
+-   [ ] **Custom Authentication Domain:** Configure Firebase Auth to display the app's name during the Google Sign-In flow, replacing the default `productivity-pwa-3780a.firebaseapp.com` URL.
+-   [ ] **Public Legal Pages:** Refactor the routing to make the Privacy Policy and Terms of Service pages accessible to users *before* they sign in, ensuring compliance and transparency.
 
 ---
 
