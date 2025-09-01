@@ -1,4 +1,4 @@
-// src/features/Tasks/index.jsx
+// src/features/Strategy/index.jsx
 
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';

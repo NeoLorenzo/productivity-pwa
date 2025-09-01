@@ -17,23 +17,17 @@ export default function Auth() {
     }
   };
 
-  const handleSignOut = () => {
-    if (window.confirm('Are you sure you want to sign out?')) {
-      auth.signOut();
-    }
-  };
+  // Gemini Note: This component now only renders the sign-in button.
+  // If a user is already logged in, it renders nothing.
+  if (auth.currentUser) {
+    return null;
+  }
 
   return (
     <div className="auth-container">
-      {auth.currentUser ? (
-        <button onClick={handleSignOut} className="button-secondary">
-          Sign Out
-        </button>
-      ) : (
-        <button onClick={handleSignIn}>
-          Sign in with Google
-        </button>
-      )}
+      <button onClick={handleSignIn}>
+        Sign in with Google
+      </button>
     </div>
   );
 }

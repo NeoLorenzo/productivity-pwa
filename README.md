@@ -46,74 +46,106 @@ This is more than an app; it's a framework for an intentional lifestyle.
 
 ## ✅ Implemented Features
 
-- **Firebase Authentication**: Users can sign in with their Google account.
-- **Cloud-Synced Data**: All session and task data is tied to the user's account and synced with Firestore.
-- **Responsive Mobile & Desktop Layouts**: The UI adapts for a seamless experience on any device size.
-- **Mobile-First Bottom Navigation**: A dedicated navigation bar on mobile provides quick access to all pages.
-- **Consistent Desktop Navigation**: The header on desktop now mirrors the mobile navigation for a unified experience.
-- **Progressive Web App (PWA) Support**: The application can be installed on mobile and desktop devices for an app-like experience.
-- **User-Defined Task Rewards**: Users can create and manage a personal list of tasks, each with a custom point value on the "Strategy" page.
-- **Focus Timer with Task Integration**: At the end of a timer session, users can select the tasks they completed to automatically calculate and log their score.
-- **Manual Session Entry**: A "Quick Add" feature allows users to log sessions without using the live timer.
-- **Session Logging & History**: All completed timer sessions are logged, showing work duration, completed tasks, and the score earned for that session.
-- **Daily Summary**: The history page includes a summary of total work duration, session counts, and total points earned per day.
-- **Activity Heatmaps**: The home page features GitHub-style heatmaps to visualize daily work duration and scores earned over time.
-- **Data Import/Export**: Users can import past sessions from a CSV file and export their entire session history.
-- **Customizable Display**: Date and time formats can be changed in the settings.
-- **Data Management**: Users can clear their entire session history.
+- **Firebase Authentication**: Users can sign in with their Google account to sync data across devices.
+- **Cloud-Synced Data**: All session, task, goal, and formula data is tied to the user's account and synced with Firestore.
+- **Comprehensive Strategy Page**: A central hub to manage your productivity system, including:
+    - **User-Defined Tasks**: Create a personal list of tasks, each with a custom point value.
+    - **Goal Setting & Tracking**: Set daily average goals for time worked, tasks completed, or points earned, and visualize your progress.
+    - **Customizable Productivity Formula**: Adjust how time and task scores are weighted to calculate your total "Productivity Points."
+- **Focus Timer & Session Logging**: A robust timer that logs work duration, notes, location, and completed tasks for each session.
+- **Advanced Session Management**:
+    - **Manual Session Entry**: "Quick Add" past sessions without using the live timer.
+    - **Edit & Delete**: Modify the details of any past session or delete multiple sessions at once.
+- **Data Visualization & History**:
+    - **Daily Summary**: View aggregated totals for work duration, session counts, and points earned per day.
+    - **Activity Heatmaps**: Visualize daily work duration and scores on a GitHub-style contribution graph.
+- **Data Portability**:
+    - **CSV Import**: Import past sessions from a CSV file.
+    - **CSV Export**: Export your entire session history for analysis elsewhere.
+- **Responsive & Installable (PWA)**: A seamless experience on any device, with mobile-first navigation and the ability to install the app to your home screen.
+- **User Profile & Settings**:
+    - **Profile Page**: View your account details and sign out.
+    - **Customizable Display**: Change date and time formats to your preference.
+    - **Data Management**: Clear your entire session history from the settings menu.
 
 ## 🔜 Upcoming Features
 
-- Add a customizable formula to strategy which uses deep work time and task score to calculate prods (short for productivity points)
-- Add a display to the home page that displays total prods which takes into account the entire user history, this means that prods have to be calculated for each day and summed.
+- Give users customizable full names and user names.
+- Allow users to send friend requests to each other and be able to view other profiles.
 
-- In the "Strategy" page allow the user to set a goal in terms of task score, time worked, or prods for the day/week/month.
-- Show the percentage to goal at the top of the "Strategy" page.
+- Make the profile page shows stats, such as streaks.
+- Make the profile highly customizable, kinda like the steam profiles.
+- Add badges that are available in the profile.
+- Share button on profile that allows to share certain stats to social media
 
-- Every time the user modifies a task (for example creates one, deletes one, or edits one) save the history to "task history" but hide it by default.
 
-- Create a profile page which shows stats, such as streaks.
-- Move sign out and settings buttons to the new profile view.
 
+- Every time the user modifies a task (for example creates one, deletes one, or edits one) save the change to "task history" but hide it by default.
+- Add a button to settings to clear task change history like the rest of the clear buttons that also displays a warning.
+
+
+
+- Allow the user to use the app locally without signing in, and put the sign in button in the profile page.
 - Add functionality to save to local storage first and sync to Firebase after, enabling offline mode.
+
+
 
 - Add a way to turn location data into names and display those names in session history.
 - Create a heatmap using the location data where each location is color coded.
+
+
 
 - Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
 - Add reflection tags rate sleep out of 5.
 - Add reflection tags rate energy out of 5.
 - Add reflection tags rate mood out of 5.
 
-- The bottom nav on mobile is far too short making it harder to click the buttons, add padding to the bottom.
 
+
+- Split history page into 2 sections, one session history section, and one play history section.
 - Add a way to easily select multiple session histories to delete.
+
+
 
 - Move timer stuff to a new timer page.
 - Split the focus timer into 2 timers, the focus timer and the play timer.
 - When the timer is on the screen should change color to blue, if its pause it should change to yellow, and when it stops it should go back to grey.
 
+
+
 - Add a button in the center of the nav that has a + svg and when the user clicks it it should pop out a card of buttons.
 - Add a button to the + card that sends the user to the focus timer page.
 - Add a button to the + card that sends the user to the play timer page.
 
+
+
 - Detect if the user is on a mobile browser and show them how to install the app as a PWA.
 
+
+
 - Add feature which auto converts github lines written to task score
-- Basic fitness tracker / workout tracker which will also give rewards
-- Add a button to the + card that sends the user to the workout page.
+- Basic fitness tracker / workout tracker
+- Basic journaling tracker
+- Add a button to the + card that sends the user to the workout page, coding page, and jorurnaling page.
+
+
+
 - Create page which serves as a resource on how to be more productive and / or have a more balanced work + play relationship.
+
+
 
 - Continue replacing text buttons with icons for a cleaner UI.
 - Improve app color scheme
 - Add dark mode light mode switch in settings
+
+
 
 - Push notifications for reminders which will sound different based on selected motivator persona
 - Flexible nudges
   - Time-boxed reminders: “If no session by 14:00, nudge me.”
   - Contextual nags: “If 2+ pauses in a 25m, suggest shorter block.”
 
-- Share button on profile that allows to share certain stats to social media
+
 
 - When the user signs in the google sign in says "to continue to productivity-pwa-3780a.firebaseapp.com" change this so it isnt ugly. (still an issue).
 - Privacy Policy and TOS only viewable if the user is signed in which is a problem if they try to read it in the google sign in page before signing in.

@@ -952,4 +952,201 @@ a[class*='button-']:hover {
   .session-log td:first-child::before {
     content: none;
   }
+
+  /* Profile Page Styles */
+  .profile-details {
+    margin-bottom: var(--spacing-md);
+  }
+  .profile-details p {
+    margin: var(--spacing-xs) 0;
+    word-break: break-all; /* Ensures long text like UID doesn't overflow */
+  }
+  .profile-actions {
+    margin-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--spacing-md);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Strategy Page Layout */
+  .strategy-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .strategy-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .strategy-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  /* On wider screens, use a two-column grid */
+  @media (min-width: 992px) {
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      align-items: start; /* Align cards to the top of their respective columns */
+    }
+  }
+
+  /* Refined Goal Manager Styles */
+  .goal-input-group {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--spacing-md);
+  }
+  .goal-form .goal-input-group:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .goal-input-group label {
+    color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .goal-inputs {
+    grid-template-columns: 2fr 2fr; /* Adjust column ratio */
+  }
+  .goal-inputs input {
+    background-color: var(--color-bg);
+  }
+  .goal-form-helper {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    background-color: var(--color-bg);
+    border-radius: var(--border-radius);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* Refined Formula Settings Styles */
+  .formula-display-wrapper {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+  }
+  .formula-display {
+    font-size: 1rem;
+    justify-content: space-around; /* Distribute items evenly */
+  }
+  .formula-input {
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  }
+  .formula-explanation {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+    text-align: center;
+  }
+
+  /* Formula Settings */
+  .formula-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    font-size: 1.1rem;
+    font-family: var(--font-family-mono);
+    text-align: center;
+    padding: var(--spacing-sm) 0;
+  }
+
+  .formula-input {
+    width: 60px;
+    padding: 4px 8px;
+    font-size: 1.1rem;
+    font-family: var(--font-family-mono);
+    text-align: center;
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+    background-color: var(--color-bg);
+  }
+
+  .formula-explanation {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--color-border);
+    line-height: 1.5;
+  }
+
+  /* Goal Manager */
+  .goal-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  .goal-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  .goal-input-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .goal-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+  }
+  .goal-inputs input {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid var(--color-border);
+    font-size: 1rem;
+  }
+
+  /* Goal Progress */
+  .goal-progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  .progress-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  .progress-item-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+  .progress-label {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .progress-text {
+    color: var(--color-text-light);
+    font-family: var(--font-family-mono);
+  }
+  .progress-bar-background {
+    width: 100%;
+    height: 12px;
+    background-color: var(--color-secondary);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-bar-foreground {
+    height: 100%;
+    background-color: var(--color-primary);
+    border-radius: 99px;
+    transition: width 0.3s ease-in-out;
+  }
 }

@@ -1,4 +1,4 @@
-// src/features/Tasks/TaskList.jsx
+// src/features/Strategy/TaskList.jsx
 
 import React from 'react';
 

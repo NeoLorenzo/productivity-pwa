@@ -8,6 +8,7 @@ import { generateHeatmapData } from '../utils/heatmapUtils';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import ScoreDisplay from '../components/ScoreDisplay';
+import ProductivityPointsDisplay from '../components/ProductivityPointsDisplay';
 import Timer from '../features/Timer';
 import Heatmap from '../components/Heatmap';
 import HeatmapModal from '../components/HeatmapModal';
@@ -19,6 +20,7 @@ export default function Home({
   timer,
   tasks,
   onOpenSettings,
+  totalProductivityPoints,
 }) {
   const isMobile = useMediaQuery('(max-width: 768px)');
 
@@ -26,12 +28,10 @@ export default function Home({
   const [heatmapModalData, setHeatmapModalData] = useState({ title: '', data: {}, valueKey: '' });
   const [isQuickAddModalOpen, setIsQuickAddModalOpen] = useState(false);
 
-  // Generate responsive data for the dashboard
   const durationHeatmapData = generateHeatmapData(dailySummary, 'totalDuration', isMobile);
   const scoreHeatmapData = generateHeatmapData(dailySummary, 'totalScore', isMobile);
 
   const handleHeatmapClick = (title, valueKey) => {
-    // Always generate full-year data for the modal
     const fullYearData = generateHeatmapData(dailySummary, valueKey, false);
     setHeatmapModalData({ title, data: fullYearData, valueKey });
     setIsHeatmapModalOpen(true);
@@ -43,10 +43,11 @@ export default function Home({
         <Header onOpenSettings={onOpenSettings} title="Home" />
         <div className="app-layout">
           {isMobile ? (
-            // Gemini Note: Mobile layout reordered to prioritize the score.
-            // The <main> and <aside> tags are omitted for a simple flex column.
             <>
-              <Card title="Today's Score">
+              <Card title="Total Productivity Points">
+                <ProductivityPointsDisplay points={totalProductivityPoints} />
+              </Card>
+              <Card title="Today's Task Score">
                 <ScoreDisplay score={dailyScore} />
               </Card>
               <Card title="Focus Timer">
@@ -94,7 +95,6 @@ export default function Home({
               </Card>
             </>
           ) : (
-            // Desktop layout remains the same
             <>
               <main className="main-content">
                 <Card title="Focus Timer">
@@ -129,7 +129,10 @@ export default function Home({
                 </Card>
               </main>
               <aside className="sidebar">
-                <Card title="Today's Score">
+                <Card title="Total Productivity Points">
+                  <ProductivityPointsDisplay points={totalProductivityPoints} />
+                </Card>
+                <Card title="Today's Task Score">
                   <ScoreDisplay score={dailyScore} />
                 </Card>
                 <Card title="Actions">

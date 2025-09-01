@@ -8,12 +8,15 @@ import { useTimer } from './hooks/useTimer';
 import { useSettings } from './hooks/useSettings';
 import { useTasks } from './hooks/useTasks';
 import { useMediaQuery } from './hooks/useMediaQuery';
+import { useFormula } from './hooks/useFormula';
+import { useGoals } from './hooks/useGoals';
 import { aggregateSessionsByDay } from './utils/sessionAggregators';
 import { exportSessionsToCSV } from './utils/csvGenerator';
 
 import Home from './pages/Home';
 import History from './pages/History';
 import Strategy from './pages/Strategy';
+import Profile from './pages/Profile';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import Card from './components/Card';
@@ -29,19 +32,24 @@ function App() {
   const timer = useTimer(userId, { addPoints });
   const { tasks } = useTasks(userId);
   const { settings, updateDateFormat, updateTimeFormat } = useSettings();
+  const { formula, updateFormula } = useFormula(userId);
+  const { goals, updateGoals } = useGoals(userId);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
-  const dailySummary = aggregateSessionsByDay(timer.sessions);
+  const dailySummary = aggregateSessionsByDay(timer.sessions, formula);
 
-  // Gemini Note: This logic finds the summary data for today.
-  // It compares the date part of the summary entry with today's date.
   const todayString = new Date().toLocaleDateString('en-CA');
   const todaysSummary = dailySummary.find(
     (day) => new Date(day.date).toLocaleDateString('en-CA') === todayString
   );
   const dailyScore = todaysSummary ? todaysSummary.totalScore : 0;
+
+  const totalProductivityPoints = dailySummary.reduce(
+    (total, day) => total + day.totalProductivityPoints,
+    0
+  );
 
   const handleExportSessions = () => {
     if (timer.sessions.length === 0) {
@@ -87,7 +95,6 @@ function App() {
 
   return (
     <>
-      {/* Gemini Note: We now use HashRouter. The `basename` prop is removed as it's not needed. */}
       <HashRouter>
         <Routes>
           <Route
@@ -99,6 +106,7 @@ function App() {
                 dailySummary={dailySummary}
                 timer={timer}
                 tasks={tasks}
+                totalProductivityPoints={totalProductivityPoints}
                 onOpenSettings={() => setIsSettingsModalOpen(true)}
               />
             }
@@ -121,7 +129,20 @@ function App() {
           />
           <Route
             path="/strategy"
-            element={<Strategy onOpenSettings={() => setIsSettingsModalOpen(true)} />}
+            element={
+              <Strategy
+                onOpenSettings={() => setIsSettingsModalOpen(true)}
+                formula={formula}
+                updateFormula={updateFormula}
+                goals={goals}
+                updateGoals={updateGoals}
+                dailySummary={dailySummary}
+              />
+            }
+          />
+          <Route
+            path="/profile"
+            element={<Profile onOpenSettings={() => setIsSettingsModalOpen(true)} />}
           />
           <Route
             path="/privacy"
@@ -132,8 +153,7 @@ function App() {
             element={<TermsOfService onOpenSettings={() => setIsSettingsModalOpen(true)} />}
           />
         </Routes>
-        {/* Gemini Note: Moved BottomNav inside HashRouter to provide routing context. */}
-        {isMobile && <BottomNav onOpenSettings={() => setIsSettingsModalOpen(true)} />}
+        {isMobile && <BottomNav />}
       </HashRouter>
       <SettingsModal
         isOpen={isSettingsModalOpen}
