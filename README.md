@@ -71,6 +71,9 @@ This is more than an app; it's a framework for an intentional lifestyle.
 
 - Add functionality to save to local storage first and sync to Firebase after, enabling offline mode.
 
+- Add a way to turn location data into names and display those names in session history.
+- Create a heatmap using the location data where each location is color coded.
+
 - Rename "Tasks" to "Strategy".
 - Add a button with a + symbol to the top left corner of the "Your Tasks" card which will bring up a pop up card which is the current "Add a New Task" card. Do the same with the edit functionality.
 

@@ -225,11 +225,15 @@ a[class*='button-']:hover {
 }
 
 /* Session Logs & Summaries */
-.daily-summary, .session-log {
+.daily-summary {
   margin-top: var(--spacing-lg);
   text-align: left;
 }
-.daily-summary h3, .session-log h3 {
+.session-log {
+  /* This class is now only for the table wrapper */
+  margin-top: var(--spacing-lg);
+}
+.daily-summary h3 {
   margin-top: 0;
   margin-bottom: var(--spacing-sm);
   font-size: 1rem;
@@ -270,6 +274,51 @@ a[class*='button-']:hover {
   width: 1%;
   white-space: nowrap;
   text-align: center;
+}
+
+/* New Mobile Daily Summary Styles */
+.daily-summary-mobile-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+.daily-summary-mobile-item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.daily-summary-mobile-item:hover {
+  background-color: var(--color-bg);
+  border-color: var(--color-secondary-dark);
+}
+.mobile-item-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.mobile-item-date {
+  font-weight: 600;
+  color: var(--color-text);
+}
+.mobile-item-duration {
+  font-size: 1.1rem;
+  font-family: var(--font-family-mono);
+  color: var(--color-primary);
+}
+.mobile-item-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  margin-right: var(--spacing-sm);
+}
+.mobile-item-chevron {
+  color: var(--color-secondary-dark);
 }
 
 /* Settings */
@@ -384,6 +433,19 @@ a[class*='button-']:hover {
   overflow-y: auto;
   flex: 1;
   padding: var(--spacing-sm) 0;
+}
+.daily-detail-modal-content {
+  max-width: 1000px;
+}
+.modal-scroll-content {
+  flex: 1;
+  overflow-y: auto;
+  margin: 0 calc(-1 * var(--spacing-lg)); /* Counteract modal padding */
+  padding: 0 var(--spacing-lg);
+}
+.modal-controls {
+  margin-bottom: var(--spacing-sm);
+  justify-content: flex-end;
 }
 
 /* Quick Add Modal Form */

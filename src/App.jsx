@@ -112,6 +112,7 @@ function App() {
                 dateFormat={settings.dateFormat}
                 timeFormat={settings.timeFormat}
                 tasks={tasks}
+                isMobile={isMobile}
                 onOpenSettings={() => setIsSettingsModalOpen(true)}
                 deleteSessions={timer.deleteSessions}
                 updateSession={timer.updateSession}
