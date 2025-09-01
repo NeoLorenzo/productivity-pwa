@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Card from '../components/Card';
 import DailySummary from '../features/Timer/DailySummary';
 import SessionLog from '../features/Timer/SessionLog';
+import EditSessionModal from '../components/EditSessionModal';
 
 /**
  * @description A page dedicated to displaying session history and summaries.
@@ -15,10 +16,13 @@ export default function History({
   dailySummary,
   dateFormat,
   timeFormat,
+  tasks,
   onOpenSettings,
   deleteSessions,
+  updateSession,
 }) {
   const [selectedSessions, setSelectedSessions] = useState(new Set());
+  const [sessionToEdit, setSessionToEdit] = useState(null);
 
   const handleSessionSelect = (sessionId) => {
     setSelectedSessions((prevSelected) => {
@@ -52,32 +56,49 @@ export default function History({
     }
   };
 
+  const handleUpdateSession = async (sessionId, updatedData) => {
+    await updateSession(sessionId, updatedData);
+    // Gemini Note: We don't need to manually update the score here.
+    // If session scores are used elsewhere for a total, that logic should be recalculated
+    // from the source of truth (all sessions) to ensure consistency.
+  };
+
   return (
-    <div className="app-container">
-      <Header onOpenSettings={onOpenSettings} title="History" />
-      <div className="app-layout" style={{ maxWidth: '1000px' }}>
-        <Card title="Session History">
-          <div className="history-page-controls">
-            <Link to="/" className="button-secondary">
-              ← Back to Timer
-            </Link>
-            {selectedSessions.size > 0 && (
-              <button onClick={handleDeleteSelected} className="button-danger">
-                Delete Selected ({selectedSessions.size})
-              </button>
-            )}
-          </div>
-          <DailySummary dailySummary={dailySummary} dateFormat={dateFormat} />
-          <SessionLog
-            sessions={sessions}
-            dateFormat={dateFormat}
-            timeFormat={timeFormat}
-            selectedSessions={selectedSessions}
-            onSessionSelect={handleSessionSelect}
-            onSelectAll={handleSelectAll}
-          />
-        </Card>
+    <>
+      <div className="app-container">
+        <Header onOpenSettings={onOpenSettings} title="History" />
+        <div className="app-layout" style={{ maxWidth: '1000px' }}>
+          <Card title="Session History">
+            <div className="history-page-controls">
+              <Link to="/" className="button-secondary">
+                ← Back to Timer
+              </Link>
+              {selectedSessions.size > 0 && (
+                <button onClick={handleDeleteSelected} className="button-danger">
+                  Delete Selected ({selectedSessions.size})
+                </button>
+              )}
+            </div>
+            <DailySummary dailySummary={dailySummary} dateFormat={dateFormat} />
+            <SessionLog
+              sessions={sessions}
+              dateFormat={dateFormat}
+              timeFormat={timeFormat}
+              selectedSessions={selectedSessions}
+              onSessionSelect={handleSessionSelect}
+              onSelectAll={handleSelectAll}
+              onEditSession={(session) => setSessionToEdit(session)}
+            />
+          </Card>
+        </div>
       </div>
-    </div>
+      <EditSessionModal
+        isOpen={!!sessionToEdit}
+        onClose={() => setSessionToEdit(null)}
+        sessionToEdit={sessionToEdit}
+        tasks={tasks}
+        onSubmit={handleUpdateSession}
+      />
+    </>
   );
 }

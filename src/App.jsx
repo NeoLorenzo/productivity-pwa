@@ -6,6 +6,7 @@ import { useAuth } from './hooks/useAuth';
 import { useScore } from './hooks/useScore';
 import { useTimer } from './hooks/useTimer';
 import { useSettings } from './hooks/useSettings';
+import { useTasks } from './hooks/useTasks';
 import { useMediaQuery } from './hooks/useMediaQuery';
 import { aggregateSessionsByDay } from './utils/sessionAggregators';
 import { exportSessionsToCSV } from './utils/csvGenerator';
@@ -26,6 +27,7 @@ function App() {
 
   const { score, addPoints } = useScore(userId);
   const timer = useTimer(userId, { addPoints });
+  const { tasks } = useTasks(userId);
   const { settings, updateDateFormat, updateTimeFormat } = useSettings();
   const isMobile = useMediaQuery('(max-width: 768px)');
 
@@ -96,6 +98,7 @@ function App() {
                 dailyScore={dailyScore}
                 dailySummary={dailySummary}
                 timer={timer}
+                tasks={tasks}
                 onOpenSettings={() => setIsSettingsModalOpen(true)}
               />
             }
@@ -108,8 +111,10 @@ function App() {
                 dailySummary={dailySummary}
                 dateFormat={settings.dateFormat}
                 timeFormat={settings.timeFormat}
+                tasks={tasks}
                 onOpenSettings={() => setIsSettingsModalOpen(true)}
                 deleteSessions={timer.deleteSessions}
+                updateSession={timer.updateSession}
               />
             }
           />

@@ -35,7 +35,8 @@ import { parseCSV } from '../utils/csvParser';
  *   addManualSession: (sessionData: object) => void,
  *   importSessions: (csvText: string) => void,
  *   clearSessions: () => void,
- *   deleteSessions: (sessionIds: Array<string>) => void
+ *   deleteSessions: (sessionIds: Array<string>) => void,
+ *   updateSession: (sessionId: string, updatedData: object) => Promise<void>
  * }}
  */
 export function useTimer(userId, { addPoints }) {
@@ -327,6 +328,7 @@ export function useTimer(userId, { addPoints }) {
     }
   };
 
+  // Gemini Note: This function deletes a specific set of sessions using a batch operation.
   const deleteSessions = async (sessionIds) => {
     if (!userId || !sessionIds || sessionIds.length === 0) return;
 
@@ -337,6 +339,12 @@ export function useTimer(userId, { addPoints }) {
     });
 
     await batch.commit();
+  };
+
+  const updateSession = async (sessionId, updatedData) => {
+    if (!userId || !sessionId) return;
+    const sessionDocRef = doc(db, 'users', userId, 'sessions', sessionId);
+    await updateDoc(sessionDocRef, updatedData);
   };
 
   return {
@@ -354,5 +362,6 @@ export function useTimer(userId, { addPoints }) {
     importSessions,
     clearSessions,
     deleteSessions,
+    updateSession,
   };
 }

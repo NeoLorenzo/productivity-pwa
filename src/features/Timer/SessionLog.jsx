@@ -8,14 +8,15 @@ import {
 } from '../../utils/formatters';
 
 /**
- * @description Displays a log of past timer sessions with selection capabilities.
+ * @description Displays a log of past timer sessions with selection and editing capabilities.
  * @param {{
  *   sessions: Array<object>,
  *   dateFormat: string,
  *   timeFormat: string,
  *   selectedSessions: Set<string>,
  *   onSessionSelect: (sessionId: string) => void,
- *   onSelectAll: () => void
+ *   onSelectAll: () => void,
+ *   onEditSession: (session: object) => void
  * }} props
  * @returns {JSX.Element}
  */
@@ -26,6 +27,7 @@ export default function SessionLog({
   selectedSessions,
   onSessionSelect,
   onSelectAll,
+  onEditSession,
 }) {
   if (sessions.length === 0) {
     return <p>No sessions logged yet.</p>;
@@ -55,6 +57,7 @@ export default function SessionLog({
             <th>Session Score</th>
             <th>Notes</th>
             <th>Location</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -95,6 +98,15 @@ export default function SessionLog({
                   ) : (
                     '—'
                   )}
+                </td>
+                <td data-label="Actions">
+                  <button
+                    onClick={() => onEditSession(session)}
+                    className="icon-button"
+                    aria-label="Edit Session"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                  </button>
                 </td>
               </tr>
             );

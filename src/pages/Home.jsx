@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTasks } from '../hooks/useTasks';
-import { useAuth } from '../hooks/useAuth';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { generateHeatmapData } from '../utils/heatmapUtils';
 
@@ -19,10 +17,9 @@ export default function Home({
   dailyScore,
   dailySummary,
   timer,
+  tasks,
   onOpenSettings,
 }) {
-  const { user } = useAuth();
-  const { tasks } = useTasks(user?.uid);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   const [isHeatmapModalOpen, setIsHeatmapModalOpen] = useState(false);
