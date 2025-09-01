@@ -109,6 +109,7 @@ function App() {
                 dateFormat={settings.dateFormat}
                 timeFormat={settings.timeFormat}
                 onOpenSettings={() => setIsSettingsModalOpen(true)}
+                deleteSessions={timer.deleteSessions}
               />
             }
           />

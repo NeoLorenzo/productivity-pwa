@@ -8,14 +8,30 @@ import {
 } from '../../utils/formatters';
 
 /**
- * @description Displays a log of past timer sessions, including tasks, scores, and notes.
- * @param {{ sessions: Array<object> }} props
+ * @description Displays a log of past timer sessions with selection capabilities.
+ * @param {{
+ *   sessions: Array<object>,
+ *   dateFormat: string,
+ *   timeFormat: string,
+ *   selectedSessions: Set<string>,
+ *   onSessionSelect: (sessionId: string) => void,
+ *   onSelectAll: () => void
+ * }} props
  * @returns {JSX.Element}
  */
-export default function SessionLog({ sessions, dateFormat, timeFormat }) {
+export default function SessionLog({
+  sessions,
+  dateFormat,
+  timeFormat,
+  selectedSessions,
+  onSessionSelect,
+  onSelectAll,
+}) {
   if (sessions.length === 0) {
     return <p>No sessions logged yet.</p>;
   }
+
+  const isAllSelected = sessions.length > 0 && selectedSessions.size === sessions.length;
 
   return (
     <div className="session-log">
@@ -23,6 +39,14 @@ export default function SessionLog({ sessions, dateFormat, timeFormat }) {
       <table>
         <thead>
           <tr>
+            <th>
+              <input
+                type="checkbox"
+                checked={isAllSelected}
+                onChange={onSelectAll}
+                aria-label="Select all sessions"
+              />
+            </th>
             <th>Date</th>
             <th>Start Time</th>
             <th>End Time</th>
@@ -35,12 +59,19 @@ export default function SessionLog({ sessions, dateFormat, timeFormat }) {
         </thead>
         <tbody>
           {sessions.map((session) => {
-            // Gemini Note: If a session's duration is 0, it was manually added
-            // without a start/end time. We should display '—' instead of default times.
             const isUntimed = session.duration === 0;
+            const isSelected = selectedSessions.has(session.id);
 
             return (
-              <tr key={session.endTime}>
+              <tr key={session.id} className={isSelected ? 'selected' : ''}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => onSessionSelect(session.id)}
+                    aria-label={`Select session from ${formatDate(session.endTime, dateFormat)}`}
+                  />
+                </td>
                 <td data-label="Date">{formatDate(session.endTime, dateFormat)}</td>
                 <td data-label="Start Time">{isUntimed ? '—' : formatTime(session.startTime, timeFormat)}</td>
                 <td data-label="End Time">{isUntimed ? '—' : formatTime(session.endTime, timeFormat)}</td>

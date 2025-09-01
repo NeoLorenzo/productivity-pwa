@@ -63,11 +63,10 @@ This is more than an app; it's a framework for an intentional lifestyle.
 
 ## 🔜 Upcoming Features
 
-- Add a way to select and delete sessions from the history page.
 - Add a way to edit sessions in session history.
 - Improve the mobile usability of the session history table.
 
-- Create a profile view which shows stats, such as streaks.
+- Create a profile page which shows stats, such as streaks.
 - Move sign out and settings buttons to the new profile view.
 
 - Add functionality to save to local storage first and sync to Firebase after, enabling offline mode.
@@ -89,6 +88,8 @@ This is more than an app; it's a framework for an intentional lifestyle.
 - Add reflection tags rate mood out of 5.
 
 - The bottom nav on mobile is far too short making it harder to click the buttons, add padding to the bottom.
+
+- Add a way to easily select multiple session histories to delete.
 
 - Move timer stuff to a new timer page.
 - Split the focus timer into 2 timers, the focus timer and the play timer.

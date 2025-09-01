@@ -253,6 +253,18 @@ a[class*='button-']:hover {
 .session-log tbody tr:last-child td {
   border-bottom: none;
 }
+.session-log tbody tr.selected {
+  background-color: #e6f7ff; /* A light blue to indicate selection */
+}
+.session-log tbody tr.selected:hover {
+  background-color: #d9f2ff; /* A slightly darker blue on hover */
+}
+.session-log th:first-child,
+.session-log td:first-child {
+  width: 1%;
+  text-align: center;
+  padding-right: 0;
+}
 
 /* Settings */
 .settings-actions, .settings-controls {
@@ -385,6 +397,11 @@ a[class*='button-']:hover {
 /* History Page & Links */
 .history-page-controls {
   margin-bottom: var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
 }
 
 .importer-container {
@@ -828,5 +845,14 @@ a[class*='button-']:hover {
     text-align: left;
     font-weight: 600;
     color: var(--color-text-light);
+  }
+
+  .session-log td:first-child {
+    padding-left: 15px;
+    justify-content: flex-start;
+  }
+
+  .session-log td:first-child::before {
+    content: none;
   }
 }

@@ -34,7 +34,8 @@ import { parseCSV } from '../utils/csvParser';
  *   discardPendingSession: () => void,
  *   addManualSession: (sessionData: object) => void,
  *   importSessions: (csvText: string) => void,
- *   clearSessions: () => void
+ *   clearSessions: () => void,
+ *   deleteSessions: (sessionIds: Array<string>) => void
  * }}
  */
 export function useTimer(userId, { addPoints }) {
@@ -326,6 +327,18 @@ export function useTimer(userId, { addPoints }) {
     }
   };
 
+  const deleteSessions = async (sessionIds) => {
+    if (!userId || !sessionIds || sessionIds.length === 0) return;
+
+    const batch = writeBatch(db);
+    sessionIds.forEach((id) => {
+      const sessionDocRef = doc(db, 'users', userId, 'sessions', id);
+      batch.delete(sessionDocRef);
+    });
+
+    await batch.commit();
+  };
+
   return {
     elapsedTime,
     isActive,
@@ -340,5 +353,6 @@ export function useTimer(userId, { addPoints }) {
     addManualSession,
     importSessions,
     clearSessions,
+    deleteSessions,
   };
 }
