@@ -27,8 +27,8 @@ export default function BottomNav({ onOpenSettings }) {
       <Link to="/history" className={pathname === '/history' ? 'active' : ''}>
         History
       </Link>
-      <Link to="/tasks" className={pathname === '/tasks' ? 'active' : ''}>
-        Tasks
+      <Link to="/strategy" className={pathname === '/strategy' ? 'active' : ''}>
+        Strategy
       </Link>
       <button onClick={onOpenSettings}>Settings</button>
       <button onClick={handleSignOut}>Sign Out</button>

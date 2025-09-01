@@ -18,7 +18,9 @@ export default function Auth() {
   };
 
   const handleSignOut = () => {
-    auth.signOut();
+    if (window.confirm('Are you sure you want to sign out?')) {
+      auth.signOut();
+    }
   };
 
   return (

@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useTasks } from '../../hooks/useTasks';
-import TaskForm from './TaskForm';
 import TaskList from './TaskList';
 import Card from '../../components/Card';
+import TaskFormModal from './TaskFormModal';
 
 /**
  * @description The main component for the task management feature.
@@ -14,15 +14,31 @@ import Card from '../../components/Card';
 export default function TaskManager() {
   const { user } = useAuth();
   const { tasks, addTask, updateTask, deleteTask } = useTasks(user?.uid);
-  const [editingTask, setEditingTask] = useState(null); // State to hold the task being edited
+  const [editingTask, setEditingTask] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleAddTask = async (name, score) => {
-    await addTask(name, score);
+  const handleOpenAddModal = () => {
+    setEditingTask(null);
+    setIsModalOpen(true);
   };
 
-  const handleUpdateTask = async (taskId, name, score) => {
-    await updateTask(taskId, name, score);
-    setEditingTask(null); // Clear editing state after update
+  const handleOpenEditModal = (task) => {
+    setEditingTask(task);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingTask(null);
+  };
+
+  const handleSubmit = async (name, score) => {
+    if (editingTask) {
+      await updateTask(editingTask.id, name, score);
+    } else {
+      await addTask(name, score);
+    }
+    handleCloseModal();
   };
 
   const handleDeleteTask = (taskId) => {
@@ -31,30 +47,31 @@ export default function TaskManager() {
     }
   };
 
-  const handleEdit = (task) => {
-    setEditingTask(task);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingTask(null);
-  };
-
   return (
-    <div className="task-manager">
-      <Card title={editingTask ? 'Edit Task' : 'Add a New Task'}>
-        <TaskForm
-          onSubmit={editingTask ? (name, score) => handleUpdateTask(editingTask.id, name, score) : handleAddTask}
-          editingTask={editingTask}
-          onCancelEdit={handleCancelEdit}
-        />
-      </Card>
-      <Card title="Your Tasks">
-        <TaskList
-          tasks={tasks}
-          onEdit={handleEdit}
-          onDelete={handleDeleteTask}
-        />
-      </Card>
-    </div>
+    <>
+      <div className="task-manager">
+        <Card
+          title="Your Tasks"
+          className="no-padding"
+          headerActions={
+            <button onClick={handleOpenAddModal} className="icon-button" aria-label="Add Task">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+          }
+        >
+          <TaskList
+            tasks={tasks}
+            onEdit={handleOpenEditModal}
+            onDelete={handleDeleteTask}
+          />
+        </Card>
+      </div>
+      <TaskFormModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmit}
+        editingTask={editingTask}
+      />
+    </>
   );
 }

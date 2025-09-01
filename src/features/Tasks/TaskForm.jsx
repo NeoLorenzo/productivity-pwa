@@ -33,11 +33,6 @@ export default function TaskForm({ onSubmit, editingTask, onCancelEdit }) {
       return;
     }
     onSubmit(name, parseInt(score, 10));
-    // Reset form only if we are not in edit mode (edit mode reset is handled by parent)
-    if (!editingTask) {
-      setName('');
-      setScore(0);
-    }
   };
 
   return (
@@ -49,6 +44,7 @@ export default function TaskForm({ onSubmit, editingTask, onCancelEdit }) {
           onChange={(e) => setName(e.target.value)}
           placeholder="Task Name (e.g., Write 500 words)"
           required
+          autoFocus
         />
         <input
           type="number"
@@ -58,14 +54,14 @@ export default function TaskForm({ onSubmit, editingTask, onCancelEdit }) {
           min="0"
           required
         />
+      </div>
+      <div className="modal-actions">
+        <button type="button" onClick={onCancelEdit} className="button-secondary">
+          Cancel
+        </button>
         <button type="submit" className="button-primary">
           {editingTask ? 'Update Task' : 'Add Task'}
         </button>
-        {editingTask && (
-          <button type="button" onClick={onCancelEdit} className="button-secondary">
-            Cancel
-          </button>
-        )}
       </div>
     </form>
   );

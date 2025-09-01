@@ -71,8 +71,8 @@ export default function Home({
                   >
                     Quick Add Session
                   </button>
-                  <Link to="/tasks" className="button-secondary">
-                    Manage Tasks
+                  <Link to="/strategy" className="button-secondary">
+                    Manage Strategy
                   </Link>
                 </div>
               </Card>
@@ -140,8 +140,8 @@ export default function Home({
                     >
                       Quick Add Session
                     </button>
-                    <Link to="/tasks" className="button-secondary">
-                      Manage Tasks
+                    <Link to="/strategy" className="button-secondary">
+                      Manage Strategy
                     </Link>
                   </div>
                 </Card>

@@ -20,17 +20,21 @@ export default function Header({ onOpenSettings, title }) {
       <div className="header-content">
         <h1>{title}</h1>
         {!isMobile && (
-          <div className="header-actions">
-            {pathname !== '/history' && (
-              <Link to="/history" className="button-secondary">
-                History
-              </Link>
-            )}
+          <nav className="header-actions">
+            <Link to="/" className={`button-secondary ${pathname === '/' ? 'active' : ''}`}>
+              Home
+            </Link>
+            <Link to="/history" className={`button-secondary ${pathname === '/history' ? 'active' : ''}`}>
+              History
+            </Link>
+            <Link to="/strategy" className={`button-secondary ${pathname === '/strategy' ? 'active' : ''}`}>
+              Strategy
+            </Link>
             <button onClick={onOpenSettings} className="button-secondary">
               Settings
             </button>
             <Auth />
-          </div>
+          </nav>
         )}
       </div>
     </header>

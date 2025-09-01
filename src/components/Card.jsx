@@ -1,5 +1,3 @@
-// src/components/Card.jsx
-
 import React from 'react';
 
 /**
@@ -7,14 +5,20 @@ import React from 'react';
  * @param {{
  *   title?: string,
  *   children: React.ReactNode,
- *   className?: string
+ *   className?: string,
+ *   headerActions?: React.ReactNode
  * }} props
  * @returns {JSX.Element}
  */
-export default function Card({ title, children, className = '' }) {
+export default function Card({ title, children, className = '', headerActions = null }) {
   return (
     <div className={`card ${className}`}>
-      {title && <h2 className="card-title">{title}</h2>}
+      {title && (
+        <div className="card-header">
+          <h2 className="card-title">{title}</h2>
+          {headerActions && <div className="card-header-actions">{headerActions}</div>}
+        </div>
+      )}
       <div className="card-content">{children}</div>
     </div>
   );

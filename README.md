@@ -50,8 +50,9 @@ This is more than an app; it's a framework for an intentional lifestyle.
 - **Cloud-Synced Data**: All session and task data is tied to the user's account and synced with Firestore.
 - **Responsive Mobile & Desktop Layouts**: The UI adapts for a seamless experience on any device size.
 - **Mobile-First Bottom Navigation**: A dedicated navigation bar on mobile provides quick access to all pages.
+- **Consistent Desktop Navigation**: The header on desktop now mirrors the mobile navigation for a unified experience.
 - **Progressive Web App (PWA) Support**: The application can be installed on mobile and desktop devices for an app-like experience.
-- **User-Defined Task Rewards**: Users can create and manage a personal list of tasks, each with a custom point value.
+- **User-Defined Task Rewards**: Users can create and manage a personal list of tasks, each with a custom point value on the "Strategy" page.
 - **Focus Timer with Task Integration**: At the end of a timer session, users can select the tasks they completed to automatically calculate and log their score.
 - **Manual Session Entry**: A "Quick Add" feature allows users to log sessions without using the live timer.
 - **Session Logging & History**: All completed timer sessions are logged, showing work duration, completed tasks, and the score earned for that session.
@@ -63,8 +64,13 @@ This is more than an app; it's a framework for an intentional lifestyle.
 
 ## 🔜 Upcoming Features
 
-- Add a way to edit sessions in session history.
-- Improve the mobile usability of the session history table.
+- Add a customizable formula to strategy which uses deep work time and task score to calculate prods (short for productivity points)
+- Add a display to the home page that displays total prods which takes into account the entire user history, this means that prods have to be calculated for each day and summed.
+
+- In the "Strategy" page allow the user to set a goal in terms of task score, time worked, or prods for the day/week/month.
+- Show the percentage to goal at the top of the "Strategy" page.
+
+- Every time the user modifies a task (for example creates one, deletes one, or edits one) save the history to "task history" but hide it by default.
 
 - Create a profile page which shows stats, such as streaks.
 - Move sign out and settings buttons to the new profile view.
@@ -73,17 +79,6 @@ This is more than an app; it's a framework for an intentional lifestyle.
 
 - Add a way to turn location data into names and display those names in session history.
 - Create a heatmap using the location data where each location is color coded.
-
-- Rename "Tasks" to "Strategy".
-- Add a button with a + symbol to the top left corner of the "Your Tasks" card which will bring up a pop up card which is the current "Add a New Task" card. Do the same with the edit functionality.
-
-- Add a customizable formula to strategy which uses deep work time and task score to calculate prods (short for productivity points)
-- Add a display to the home page that displays total prods which takes into account the entire user history, this means that prods have to be calculated for each day and summed.
-
-- In the "Strategy" page allow the user to set a goal in terms of task score, time worked, or prods for the day/week/month.
-- Show the percentage to goal at the top of the "Strategy" page.
-
-- Every time the user modifies a task (for example creates one, deletes one, or edits one) save the history to "task history" but hide it by default.
 
 - Reflection prompt after completed session which will ask how the user felt (note about self), info they want to keep/remember (note to self), and maybe certain environment features (ex. were they with friends / how well they slept, etc.)
 - Add reflection tags rate sleep out of 5.

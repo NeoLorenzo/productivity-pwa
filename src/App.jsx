@@ -13,7 +13,7 @@ import { exportSessionsToCSV } from './utils/csvGenerator';
 
 import Home from './pages/Home';
 import History from './pages/History';
-import Tasks from './pages/Tasks';
+import Strategy from './pages/Strategy';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import Card from './components/Card';
@@ -120,8 +120,8 @@ function App() {
             }
           />
           <Route
-            path="/tasks"
-            element={<Tasks onOpenSettings={() => setIsSettingsModalOpen(true)} />}
+            path="/strategy"
+            element={<Strategy onOpenSettings={() => setIsSettingsModalOpen(true)} />}
           />
           <Route
             path="/privacy"
