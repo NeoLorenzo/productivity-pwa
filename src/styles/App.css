@@ -57,31 +57,14 @@ body {
 }
 
 .main-content {
-  flex: 2; /* Takes up 2/3 of the space */
+  flex: 2;
 }
 
 .sidebar {
-  flex: 1; /* Takes up 1/3 of the space */
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-}
-
-/* Desktop layout */
-@media (min-width: 768px) {
-  .app-layout {
-    flex-direction: row; /* Side-by-side on larger screens */
-    padding: var(--spacing-lg);
-    gap: var(--spacing-lg);
-  }
-}
-
-/* Gemini Note: Added padding-bottom to the main container on mobile to prevent
-   the new bottom navigation bar from overlapping content. */
-@media (max-width: 767px) {
-  .app-container {
-    padding-bottom: 60px;
-  }
 }
 
 /* Login screen styles */
@@ -163,7 +146,7 @@ body {
 /* Buttons */
 button,
 a[class*='button-'] {
-  display: inline-block; /* Ensures <a> tags respect padding and margins */
+  display: inline-block;
   background-color: var(--color-primary);
   color: var(--color-text-white);
   border: none;
@@ -173,7 +156,7 @@ a[class*='button-'] {
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s;
-  text-decoration: none; /* Removes the default underline from links */
+  text-decoration: none;
   text-align: center;
 }
 button:hover,
@@ -195,7 +178,6 @@ a[class*='button-']:hover {
 }
 .button-full-width {
   width: 100%;
-  /* margin-top: var(--spacing-sm); */ /* Removed to be handled by container */
 }
 
 /* Score Display */
@@ -203,7 +185,7 @@ a[class*='button-']:hover {
   text-align: center;
 }
 .score-display h2 {
-  display: none; /* Title is now in the card header */
+  display: none;
 }
 .score-display p {
   font-size: 3rem;
@@ -247,7 +229,6 @@ a[class*='button-']:hover {
   text-align: left;
 }
 .session-log {
-  /* This class is now only for the table wrapper */
   margin-top: var(--spacing-lg);
 }
 .daily-summary h3 {
@@ -275,10 +256,10 @@ a[class*='button-']:hover {
   border-bottom: none;
 }
 .session-log tbody tr.selected {
-  background-color: #e6f7ff; /* A light blue to indicate selection */
+  background-color: #e6f7ff;
 }
 .session-log tbody tr.selected:hover {
-  background-color: #d9f2ff; /* A slightly darker blue on hover */
+  background-color: #d9f2ff;
 }
 .session-log th:first-child,
 .session-log td:first-child {
@@ -293,7 +274,7 @@ a[class*='button-']:hover {
   text-align: center;
 }
 
-/* New Mobile Daily Summary Styles */
+/* Mobile Daily Summary */
 .daily-summary-mobile-list {
   display: flex;
   flex-direction: column;
@@ -319,7 +300,6 @@ a[class*='button-']:hover {
 }
 .mobile-item-date {
   font-weight: 600;
-  color: var(--color-text);
 }
 .mobile-item-duration {
   font-size: 1.1rem;
@@ -385,7 +365,6 @@ a[class*='button-']:hover {
   width: 90%;
   max-width: 500px;
   text-align: left;
-  /* Gemini Note: Added flex layout and max-height to make modal scrollable */
   display: flex;
   flex-direction: column;
   max-height: 85vh;
@@ -401,18 +380,6 @@ a[class*='button-']:hover {
   font-size: 1rem;
   font-family: inherit;
   resize: vertical;
-  margin-bottom: var(--spacing-md);
-  box-sizing: border-box;
-}
-.modal-content textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid var(--color-border);
-  font-size: 1rem;
-  font-family: inherit;
-  resize: vertical;
-  /* margin-bottom: var(--spacing-md); */ /* This is being replaced by the location controls margin */
   box-sizing: border-box;
 }
 .location-controls {
@@ -446,7 +413,6 @@ a[class*='button-']:hover {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  /* Gemini Note: Made this section scrollable and removed margin */
   overflow-y: auto;
   flex: 1;
   padding: var(--spacing-sm) 0;
@@ -457,7 +423,7 @@ a[class*='button-']:hover {
 .modal-scroll-content {
   flex: 1;
   overflow-y: auto;
-  margin: 0 calc(-1 * var(--spacing-lg)); /* Counteract modal padding */
+  margin: 0 calc(-1 * var(--spacing-lg));
   padding: 0 var(--spacing-lg);
 }
 .modal-controls {
@@ -473,12 +439,6 @@ a[class*='button-']:hover {
   margin-bottom: var(--spacing-md);
 }
 
-/* Header Link */
-.header-link {
-  text-decoration: none;
-  color: inherit;
-}
-
 /* History Page & Links */
 .history-page-controls {
   margin-bottom: var(--spacing-lg);
@@ -489,18 +449,12 @@ a[class*='button-']:hover {
   gap: var(--spacing-sm);
 }
 
-.importer-container {
-  margin-top: var(--spacing-lg);
-  padding-top: var(--spacing-md);
-  border-top: 1px solid var(--color-border);
-}
-
 /* Actions Container */
 .actions-container {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  align-items: stretch; /* This will make buttons full-width */
+  align-items: stretch;
 }
 
 /* Task Management */
@@ -509,31 +463,24 @@ a[class*='button-']:hover {
   flex-direction: column;
   gap: var(--spacing-lg);
 }
-
 .task-form .form-controls {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
 }
-
 .task-form input {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid var(--color-border);
   font-size: 1rem;
 }
-
 .task-list-container {
   display: flex;
   flex-direction: column;
-  /* Gemini Note: Removed gap, spacing is now handled by borders */
 }
-
-/* Gemini Note: This is a new class to remove padding from a card's content area */
 .card.no-padding .card-content {
   padding: 0;
 }
-
 .task-item {
   display: flex;
   justify-content: space-between;
@@ -541,58 +488,47 @@ a[class*='button-']:hover {
   padding: var(--spacing-sm) var(--spacing-md);
   border-bottom: 1px solid var(--color-border);
   transition: background-color 0.2s;
-  gap: var(--spacing-md); /* Gemini Note: Added a gap for better spacing */
+  gap: var(--spacing-md);
 }
-
 .task-list-container .task-item:last-child {
   border-bottom: none;
 }
-
 .task-item:hover {
   background-color: var(--color-bg);
 }
-
 .task-details {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  /* Gemini Note: Allow task details to shrink to make space for actions */
   flex: 1;
   min-width: 0;
 }
-
 .task-name {
   font-weight: 600;
-  color: var(--color-text);
-  /* Gemini Note: Prevent long task names from overflowing */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .task-meta {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  flex-shrink: 0; /* Prevent this container from shrinking */
+  flex-shrink: 0;
 }
-
 .task-score-pill {
   background-color: var(--color-primary);
   color: var(--color-text-white);
   padding: 4px 10px;
-  border-radius: 9999px; /* Creates a pill shape */
+  border-radius: 9999px;
   font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
 }
-
 .task-actions {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
 }
-
 .icon-button {
   background: none;
   border: none;
@@ -605,23 +541,19 @@ a[class*='button-']:hover {
   justify-content: center;
   transition: color 0.2s, background-color 0.2s;
 }
-
 .icon-button:hover {
   color: var(--color-text);
   background-color: var(--color-secondary);
 }
-
 .icon-button.danger:hover {
   color: var(--color-danger);
-  background-color: #fed7d7; /* A light red for hover */
+  background-color: #fed7d7;
 }
-
 .task-list-empty {
   text-align: center;
   padding: var(--spacing-lg) var(--spacing-md);
   color: var(--color-text-light);
 }
-
 .task-list-empty p {
   margin: 0 0 var(--spacing-xs) 0;
   font-weight: 600;
@@ -654,146 +586,104 @@ a[class*='button-']:hover {
   cursor: pointer;
 }
 
-@media (min-width: 768px) {
-  .task-form .form-controls {
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .task-form input[type="text"] {
-    flex-grow: 1; /* Allow text input to take up available space */
-  }
-
-  .task-form input[type="number"] {
-    width: 100px; /* Fixed width for score input */
-  }
-}
-
 /* Heatmap Styles */
 .activity-heatmaps {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
 }
-
 .heatmap-container h4 {
   margin-top: 0;
   margin-bottom: var(--spacing-sm);
   font-size: 1rem;
   color: var(--color-text-light);
 }
-
 .heatmap-body {
   display: flex;
   gap: var(--spacing-xs);
 }
-
 .heatmap-day-labels {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   font-size: 0.75rem;
   color: var(--color-text-light);
-  padding-top: 20px; /* Align with grid rows, accounting for month labels */
-  flex-shrink: 0; /* Prevent labels from shrinking */
+  padding-top: 20px;
+  flex-shrink: 0;
 }
-
 .heatmap-grid-wrapper {
-  flex: 1; /* This forces the wrapper to grow and fill the available space */
-  min-width: 0; /* Prevents flexbox overflow issues */
+  flex: 1;
+  min-width: 0;
 }
-
 .heatmap-months {
   display: grid;
-  /* Updated to span a full 53-week year */
   grid-template-columns: repeat(53, minmax(0, 1fr));
   margin-bottom: var(--spacing-xs);
 }
-
 .heatmap-month-label {
   font-size: 0.75rem;
   color: var(--color-text-light);
-  grid-column-end: span 4; /* Approx 4 weeks per month */
+  grid-column-end: span 4;
 }
-
 .heatmap-grid {
-  display: flex; /* Changed to flexbox */
-  gap: 3px; /* Maintained gap */
+  display: flex;
+  gap: 3px;
 }
-
-/* New class for columns */
 .heatmap-column {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  flex: 1; /* This makes each column take up equal space */
+  flex: 1;
 }
-
 .heatmap-cell {
   position: relative;
   background-color: var(--color-secondary);
-  border-radius: 4px; /* Changed to rounded squares */
-  aspect-ratio: 1 / 1; /* This is the key to making the cells responsive squares */
+  border-radius: 4px;
+  aspect-ratio: 1 / 1;
 }
-
-/* New style for placeholder cells */
 .heatmap-cell.placeholder {
   background-color: transparent;
 }
-
-/* New style for future cells */
 .heatmap-cell.future {
-  background-color: #f7fafc; /* Use the main background color */
-  border: 1px dashed #e2e8f0; /* Add a subtle border to indicate an empty slot */
+  background-color: #f7fafc;
+  border: 1px dashed #e2e8f0;
   box-sizing: border-box;
 }
-
-/* Make dashboard heatmap clickable */
 .heatmap-container {
   cursor: pointer;
 }
-
-/* Heatmap Modal Styles */
 .heatmap-modal-content {
   max-width: 90vw;
   width: 600px;
 }
-
 .vertical-heatmap-container {
   max-height: 60vh;
   overflow-y: auto;
-  padding-right: var(--spacing-sm); /* For scrollbar */
+  padding-right: var(--spacing-sm);
   margin-bottom: var(--spacing-md);
 }
-
 .vertical-heatmap-month {
   margin-bottom: var(--spacing-md);
 }
-
 .vertical-heatmap-month h3 {
   margin-top: 0;
   margin-bottom: var(--spacing-sm);
   font-size: 1rem;
 }
-
 .vertical-heatmap-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
 }
-
 .heatmap-cell:hover .heatmap-tooltip {
   visibility: visible;
   opacity: 1;
 }
-
 .heatmap-cell[data-level='1'] { background-color: #9be9a8; }
 .heatmap-cell[data-level='2'] { background-color: #40c463; }
 .heatmap-cell[data-level='3'] { background-color: #30a14e; }
 .heatmap-cell[data-level='4'] { background-color: #216e39; }
 .heatmap-cell[data-level='5'] { background-color: #1a552c; }
-
-
 .heatmap-tooltip {
   visibility: hidden;
   opacity: 0;
@@ -810,7 +700,6 @@ a[class*='button-']:hover {
   z-index: 10;
   transition: opacity 0.2s, visibility 0.2s;
 }
-
 .heatmap-tooltip::after {
   content: '';
   position: absolute;
@@ -833,17 +722,14 @@ a[class*='button-']:hover {
   align-items: center;
   background-color: var(--color-bg-card);
   border-top: 1px solid var(--color-border);
-  /* Gemini Note: Added safe-area padding for mobile devices with notches */
   padding: var(--spacing-xs) 0 calc(var(--spacing-xs) + env(safe-area-inset-bottom));
   z-index: 100;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 }
-
 .bottom-nav a,
 .bottom-nav button {
   flex: 1;
   text-align: center;
-  /* Gemini Note: Adjusted padding to anchor content to the top */
   padding: 0.75rem 0 1.25rem;
   text-decoration: none;
   color: var(--color-text-light);
@@ -857,12 +743,10 @@ a[class*='button-']:hover {
   gap: 4px;
   transition: color 0.2s;
 }
-
 .bottom-nav a:hover,
 .bottom-nav button:hover {
   color: var(--color-text);
 }
-
 .bottom-nav a.active {
   color: var(--color-primary);
   font-weight: 600;
@@ -872,66 +756,246 @@ a[class*='button-']:hover {
 .legal-content {
   line-height: 1.6;
 }
-
 .legal-content h3 {
   margin-top: var(--spacing-md);
   margin-bottom: var(--spacing-xs);
   border-bottom: 1px solid var(--color-border);
   padding-bottom: var(--spacing-xs);
 }
-
 .legal-content ul {
   padding-left: var(--spacing-md);
 }
 
-/* Gemini Note: Responsive table styles for mobile */
-@media (max-width: 768px) {
-  .session-log table {
+/* Profile Page */
+.profile-details {
+  margin-bottom: var(--spacing-md);
+}
+.profile-details p {
+  margin: var(--spacing-xs) 0;
+  word-break: break-all;
+}
+.profile-actions {
+  margin-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--spacing-md);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* === STRATEGY PAGE === */
+.strategy-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+.strategy-main,
+.strategy-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+.formula-display-wrapper {
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+.formula-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  font-size: 1.1rem;
+  font-family: var(--font-family-mono);
+}
+.formula-input {
+  width: 60px;
+  padding: 4px 8px;
+  font-size: 1.1rem;
+  font-family: var(--font-family-mono);
+  text-align: center;
+  border-radius: 5px;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+.formula-explanation {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  margin-top: var(--spacing-sm);
+  line-height: 1.5;
+  text-align: center;
+}
+.goal-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+.goal-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-md);
+}
+.goal-form .goal-input-group:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.goal-input-group label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+.goal-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+.goal-inputs input {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid var(--color-border);
+  font-size: 1rem;
+  background-color: var(--color-bg);
+}
+.goal-form-helper {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background-color: var(--color-bg);
+  border-radius: var(--border-radius);
+  text-align: center;
+  line-height: 1.5;
+}
+.goal-progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+.progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+.progress-item-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+.progress-label {
+  font-weight: 600;
+}
+.progress-text {
+  color: var(--color-text-light);
+  font-family: var(--font-family-mono);
+}
+.progress-bar-background {
+  width: 100%;
+  height: 12px;
+  background-color: var(--color-secondary);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-bar-foreground {
+  height: 100%;
+  background-color: var(--color-primary);
+  border-radius: 99px;
+  transition: width 0.3s ease-in-out;
+}
+
+/* 4. RESPONSIVE STYLES */
+
+/* Desktop Layout */
+@media (min-width: 768px) {
+  .app-layout {
+    flex-direction: row;
+    padding: var(--spacing-lg);
+    gap: var(--spacing-lg);
+  }
+
+  .task-form .form-controls {
+    flex-direction: row;
+    align-items: center;
+  }
+  .task-form input[type="text"] {
+    flex-grow: 1;
+  }
+  .task-form input[type="number"] {
+    width: 100px;
+  }
+
+  .goal-manager-modal-content {
+    max-width: 600px;
+  }
+  .goal-manager .goal-form {
+    gap: 0;
+  }
+  .goal-manager .goal-input-group {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    align-items: center;
+    gap: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--spacing-sm) 0;
+  }
+  .goal-manager .goal-input-group label {
+    font-size: 0.9rem;
+    text-align: right;
+  }
+}
+
+/* Large Desktop Layout for Strategy Page */
+@media (min-width: 992px) {
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+  }
+}
+
+/* Mobile-Specific Layout */
+@media (max-width: 767px) {
+  .app-container {
+    padding-bottom: 60px;
+  }
+
+  /* Responsive Table */
+  .session-log table,
+  .session-log thead,
+  .session-log tbody,
+  .session-log th,
+  .session-log td,
+  .session-log tr {
     display: block;
   }
   .session-log thead {
     display: none;
   }
-  .session-log tbody {
-    display: block;
-  }
-  .session-log th {
-    display: block;
-  }
-  .session-log td {
-    display: block;
-  }
-  .session-log tr {
-    display: block;
-  }
-
-  .session-log thead {
-    display: none; /* Hide headers on mobile */
-  }
-
   .session-log tr {
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius);
     margin-bottom: var(--spacing-md);
     box-shadow: var(--shadow);
   }
-
   .session-log td {
     border: none;
     border-bottom: 1px solid var(--color-border);
     position: relative;
-    padding-left: 50%; /* Create space for the label */
+    padding-left: 50%;
     text-align: right;
-    white-space: normal; /* Allow text to wrap */
-    display: flex; /* Use flexbox for alignment */
-    align-items: center; /* Vertically center content */
-    justify-content: flex-end; /* Align content to the right */
+    white-space: normal;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
-
   .session-log td:last-child {
     border-bottom: 0;
   }
-
   .session-log td::before {
     content: attr(data-label);
     position: absolute;
@@ -943,210 +1007,11 @@ a[class*='button-']:hover {
     font-weight: 600;
     color: var(--color-text-light);
   }
-
   .session-log td:first-child {
     padding-left: 15px;
     justify-content: flex-start;
   }
-
   .session-log td:first-child::before {
     content: none;
-  }
-
-  /* Profile Page Styles */
-  .profile-details {
-    margin-bottom: var(--spacing-md);
-  }
-  .profile-details p {
-    margin: var(--spacing-xs) 0;
-    word-break: break-all; /* Ensures long text like UID doesn't overflow */
-  }
-  .profile-actions {
-    margin-top: var(--spacing-md);
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--spacing-md);
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  /* Strategy Page Layout */
-  .strategy-layout {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-  }
-
-  .strategy-grid {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-  }
-
-  .strategy-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-  }
-
-  /* On wider screens, use a two-column grid */
-  @media (min-width: 992px) {
-    .strategy-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      align-items: start; /* Align cards to the top of their respective columns */
-    }
-  }
-
-  /* Refined Goal Manager Styles */
-  .goal-input-group {
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: var(--spacing-md);
-  }
-  .goal-form .goal-input-group:last-of-type {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-  .goal-input-group label {
-    color: var(--color-text);
-    font-size: 1rem;
-    font-weight: 600;
-  }
-  .goal-inputs {
-    grid-template-columns: 2fr 2fr; /* Adjust column ratio */
-  }
-  .goal-inputs input {
-    background-color: var(--color-bg);
-  }
-  .goal-form-helper {
-    font-size: 0.85rem;
-    color: var(--color-text-light);
-    margin-top: var(--spacing-md);
-    padding: var(--spacing-sm);
-    background-color: var(--color-bg);
-    border-radius: var(--border-radius);
-    text-align: center;
-    line-height: 1.5;
-  }
-
-  /* Refined Formula Settings Styles */
-  .formula-display-wrapper {
-    background-color: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
-    padding: var(--spacing-md);
-    margin-bottom: var(--spacing-sm);
-  }
-  .formula-display {
-    font-size: 1rem;
-    justify-content: space-around; /* Distribute items evenly */
-  }
-  .formula-input {
-    background-color: var(--color-bg-card);
-    border: 1px solid var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
-  }
-  .formula-explanation {
-    border-top: none;
-    padding-top: 0;
-    margin-top: 0;
-    text-align: center;
-  }
-
-  /* Formula Settings */
-  .formula-display {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-xs);
-    font-size: 1.1rem;
-    font-family: var(--font-family-mono);
-    text-align: center;
-    padding: var(--spacing-sm) 0;
-  }
-
-  .formula-input {
-    width: 60px;
-    padding: 4px 8px;
-    font-size: 1.1rem;
-    font-family: var(--font-family-mono);
-    text-align: center;
-    border: 1px solid var(--color-border);
-    border-radius: 5px;
-    background-color: var(--color-bg);
-  }
-
-  .formula-explanation {
-    font-size: 0.9rem;
-    color: var(--color-text-light);
-    margin-top: var(--spacing-md);
-    padding-top: var(--spacing-sm);
-    border-top: 1px solid var(--color-border);
-    line-height: 1.5;
-  }
-
-  /* Goal Manager */
-  .goal-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-  }
-  .goal-input-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-  }
-  .goal-input-group label {
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-  .goal-inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-sm);
-  }
-  .goal-inputs input {
-    padding: 8px 12px;
-    border-radius: 5px;
-    border: 1px solid var(--color-border);
-    font-size: 1rem;
-  }
-
-  /* Goal Progress */
-  .goal-progress-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-  }
-  .progress-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-  }
-  .progress-item-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-  }
-  .progress-label {
-    font-weight: 600;
-    color: var(--color-text);
-  }
-  .progress-text {
-    color: var(--color-text-light);
-    font-family: var(--font-family-mono);
-  }
-  .progress-bar-background {
-    width: 100%;
-    height: 12px;
-    background-color: var(--color-secondary);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .progress-bar-foreground {
-    height: 100%;
-    background-color: var(--color-primary);
-    border-radius: 99px;
-    transition: width 0.3s ease-in-out;
   }
 }

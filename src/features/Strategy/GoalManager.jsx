@@ -1,16 +1,16 @@
 // src/features/Strategy/GoalManager.jsx
 
 import React, { useState, useEffect } from 'react';
-import Card from '../../components/Card';
 
 /**
  * @description A component for setting and managing average-based productivity goals.
  * @param {{
  *   goals: object,
- *   updateGoals: (newGoals: object) => void
+ *   updateGoals: (newGoals: object) => void,
+ *   onClose: () => void
  * }} props
  */
-export default function GoalManager({ goals, updateGoals }) {
+export default function GoalManager({ goals, updateGoals, onClose }) {
   const [localGoals, setLocalGoals] = useState(goals);
 
   useEffect(() => {
@@ -39,6 +39,7 @@ export default function GoalManager({ goals, updateGoals }) {
   const handleSave = () => {
     updateGoals(localGoals);
     alert('Goals saved successfully!');
+    onClose();
   };
 
   const goalTypes = [
@@ -48,36 +49,35 @@ export default function GoalManager({ goals, updateGoals }) {
   ];
 
   return (
-    <Card title="Set Your Goals">
-      <div className="goal-manager">
-        <div className="goal-form">
-          {goalTypes.map(({ key, label, unit }) => (
-            <div key={key} className="goal-input-group">
-              <label>{label}</label>
-              <div className="goal-inputs">
-                <input
-                  type="number"
-                  placeholder={`Target ${unit}`}
-                  min="0"
-                  value={localGoals[key]?.target || ''}
-                  onChange={(e) => handleInputChange(key, 'target', Number(e.target.value))}
-                />
-                <input
-                  type="date"
-                  value={localGoals[key]?.endDate || ''}
-                  onChange={(e) => handleInputChange(key, 'endDate', e.target.value)}
-                />
-              </div>
+    <div className="goal-manager">
+      <div className="goal-form">
+        {goalTypes.map(({ key, label, unit }) => (
+          <div key={key} className="goal-input-group">
+            <label>{label}</label>
+            <div className="goal-inputs">
+              <input
+                type="number"
+                placeholder={`Target ${unit}`}
+                min="0"
+                value={localGoals[key]?.target || ''}
+                onChange={(e) => handleInputChange(key, 'target', Number(e.target.value))}
+              />
+              <input
+                type="date"
+                value={localGoals[key]?.endDate || ''}
+                onChange={(e) => handleInputChange(key, 'endDate', e.target.value)}
+              />
             </div>
-          ))}
-        </div>
-        <p className="goal-form-helper">
-          Set a target daily average and an end date. Progress is tracked from today until the goal's end. Clear a target to disable the goal.
-        </p>
-        <div className="modal-actions">
-          <button onClick={handleSave} className="button-primary">Save Goals</button>
-        </div>
+          </div>
+        ))}
       </div>
-    </Card>
+      <p className="goal-form-helper">
+        Set a target daily average and an end date. Progress is tracked from today until the goal's end. Clear a target to disable the goal.
+      </p>
+      <div className="modal-actions">
+        <button onClick={onClose} className="button-secondary">Cancel</button>
+        <button onClick={handleSave} className="button-primary">Save Goals</button>
+      </div>
+    </div>
   );
 }
