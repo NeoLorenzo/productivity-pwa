@@ -36,6 +36,7 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   margin: 0;
+  overflow-x: hidden; /* Gemini Note: Prevents horizontal scrolling app-wide */
 }
 
 /* 2. LAYOUT & CONTAINERS */
@@ -58,6 +59,9 @@ body {
 
 .main-content {
   flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
 }
 
 .sidebar {
@@ -194,6 +198,61 @@ a[class*='button-']:hover {
   color: var(--color-primary);
 }
 
+/* === TIMER PAGE === */
+.timer-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: background-color 0.4s ease;
+}
+.timer-page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-sm);
+}
+.timer-page-container.active-productivity {
+  background-color: #e0f0ff; /* Light blue */
+}
+.timer-page-container.active-play {
+  background-color: #fffbe0; /* Light yellow/orange */
+}
+.timer-page-container.paused {
+  background-color: #f0f0f0; /* Light gray */
+}
+.timer-mode-toggle {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: 99px;
+  margin-bottom: var(--spacing-lg);
+  background-color: var(--color-bg-card);
+  overflow: hidden;
+}
+.timer-mode-toggle button {
+  background: none;
+  border: none;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.timer-mode-toggle button.active {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+}
+.timer-mode-toggle button:disabled {
+  color: #a0aec0;
+  cursor: not-allowed;
+}
+.timer-page-actions {
+  margin-top: var(--spacing-lg);
+}
+
 /* Timer */
 .timer-feature {
   text-align: center;
@@ -274,6 +333,22 @@ a[class*='button-']:hover {
   text-align: center;
 }
 
+/* Session Type Tag */
+.session-type-tag {
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-white);
+  white-space: nowrap;
+}
+.session-type-tag.productivity {
+  background-color: var(--color-primary);
+}
+.session-type-tag.play {
+  background-color: var(--color-warn-dark);
+}
+
 /* Mobile Daily Summary */
 .daily-summary-mobile-list {
   display: flex;
@@ -305,6 +380,9 @@ a[class*='button-']:hover {
   font-size: 1.1rem;
   font-family: var(--font-family-mono);
   color: var(--color-primary);
+}
+.mobile-item-duration.play {
+  color: var(--color-warn-dark);
 }
 .mobile-item-meta {
   display: flex;
@@ -431,11 +509,14 @@ a[class*='button-']:hover {
   justify-content: flex-end;
 }
 
-/* Quick Add Modal Form */
+/* Quick Add & Edit Session Modal Form */
 .quick-add-form-controls {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+.session-type-editor {
   margin-bottom: var(--spacing-md);
 }
 
@@ -679,11 +760,29 @@ a[class*='button-']:hover {
   visibility: visible;
   opacity: 1;
 }
-.heatmap-cell[data-level='1'] { background-color: #9be9a8; }
-.heatmap-cell[data-level='2'] { background-color: #40c463; }
-.heatmap-cell[data-level='3'] { background-color: #30a14e; }
-.heatmap-cell[data-level='4'] { background-color: #216e39; }
-.heatmap-cell[data-level='5'] { background-color: #1a552c; }
+/* Default/Productivity Colors */
+.productivity-heatmap .heatmap-cell[data-level='1'] { background-color: #9be9a8; }
+.productivity-heatmap .heatmap-cell[data-level='2'] { background-color: #40c463; }
+.productivity-heatmap .heatmap-cell[data-level='3'] { background-color: #30a14e; }
+.productivity-heatmap .heatmap-cell[data-level='4'] { background-color: #216e39; }
+.productivity-heatmap .heatmap-cell[data-level='5'] { background-color: #1a552c; }
+
+/* Play Colors */
+.play-heatmap .heatmap-cell[data-level='1'] { background-color: #feebc8; }
+.play-heatmap .heatmap-cell[data-level='2'] { background-color: #fbd38d; }
+.play-heatmap .heatmap-cell[data-level='3'] { background-color: #f6ad55; }
+.play-heatmap .heatmap-cell[data-level='4'] { background-color: #ed8936; }
+.play-heatmap .heatmap-cell[data-level='5'] { background-color: #dd6b20; }
+
+/* Harmony Colors (Diverging Scale) */
+.harmony-heatmap .heatmap-cell[data-level='-3'] { background-color: #fca5a5; } /* Strong Red */
+.harmony-heatmap .heatmap-cell[data-level='-2'] { background-color: #fecaca; }
+.harmony-heatmap .heatmap-cell[data-level='-1'] { background-color: #fee2e2; } /* Light Red */
+.harmony-heatmap .heatmap-cell[data-level='0'] { background-color: #e5e7eb; }  /* Neutral Gray */
+.harmony-heatmap .heatmap-cell[data-level='1'] { background-color: #dbeafe; } /* Light Blue */
+.harmony-heatmap .heatmap-cell[data-level='2'] { background-color: #93c5fd; }
+.harmony-heatmap .heatmap-cell[data-level='3'] { background-color: #60a5fa; } /* Strong Blue */
+
 .heatmap-tooltip {
   visibility: hidden;
   opacity: 0;
@@ -782,6 +881,120 @@ a[class*='button-']:hover {
   justify-content: flex-end;
 }
 
+/* === HARMONY SCORE DISPLAY === */
+.harmony-score-display {
+  text-align: center;
+}
+.harmony-score-main {
+  margin-bottom: var(--spacing-sm);
+}
+.harmony-score-value {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.1;
+  display: block;
+  transition: color 0.3s ease;
+}
+.harmony-score-label {
+  font-size: 1rem;
+  color: var(--color-text-light);
+  font-weight: 600;
+}
+
+/* Feedback Visuals */
+.harmony-feedback-visual {
+  position: relative;
+  width: 100%;
+  margin: var(--spacing-md) 0;
+}
+.harmony-scale {
+  display: flex;
+  width: 100%;
+  height: 12px;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.scale-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--color-text-white);
+  font-weight: 600;
+}
+.scale-section.play { background-color: var(--color-warn); }
+.scale-section.balanced { background-color: #48bb78; } /* Green */
+.scale-section.productive { background-color: var(--color-primary); }
+
+.scale-arrow-container {
+  position: absolute;
+  top: 12px;
+  transform: translateX(-50%);
+  transition: left 0.5s ease-in-out;
+}
+.scale-arrow {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 12px solid;
+  transition: border-color 0.3s ease;
+}
+
+.harmony-feedback-text {
+  font-size: 1rem;
+  font-weight: 600;
+  min-height: 40px; /* Prevent layout shift */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: var(--spacing-md) 0;
+  transition: color 0.3s ease;
+}
+
+/* Status Colors */
+.status-productive { color: var(--color-primary-dark); }
+.status-productive-light { color: var(--color-primary); }
+.status-balanced { color: #38a169; }
+.status-play-light { color: var(--color-warn-dark); }
+.status-play { color: #c05621; }
+
+.scale-arrow.status-productive { border-bottom-color: var(--color-primary-dark); }
+.scale-arrow.status-productive-light { border-bottom-color: var(--color-primary); }
+.scale-arrow.status-balanced { border-bottom-color: #38a169; }
+.scale-arrow.status-play-light { border-bottom-color: var(--color-warn-dark); }
+.scale-arrow.status-play { border-bottom-color: #c05621; }
+
+
+.harmony-score-breakdown {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+.breakdown-item {
+  display: flex;
+  flex-direction: column;
+}
+.breakdown-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: var(--font-family-mono);
+}
+.breakdown-item:first-child .breakdown-value {
+  color: var(--color-primary);
+}
+.breakdown-item:last-child .breakdown-value {
+  color: var(--color-warn-dark);
+}
+.breakdown-label {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+}
+
 /* === STRATEGY PAGE === */
 .strategy-grid {
   display: flex;
@@ -793,6 +1006,12 @@ a[class*='button-']:hover {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
+}
+.formula-group {
+  margin-bottom: var(--spacing-md);
+}
+.formula-group:last-child {
+  margin-bottom: 0;
 }
 .formula-display-wrapper {
   background-color: var(--color-bg);

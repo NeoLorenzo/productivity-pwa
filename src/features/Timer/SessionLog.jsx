@@ -49,10 +49,11 @@ export default function SessionLog({
                 aria-label="Select all sessions"
               />
             </th>
+            <th>Type</th>
             <th>Date</th>
             <th>Start Time</th>
             <th>End Time</th>
-            <th>Work Duration</th>
+            <th>Duration</th>
             <th>Completed Tasks</th>
             <th>Session Score</th>
             <th>Notes</th>
@@ -64,6 +65,8 @@ export default function SessionLog({
           {sessions.map((session) => {
             const isUntimed = session.duration === 0;
             const isSelected = selectedSessions.has(session.id);
+            // For backward compatibility, default to 'productivity'
+            const sessionType = session.type || 'productivity';
 
             return (
               <tr key={session.id} className={isSelected ? 'selected' : ''}>
@@ -75,10 +78,15 @@ export default function SessionLog({
                     aria-label={`Select session from ${formatDate(session.endTime, dateFormat)}`}
                   />
                 </td>
+                <td data-label="Type">
+                  <span className={`session-type-tag ${sessionType}`}>
+                    {sessionType.charAt(0).toUpperCase() + sessionType.slice(1)}
+                  </span>
+                </td>
                 <td data-label="Date">{formatDate(session.endTime, dateFormat)}</td>
                 <td data-label="Start Time">{isUntimed ? '—' : formatTime(session.startTime, timeFormat)}</td>
                 <td data-label="End Time">{isUntimed ? '—' : formatTime(session.endTime, timeFormat)}</td>
-                <td data-label="Work Duration">{isUntimed ? '—' : formatDuration(session.duration)}</td>
+                <td data-label="Duration">{isUntimed ? '—' : formatDuration(session.duration)}</td>
                 <td data-label="Completed Tasks">
                   {session.completedTasks?.length > 0
                     ? session.completedTasks.map(task => task.name).join(', ')

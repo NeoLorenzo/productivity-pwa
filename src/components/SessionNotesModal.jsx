@@ -9,11 +9,12 @@ import { useState, useEffect } from 'react';
  *   isOpen: boolean,
  *   tasks: Array<{id: string, name: string, score: number}>,
  *   onSubmit: (sessionData: { notes: string, location: object | null, completedTasks: Array<object> }) => void,
- *   onClose: () => void
+ *   onClose: () => void,
+ *   sessionType: 'productivity' | 'play'
  * }} props
  * @returns {JSX.Element | null}
  */
-export default function SessionNotesModal({ isOpen, tasks = [], onSubmit, onClose }) {
+export default function SessionNotesModal({ isOpen, tasks = [], onSubmit, onClose, sessionType }) {
   const [notes, setNotes] = useState('');
   const [location, setLocation] = useState(null);
   const [selectedTasks, setSelectedTasks] = useState(new Set());
@@ -84,22 +85,27 @@ export default function SessionNotesModal({ isOpen, tasks = [], onSubmit, onClos
         <h2>Session Complete</h2>
         
         <form onSubmit={handleSubmit}>
-          {tasks.length > 0 && (
-            <div className="task-selection-container">
-              <p>What tasks did you complete?</p>
-              <div className="task-checklist">
-                {tasks.map((task) => (
-                  <label key={task.id} className="task-checkbox-label">
-                    <input
-                      type="checkbox"
-                      checked={selectedTasks.has(task.id)}
-                      onChange={() => handleTaskToggle(task.id)}
-                    />
-                    {task.name} (+{task.score})
-                  </label>
-                ))}
-              </div>
-            </div>
+          {/* Gemini Note: Conditionally render task and location inputs for productivity sessions only. */}
+          {sessionType === 'productivity' && (
+            <>
+              {tasks.length > 0 && (
+                <div className="task-selection-container">
+                  <p>What tasks did you complete?</p>
+                  <div className="task-checklist">
+                    {tasks.map((task) => (
+                      <label key={task.id} className="task-checkbox-label">
+                        <input
+                          type="checkbox"
+                          checked={selectedTasks.has(task.id)}
+                          onChange={() => handleTaskToggle(task.id)}
+                        />
+                        {task.name} (+{task.score})
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
 
           <p>Add any additional notes for this session:</p>
@@ -111,22 +117,24 @@ export default function SessionNotesModal({ isOpen, tasks = [], onSubmit, onClos
             autoFocus
           ></textarea>
 
-          <div className="location-controls">
-            <button
-              type="button"
-              onClick={handleFetchLocation}
-              disabled={isFetchingLocation || !!location}
-              className="button-secondary"
-            >
-              {isFetchingLocation ? 'Fetching...' : 'Add Location'}
-            </button>
-            {location && (
-              <p className="location-status">
-                Location captured: {location.lat.toFixed(4)}, {location.lon.toFixed(4)}
-              </p>
-            )}
-            {locationError && <p className="location-status error">{locationError}</p>}
-          </div>
+          {sessionType === 'productivity' && (
+            <div className="location-controls">
+              <button
+                type="button"
+                onClick={handleFetchLocation}
+                disabled={isFetchingLocation || !!location}
+                className="button-secondary"
+              >
+                {isFetchingLocation ? 'Fetching...' : 'Add Location'}
+              </button>
+              {location && (
+                <p className="location-status">
+                  Location captured: {location.lat.toFixed(4)}, {location.lon.toFixed(4)}
+                </p>
+              )}
+              {locationError && <p className="location-status error">{locationError}</p>}
+            </div>
+          )}
 
           <div className="modal-actions">
             <button type="button" onClick={onClose} className="button-secondary">

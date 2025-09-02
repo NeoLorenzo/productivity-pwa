@@ -13,8 +13,11 @@ export default function BottomNav() {
 
   return (
     <nav className="bottom-nav">
+      <Link to="/dashboard" className={pathname === '/dashboard' ? 'active' : ''}>
+        Dashboard
+      </Link>
       <Link to="/" className={pathname === '/' ? 'active' : ''}>
-        Home
+        Timer
       </Link>
       <Link to="/history" className={pathname === '/history' ? 'active' : ''}>
         History

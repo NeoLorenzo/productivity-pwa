@@ -19,6 +19,7 @@ export default function EditSessionModal({ isOpen, sessionToEdit, tasks = [], on
   const [endTime, setEndTime] = useState('');
   const [notes, setNotes] = useState('');
   const [selectedTasks, setSelectedTasks] = useState(new Set());
+  const [sessionType, setSessionType] = useState('productivity');
 
   // Gemini Note: This effect populates the form with the session's data
   // whenever a new session is selected for editing.
@@ -32,6 +33,7 @@ export default function EditSessionModal({ isOpen, sessionToEdit, tasks = [], on
       setEndTime(endDate.toTimeString().substring(0, 5)); // HH:MM
 
       setNotes(sessionToEdit.notes || '');
+      setSessionType(sessionToEdit.type || 'productivity');
       
       const initialSelectedTasks = new Set(
         (sessionToEdit.completedTasks || []).map(task => task.id)
@@ -67,8 +69,9 @@ export default function EditSessionModal({ isOpen, sessionToEdit, tasks = [], on
       return;
     }
 
-    const completedTasks = tasks.filter(task => selectedTasks.has(task.id));
-    const sessionScore = completedTasks.reduce((total, task) => total + task.score, 0);
+    const isProductivity = sessionType === 'productivity';
+    const completedTasks = isProductivity ? tasks.filter(task => selectedTasks.has(task.id)) : [];
+    const sessionScore = isProductivity ? completedTasks.reduce((total, task) => total + task.score, 0) : 0;
 
     const startTimestamp = new Date(`${date}T${startTime}`).getTime();
     const endTimestamp = new Date(`${date}T${endTime}`).getTime();
@@ -81,6 +84,7 @@ export default function EditSessionModal({ isOpen, sessionToEdit, tasks = [], on
       notes,
       completedTasks,
       sessionScore,
+      type: sessionType,
     });
     onClose();
   };
@@ -91,6 +95,18 @@ export default function EditSessionModal({ isOpen, sessionToEdit, tasks = [], on
         <h2>Edit Session</h2>
         
         <form onSubmit={handleSubmit}>
+          <div className="session-type-editor setting-option">
+            <label htmlFor="session-type-select">Session Type</label>
+            <select
+              id="session-type-select"
+              value={sessionType}
+              onChange={(e) => setSessionType(e.target.value)}
+            >
+              <option value="productivity">Productivity</option>
+              <option value="play">Play</option>
+            </select>
+          </div>
+
           <div className="quick-add-form-controls">
             <div className="setting-option">
               <label htmlFor="session-date-edit">Date *</label>
@@ -122,7 +138,7 @@ export default function EditSessionModal({ isOpen, sessionToEdit, tasks = [], on
             </div>
           </div>
 
-          {tasks.length > 0 && (
+          {sessionType === 'productivity' && tasks.length > 0 && (
             <div className="task-selection-container">
               <p>What tasks did you complete?</p>
               <div className="task-checklist">

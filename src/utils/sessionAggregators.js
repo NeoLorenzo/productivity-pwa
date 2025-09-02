@@ -9,7 +9,9 @@ import { formatDuration, formatDate } from './formatters';
  * @returns {number} The calculated productivity points.
  */
 export function calculateProductivityPoints(session, formula) {
-  if (!session || !formula || !formula.timeDivisor) {
+  // Gemini Note: This function now only calculates points for 'productivity' sessions.
+  // For backward compatibility, sessions without a 'type' are treated as productivity.
+  if (!session || !formula || !formula.timeDivisor || (session.type && session.type !== 'productivity')) {
     return 0;
   }
 
@@ -22,11 +24,27 @@ export function calculateProductivityPoints(session, formula) {
 }
 
 /**
+ * @description Calculates the play points for a single session based on a formula.
+ * @param {object} session - The session object.
+ * @param {object} formula - The formula configuration object.
+ * @returns {number} The calculated play points.
+ */
+export function calculatePlayPoints(session, formula) {
+  if (!session || !formula || !formula.playTimeDivisor || session.type !== 'play') {
+    return 0;
+  }
+
+  const playMinutes = session.duration / 60;
+  const playPoints = playMinutes / formula.playTimeDivisor;
+
+  return playPoints;
+}
+
+/**
  * @description Aggregates session data by day, calculating totals for duration, count, score, and productivity points.
  * @param {Array<object>} sessions - The array of session objects from useTimer.
  * @param {object} formula - The formula configuration object.
- * @returns {Array<{date: number, totalDuration: number, sessionCount: number, totalScore: number, totalProductivityPoints: number}>}
- *          An array of objects, each representing a day with aggregated data, sorted by most recent.
+ * @returns {Array<object>} An array of objects, each representing a day with aggregated data, sorted by most recent.
  */
 export function aggregateSessionsByDay(sessions, formula) {
   if (!sessions || sessions.length === 0) {
@@ -39,17 +57,31 @@ export function aggregateSessionsByDay(sessions, formula) {
     if (!acc[dateKey]) {
       acc[dateKey] = {
         date: session.endTime,
-        totalDuration: 0,
+        totalDuration: 0, // Now represents productivity duration
+        totalPlayDuration: 0,
         sessionCount: 0,
         totalScore: 0,
         totalProductivityPoints: 0,
+        totalPlayPoints: 0,
+        dailyHarmonyScore: 0,
       };
     }
 
-    acc[dateKey].totalDuration += session.duration;
-    acc[dateKey].sessionCount += 1;
-    acc[dateKey].totalScore += session.sessionScore || 0;
-    acc[dateKey].totalProductivityPoints += calculateProductivityPoints(session, formula);
+    // For backward compatibility, treat sessions without a type as 'productivity'
+    const sessionType = session.type || 'productivity';
+
+    if (sessionType === 'productivity') {
+      acc[dateKey].totalDuration += session.duration;
+      acc[dateKey].sessionCount += 1;
+      acc[dateKey].totalScore += session.sessionScore || 0;
+      acc[dateKey].totalProductivityPoints += calculateProductivityPoints(session, formula);
+    } else if (sessionType === 'play') {
+      acc[dateKey].totalPlayDuration += session.duration;
+      acc[dateKey].totalPlayPoints += calculatePlayPoints(session, formula);
+    }
+    
+    // Recalculate harmony score for the day
+    acc[dateKey].dailyHarmonyScore = acc[dateKey].totalProductivityPoints - acc[dateKey].totalPlayPoints;
 
     return acc;
   }, {});

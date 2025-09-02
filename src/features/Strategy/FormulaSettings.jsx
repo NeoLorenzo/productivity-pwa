@@ -4,48 +4,74 @@ import React, { useState, useEffect } from 'react';
 import Card from '../../components/Card';
 
 /**
- * @description A component for viewing and editing the Productivity Points formula.
+ * @description A component for viewing and editing the Productivity & Play Points formulas.
  * @param {{
- *   formula: { timeDivisor: number },
+ *   formula: { timeDivisor: number, playTimeDivisor: number },
  *   updateFormula: (newFormula: object) => void
  * }} props
  */
 export default function FormulaSettings({ formula, updateFormula }) {
-  const [timeDivisor, setTimeDivisor] = useState(formula.timeDivisor);
+  const [localFormula, setLocalFormula] = useState(formula);
 
   useEffect(() => {
-    setTimeDivisor(formula.timeDivisor);
+    setLocalFormula(formula);
   }, [formula]);
 
-  const handleUpdate = () => {
-    const newDivisor = parseInt(timeDivisor, 10);
+  const handleInputChange = (key, value) => {
+    setLocalFormula(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleUpdate = (key) => {
+    const newDivisor = parseInt(localFormula[key], 10);
     if (!isNaN(newDivisor) && newDivisor > 0) {
-      updateFormula({ ...formula, timeDivisor: newDivisor });
+      updateFormula({ ...formula, [key]: newDivisor });
     } else {
       alert('Please enter a valid number greater than 0.');
-      setTimeDivisor(formula.timeDivisor); // Reset on invalid input
+      setLocalFormula(formula); // Reset on invalid input
     }
   };
 
   return (
-    <Card title="Productivity Points Formula">
-      <div className="formula-display-wrapper">
-        <div className="formula-display">
-          <span>(Time /</span>
-          <input
-            type="number"
-            value={timeDivisor}
-            onChange={(e) => setTimeDivisor(e.target.value)}
-            onBlur={handleUpdate}
-            className="formula-input"
-            min="1"
-          />
-          <span>) + Score = Points</span>
+    <Card title="Points Formulas">
+      <div className="formula-group">
+        <div className="formula-display-wrapper">
+          <div className="formula-display">
+            <span>(Prod. Time /</span>
+            <input
+              type="number"
+              value={localFormula.timeDivisor}
+              onChange={(e) => handleInputChange('timeDivisor', e.target.value)}
+              onBlur={() => handleUpdate('timeDivisor')}
+              className="formula-input"
+              min="1"
+            />
+            <span>) + Score = Prod. Points</span>
+          </div>
         </div>
+        <p className="formula-explanation">
+          A lower number makes focused time more valuable.
+        </p>
       </div>
-      <p className="formula-explanation">
-        Adjust the time divisor to change how much your focused work (in minutes) is worth. A lower number makes time more valuable.
-      </p>
+
+      <div className="formula-group">
+        <div className="formula-display-wrapper">
+          <div className="formula-display">
+            <span>(Play Time /</span>
+            <input
+              type="number"
+              value={localFormula.playTimeDivisor}
+              onChange={(e) => handleInputChange('playTimeDivisor', e.target.value)}
+              onBlur={() => handleUpdate('playTimeDivisor')}
+              className="formula-input"
+              min="1"
+            />
+            <span>) = Play Points</span>
+          </div>
+        </div>
+        <p className="formula-explanation">
+          A lower number makes play time "cost" more against your Harmony Score.
+        </p>
+      </div>
     </Card>
   );
 }

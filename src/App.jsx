@@ -13,7 +13,8 @@ import { useGoals } from './hooks/useGoals';
 import { aggregateSessionsByDay } from './utils/sessionAggregators';
 import { exportSessionsToCSV } from './utils/csvGenerator';
 
-import Home from './pages/Home';
+import TimerPage from './pages/TimerPage';
+import Dashboard from './pages/Dashboard';
 import History from './pages/History';
 import Strategy from './pages/Strategy';
 import Profile from './pages/Profile';
@@ -48,6 +49,18 @@ function App() {
 
   const totalProductivityPoints = dailySummary.reduce(
     (total, day) => total + day.totalProductivityPoints,
+    0
+  );
+
+  const totalPlayPoints = dailySummary.reduce(
+    (total, day) => total + day.totalPlayPoints,
+    0
+  );
+
+  // Gemini Note: The harmony score is the new core metric for the app's philosophy.
+  // It is calculated here but will be surfaced in the UI in a later phase.
+  const harmonyScore = dailySummary.reduce(
+    (total, day) => total + day.dailyHarmonyScore,
     0
   );
 
@@ -100,14 +113,22 @@ function App() {
           <Route
             path="/"
             element={
-              <Home
-                score={score}
-                dailyScore={dailyScore}
-                dailySummary={dailySummary}
+              <TimerPage
                 timer={timer}
                 tasks={tasks}
-                totalProductivityPoints={totalProductivityPoints}
                 onOpenSettings={() => setIsSettingsModalOpen(true)}
+              />
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <Dashboard
+                dailySummary={dailySummary}
+                onOpenSettings={() => setIsSettingsModalOpen(true)}
+                harmonyScore={harmonyScore}
+                totalProductivityPoints={totalProductivityPoints}
+                totalPlayPoints={totalPlayPoints}
               />
             }
           />
