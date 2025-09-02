@@ -11,7 +11,7 @@ import { formatHeatmapTooltip } from '../utils/heatmapUtils';
  *     monthLabels: Array<{label: string, colStart: number}>,
  *     days: Array<{date: string, value: number, level: number}>
  *   },
- *   valueKey: 'totalDuration' | 'totalScore'
+ *   valueKey: 'totalDuration' | 'totalScore' | 'totalPlayDuration' | 'dailyHarmonyScore'
  * }} props
  * @returns {JSX.Element}
  */
@@ -48,11 +48,11 @@ export default function Heatmap({ title, data, valueKey, onClick }) {
             {Array.from({ length: Math.ceil(days.length / 7) }).map((_, colIndex) => (
               <div className="heatmap-column" key={colIndex}>
                 {days.slice(colIndex * 7, colIndex * 7 + 7).map((day) => {
-                  if (day.level === -1) {
+                  // Gemini Note: Updated level checks to match the new non-data values from the utility.
+                  if (day.level === -10) {
                     return <div key={day.date} className="heatmap-cell placeholder" />;
                   }
-                  // Gemini Note: Added a new condition to render future days with a unique class.
-                  if (day.level === -2) {
+                  if (day.level === -20) {
                     return <div key={day.date} className="heatmap-cell future" />;
                   }
                   return (

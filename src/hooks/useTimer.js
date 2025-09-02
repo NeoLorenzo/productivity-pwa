@@ -27,7 +27,7 @@ import { parseCSV } from '../utils/csvParser';
  *   isPaused: boolean,
  *   sessions: Array<object>,
  *   pendingSession: object | null,
- *   startTimer: () => void,
+ *   startTimer: (mode: 'productivity' | 'play') => void,
  *   pauseTimer: () => void,
  *   stopTimer: () => void,
  *   saveSession: (sessionData: object) => void,
@@ -131,7 +131,7 @@ export function useTimer(userId, { addPoints }) {
     return () => unsubscribe();
   }, [userId]);
 
-  const startTimer = async () => {
+  const startTimer = async (mode = 'productivity') => {
     if (!userId) return;
     const userDocRef = doc(db, 'users', userId);
     const currentState = timerStateRef.current;
@@ -155,6 +155,7 @@ export function useTimer(userId, { addPoints }) {
           isPaused: false,
           breaks: [],
           pauseTime: null,
+          mode: mode, // Gemini Note: Storing the mode in Firestore state
         },
       };
       await setDoc(userDocRef, newTimerState, { merge: true });
@@ -210,6 +211,7 @@ export function useTimer(userId, { addPoints }) {
       notes: '',
       completedTasks: [],
       sessionScore: 0,
+      type: finalState.mode || 'productivity', // Gemini Note: Set type from stored mode
     };
 
     setPendingSession(sessionData);
@@ -276,6 +278,7 @@ export function useTimer(userId, { addPoints }) {
       location: null,
       completedTasks: completedTasks || [],
       sessionScore: sessionScore,
+      type: 'productivity', // Gemini Note: Added session type for Harmony Update
     };
 
     const sessionsColRef = collection(db, 'users', userId, 'sessions');

@@ -1,6 +1,6 @@
 # Productivity Tracker PWA
 
-A minimalist React-based Progressive Web App designed to gamify productivity using customizable rewards, scores, and streaks.
+A minimalist React-based Progressive Web App designed to help you find a healthy, sustainable balance between focused work and guilt-free leisure.
 
 ---
 
@@ -14,16 +14,12 @@ A minimalist React-based Progressive Web App designed to gamify productivity usi
 
 In a world of digital distractions engineered to exploit our attention, this app is a tool to **reclaim your agency**. It's designed to be a frictionless system for anyone who feels their potential is being capped by the guilt of misplaced time or the friction of starting meaningful work.
 
-Our philosophy is built on three states of being: **Productivity, Play, and Rest.**
+Our philosophy is built on two tracked states of being: **Productivity and Play.**
 
 -   **Productivity** is the focused, deep work that drives you toward your goals.
 -   **Play** is the rejuvenation and enjoyment you've earned, free from guilt.
--   **Rest** is the deliberate, untracked disengagement necessary for recovery.
 
-By consciously tracking and balancing these states, you can engage more purposefully with your life. Think of it as a "time diet" tracker. Just as a food tracker gives you the awareness to build a healthy diet, this app provides the contextualized knowledge to build a healthy, balanced, and fulfilling life.
-
-The core idea:
-> **"Discipline isn't deprivation — it's earned freedom."**
+By consciously tracking and balancing these states, you can engage more purposefully with your life. The app's central metric, the **Harmony Score**, provides a tangible measure of this balance, guiding you to avoid burnout and enjoy your leisure time without reservation.
 
 This is more than an app; it's a framework for an intentional lifestyle.
 
@@ -46,57 +42,54 @@ This is more than an app; it's a framework for an intentional lifestyle.
 
 ## ✅ Implemented Features
 
-- **Firebase Authentication**: Users can sign in with their Google account to sync data across devices.
-- **Cloud-Synced Data**: All session, task, goal, and formula data is tied to the user's account and synced with Firestore.
-- **Comprehensive Strategy Page**: A central hub to manage your productivity system, including:
-    - **User-Defined Tasks**: Create a personal list of tasks, each with a custom point value.
-    - **Goal Setting & Tracking**: Set daily average goals for time worked, tasks completed, or points earned, and visualize your progress.
-    - **Customizable Productivity Formula**: Adjust how time and task scores are weighted to calculate your total "Productivity Points."
-- **Focus Timer & Session Logging**: A robust timer that logs work duration, notes, location, and completed tasks for each session.
-- **Advanced Session Management**:
-    - **Manual Session Entry**: "Quick Add" past sessions without using the live timer.
-    - **Edit & Delete**: Modify the details of any past session or delete multiple sessions at once.
-- **Data Visualization & History**:
-    - **Daily Summary**: View aggregated totals for work duration, session counts, and points earned per day.
-    - **Activity Heatmaps**: Visualize daily work duration and scores on a GitHub-style contribution graph.
-- **Data Portability**:
-    - **CSV Import**: Import past sessions from a CSV file.
-    - **CSV Export**: Export your entire session history for analysis elsewhere.
-- **Responsive & Installable (PWA)**: A seamless experience on any device, with mobile-first navigation and the ability to install the app to your home screen.
-- **User Profile & Settings**:
-    - **Profile Page**: View your account details and sign out.
-    - **Customizable Display**: Change date and time formats to your preference.
-    - **Data Management**: Clear your entire session history from the settings menu.
+### Core Philosophy: The Harmony Score
+The app's central concept, designed to promote a balanced lifestyle.
+-   **Core Calculation**: The Harmony Score is calculated as `Total Productivity Points - Total Play Points`. The user's goal is to keep this score as close to zero as possible.
+-   **Intuitive Feedback Card**: The dashboard features a dedicated card that provides at-a-glance feedback on the user's current Harmony Score.
+-   **Visual Scale & Arrow**: A color-coded scale (Play-Balanced-Productivity) with a dynamic arrow shows the user's current position.
+-   **Actionable Guidance**: The card displays clear, contextual text that explains what the current score means and suggests an action (e.g., "Time to play!" or "Time to focus!").
+
+### The Timer Page (The App's Hub)
+The new landing page and primary interaction point for the user.
+-   **Dual-Mode Timer**: A prominent toggle allows users to switch between **Productivity** and **Play** modes before starting a session.
+-   **Dynamic UI Feedback**: The entire page background changes color to reflect the timer's state: a cool blue for active productivity, a warm yellow for active play, and a neutral gray when paused.
+-   **Streamlined Session Logging**: When a 'Play' session is completed, the app presents a simplified modal that only asks for notes, removing the irrelevant task and location fields for a frictionless experience.
+-   **Quick Add Functionality**: Users can manually log past sessions directly from the timer page without using the live timer.
+
+### The Dashboard (Your Progress at a Glance)
+A dedicated page for visualizing trends and long-term progress.
+-   **Central Harmony Card**: The dashboard is headlined by the intuitive Harmony Score feedback card.
+-   **Triple Activity Heatmaps**: Users can track their progress through three distinct, color-coded heatmaps:
+    1.  **Productivity Duration** (Green scale)
+    2.  **Play Duration** (Orange/Yellow scale)
+    3.  **Daily Harmony Score** (Red-to-Blue diverging scale)
+
+### The Strategy Page (Define Your System)
+A central control panel for customizing the app's logic to fit the user's personal goals.
+-   **Customizable Formulas**: Users can independently adjust the divisors for both `Productivity Points` and `Play Points`, giving them full control over how work and leisure are weighted.
+-   **User-Defined Tasks**: A complete task manager where users can create, edit, and delete custom tasks, each with its own point value.
+-   **Goal Setting & Tracking**: Set and track progress towards daily average goals for time worked, task scores, or productivity points.
+
+### History & Data Management
+Comprehensive tools for reviewing and managing session data.
+-   **Enhanced Session Log**: The detailed history table now includes a "Type" column with colored tags to visually differentiate between 'Productivity' and 'Play' sessions.
+-   **Upgraded Daily Summary**: The summary view now includes columns for `Play Duration` and `Daily Harmony Score`, providing a complete daily overview.
+-   **Full Session Editing**: Users can edit any detail of a past session, including its **type**, allowing them to easily re-categorize a session from 'Productivity' to 'Play' and vice-versa.
+-   **Data Portability**: Users can import and export their entire session history as a CSV file.
+
+### Core Technical Features
+-   **Firebase Authentication**: Secure sign-in with a Google account.
+-   **Cloud Data Sync**: All session, task, goal, and formula data is synced with Firestore in real-time, ensuring consistency across devices.
+-   **Responsive & Installable (PWA)**: A seamless, mobile-first experience that is fully installable on any device.
+
+---
 
 ## 🔜 Upcoming Features
 
 This section outlines the planned features and improvements for the application, serving as a public roadmap.
 
-### 🎯 Priority 1: The Harmony Update
-*This is a fundamental evolution of the app's core philosophy, shifting the focus from pure productivity to a holistic balance between focused work and guilt-free play. The central goal for the user will be to achieve "Harmony."*
-
--   **Phase 1: Foundational Logic & Data Model**
-    -   [ ] **Evolve Session Data Model:** Add a `type` field to all session documents in Firestore. This field will accept one of two string values—`'productivity'` or `'play'`—to differentiate sessions at the database level.
-    -   [ ] **Implement Data Migration:** Ensure backward compatibility by retroactively assigning `type: 'productivity'` to all existing sessions. This will be handled via a logic check that updates any session document where the `type` field is missing.
-    -   [ ] **Introduce "Play Points" Formula:** Update the formula system to include a `playTimeDivisor`. This will be used to calculate "Play Points" based purely on the duration of 'play' sessions, creating a separate scoring system for leisure.
-    -   [ ] **Create the "Harmony Score":** Implement the app's new core metric, calculated as `Harmony = Total Productivity Points - Total Play Points`. The user's primary goal will be to keep this score near zero, representing a balanced lifestyle.
-    -   [ ] **Enhance Data Aggregation:** The `aggregateSessionsByDay` utility will be updated to track and return daily totals for play duration, play points, and the resulting daily harmony score.
-
--   **Phase 2: New Timer Experience**
-    -   [ ] **Create a Dedicated Timer Page:** The app's landing page (`/`) for authenticated users will become a new, dedicated Timer page, making it the primary interaction point.
-    -   [ ] **Implement Timer Mode Toggle:** A prominent UI switch on the Timer page will allow users to toggle between 'Productivity' and 'Play' modes before starting a session.
-    -   [ ] **Dynamic UI Feedback:** The screen's background or key elements will change color to reflect the timer's state: a cool blue for active focus, a warm color for active play, yellow for paused, and neutral for stopped.
-    -   [ ] **Streamline the Play Session Flow:** The "Session Complete" modal for 'play' sessions will be simplified to only prompt for notes, hiding the task selection and location-tagging features to reduce friction.
-
--   **Phase 3: Redesigned Dashboard & Strategy UI**
-    -   [ ] **Create a New Dashboard Page:** The current homepage content (heatmaps, stats, etc.) will be moved to a new, dedicated `/dashboard` page.
-    -   [ ] **Design a Central Harmony Card:** The dashboard's centerpiece will be a "Harmony" card that prominently displays the current Harmony score. It will also show the contributing Productivity and Play point totals as secondary metrics.
-    -   [ ] **Implement Dual Heatmaps:** The dashboard will feature two sets of activity heatmaps: one for visualizing Productivity metrics (duration/points) and another for visualizing Play duration.
-    -   [ ] **Update the Strategy Page:** The "Formula Settings" section will be updated with UI controls to manage the new `playTimeDivisor`, with clear explanations for each formula.
-
--   **Phase 4: App-wide Integration & Polish**
-    -   [ ] **Enhance the History Page:** The session log will be updated to visually differentiate between 'productivity' and 'play' sessions (e.g., using colored tags). The daily summary view will include columns for play duration and harmony score.
-    -   [ ] **Update App Navigation:** The main navigation (header and bottom nav) will be reworked to link to the new Dashboard, with the Timer page serving as the implicit home.
+- Make sure if timer is set to play on desktop its also set to play on mobile and visa versa to ensure cross platform consistency.
+- Impliment stuff so users know how much rest vs prod vs play they are doing.
 
 ---
 
@@ -133,7 +126,7 @@ This section outlines the planned features and improvements for the application,
 -   [ ] **Flexible Nudges:** Allow users to set intelligent reminders, such as time-boxed nudges ("If I haven't started a session by 2 PM, remind me") or contextual nags ("If I pause more than twice in a 25-minute session, suggest a shorter work block").
 
 ### 🔧 Technical & Administrative
--   [ ] **Custom Authentication Domain:** Configure Firebase Auth to display the app's name during the Google Sign-In flow, replacing the default `productivity-pwa-3780a.firebaseapp.com` URL.
+-   [ ] **Custom Authentication Domain:** Configure Firebase Auth to display the app's name during the Google Sign-In flow, replacing the default `productivity-pwa-3e780a.firebaseapp.com` URL.
 -   [ ] **Public Legal Pages:** Refactor the routing to make the Privacy Policy and Terms of Service pages accessible to users *before* they sign in, ensuring compliance and transparency.
 
 ---
@@ -145,23 +138,12 @@ This section outlines the planned features and improvements for the application,
 - **File structure philosophy**:
   - `components/` → Reusable, often stateless UI components used across the app (e.g., `Button`, `Modal`).
   - `features/` → Self-contained modules that represent a major piece of functionality, complete with their own components and logic (e.g., `Timer`).
-  - `pages/` → Top-level components that compose features and components into a full view (e.g., `Home`).
+  - `pages/` → Top-level components that compose features and components into a full view (e.g., `Dashboard`, `TimerPage`).
   - `hooks/` → Custom hooks that encapsulate complex, reusable logic (e.g., `useAuth`, `useTimer`).
   - `utils/` → Pure, shared utility functions that have no state or side effects (e.g., `formatDate`, `parseCSV`).
 - **Styling**: Plain CSS (`App.css`), no CSS modules or Tailwind yet.
-- **Routing**: Handled by `react-router-dom` to manage different pages like Home and History.
+- **Routing**: Handled by `react-router-dom` to manage different pages.
 - **Testing**: Not a priority right now — no test suite or test runners installed.
-- **Gemini note**: AI has access to all open files listed in "📌 Active Files", so keep critical logic in those files or folders
-
----
-
-## 🧭 Planned Tech/Architecture Decisions
-
-- May switch to **Tailwind CSS** for faster UI iteration
-- May use **Firebase Auth + Firestore** for syncing data across devices
-- Push notifications will likely be handled via **service workers + Firebase**
-- State may stay local for MVP, then expand to **global state or cloud-based sync**
-- Modular feature logic in `features/` is intended to be **self-contained and plug-and-play**
 
 ---
 

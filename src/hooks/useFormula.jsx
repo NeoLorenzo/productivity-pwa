@@ -6,13 +6,14 @@ import { db } from '../firebase';
 
 const defaultFormula = {
   timeDivisor: 20,
+  playTimeDivisor: 60,
 };
 
 /**
  * @description A custom hook to manage the user's productivity points formula.
  * @param {string | null} userId - The ID of the currently authenticated user.
  * @returns {{
- *   formula: { timeDivisor: number },
+ *   formula: { timeDivisor: number, playTimeDivisor: number },
  *   updateFormula: (newFormula: object) => Promise<void>
  * }}
  */
@@ -28,7 +29,9 @@ export function useFormula(userId) {
     const userDocRef = doc(db, 'users', userId);
     const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
       if (docSnap.exists() && docSnap.data().formula) {
-        setFormula(docSnap.data().formula);
+        // Gemini Note: Merge with default to ensure new properties like playTimeDivisor are present.
+        const userFormula = docSnap.data().formula;
+        setFormula({ ...defaultFormula, ...userFormula });
       } else {
         // If no formula is set for the user, initialize it with the default.
         setDoc(userDocRef, { formula: defaultFormula }, { merge: true });
