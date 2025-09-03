@@ -1126,6 +1126,126 @@ a[class*='button-']:hover {
   transition: width 0.3s ease-in-out;
 }
 
+/* === DASHBOARD GRID === */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-sm);
+}
+
+/* === KEYFRAMES FOR ANIMATION === */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-sm);
+}
+
+/* === KEYFRAMES FOR ANIMATION === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === TIME DISTRIBUTION CHART === */
+.time-distribution-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+.donut-chart-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  flex-shrink: 0;
+}
+.donut-chart-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.chart-track {
+  fill: none;
+  stroke: #eff6ff;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.03));
+}
+.chart-segment {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+.chart-segment.productivity { stroke: var(--color-primary); }
+.chart-segment.play { stroke: var(--color-warn); }
+.chart-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.3s ease-in-out;
+}
+.center-text-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+.center-text-label {
+  font-size: 0.7rem;
+  color: var(--color-text-light);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.chart-legend {
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+.legend-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) 0;
+  cursor: default;
+}
+.legend-color-box {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+.legend-color-box.productivity { background-color: var(--color-primary); }
+.legend-color-box.play { background-color: var(--color-warn); }
+.legend-color-box.rest { background-color: #dbeafe; }
+.legend-label {
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--color-text-light);
+}
+.legend-percent {
+  font-size: 1rem;
+  color: var(--color-text);
+  font-weight: 500;
+  text-align: right;
+}
+.legend-value {
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--color-text);
+  width: 90px;
+  text-align: right;
+}
+
 /* 4. RESPONSIVE STYLES */
 
 /* Desktop Layout */
@@ -1134,6 +1254,18 @@ a[class*='button-']:hover {
     flex-direction: row;
     padding: var(--spacing-lg);
     gap: var(--spacing-lg);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .time-distribution-chart {
+    flex-direction: row;
+    justify-content: space-around;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-md) 0;
   }
 
   .task-form .form-controls {

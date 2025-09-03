@@ -11,8 +11,7 @@ import QuickAddSessionModal from '../components/QuickAddSessionModal';
 /**
  * @description The main timer page, serving as the app's landing page.
  */
-export default function TimerPage({ timer, tasks, onOpenSettings }) {
-  const [timerMode, setTimerMode] = useState('productivity'); // 'productivity' or 'play'
+export default function TimerPage({ timer, tasks, onOpenSettings, timerMode, onTimerModeChange }) {
   const [isQuickAddModalOpen, setIsQuickAddModalOpen] = useState(false);
 
   const {
@@ -47,7 +46,7 @@ export default function TimerPage({ timer, tasks, onOpenSettings }) {
         <div className="timer-page-content">
           <TimerModeToggle
             mode={timerMode}
-            onModeChange={setTimerMode}
+            onModeChange={onTimerModeChange}
             disabled={isActive || isPaused}
           />
           <TimerDisplay elapsedTime={elapsedTime} />

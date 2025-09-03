@@ -10,6 +10,7 @@ import { useTasks } from './hooks/useTasks';
 import { useMediaQuery } from './hooks/useMediaQuery';
 import { useFormula } from './hooks/useFormula';
 import { useGoals } from './hooks/useGoals';
+import { useTimerMode } from './hooks/useTimerMode';
 import { aggregateSessionsByDay } from './utils/sessionAggregators';
 import { exportSessionsToCSV } from './utils/csvGenerator';
 
@@ -35,6 +36,7 @@ function App() {
   const { settings, updateDateFormat, updateTimeFormat } = useSettings();
   const { formula, updateFormula } = useFormula(userId);
   const { goals, updateGoals } = useGoals(userId);
+  const { timerMode, updateTimerMode } = useTimerMode(userId);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
@@ -117,6 +119,8 @@ function App() {
                 timer={timer}
                 tasks={tasks}
                 onOpenSettings={() => setIsSettingsModalOpen(true)}
+                timerMode={timerMode}
+                onTimerModeChange={updateTimerMode}
               />
             }
           />

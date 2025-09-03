@@ -88,8 +88,7 @@ Comprehensive tools for reviewing and managing session data.
 
 This section outlines the planned features and improvements for the application, serving as a public roadmap.
 
-- Make sure if timer is set to play on desktop its also set to play on mobile and visa versa to ensure cross platform consistency.
-- Impliment stuff so users know how much rest vs prod vs play they are doing.
+Add a way to toggle between daily, weekly, monthly, and all time view for average day chart and harmony score.
 
 ---
 
@@ -101,9 +100,20 @@ This section outlines the planned features and improvements for the application,
 -   [ ] **Friend System:** Implement functionality to send friend requests and view the (privacy-controlled) profiles and stats of friends.
 
 ### ✍️ Journaling & Reflections
--   [ ] **Post-Session Reflection Prompt:** After completing a session, prompt the user with optional fields to reflect on their experience, including rating their sleep, energy, and mood on a 1-5 scale.
+-   [ ] **Post-Session Reflection Prompt:** After completing a session, prompt the user with optional fields to reflect on their experience, including rating their sleep, energy, mood, and focus on a 1-5 scale.
 -   [ ] **Structured Note-Taking:** Evolve the "notes" field into two distinct prompts: "Note about self" (to capture feelings and mental state) and "Note to self" (to capture ideas and information to remember).
 -   [ ] **Dedicated Journaling Feature:** Create a separate, more robust journaling tracker for daily entries, independent of timed sessions.
+
+### 📱 Mindful Tech Usage
+-   [ ] **Manual Screen Time Logging:** Introduce a dedicated page for users to manually log their daily screen time. This feature turns a technical limitation (inability to auto-track) into a tool for mindfulness, requiring users to consciously confront their digital habits.
+-   [ ] **Frictionless Entry:** The UI will be optimized for speed. At the end of the day, the user can open their device's native screen time report, check the screen time, and input it into the PWA.
+-   [ ] **Categorization & Integration:** Users can log their total screen time or optionally break it down by specific apps they wish to monitor (e.g., Instagram, YouTube). This logged time will be categorized as 'Play,' directly impacting the Harmony Score and the "Average Day" visualization.
+
+### 🗓️ Scheduling & Pacing
+-   [ ] **Recurring Task Scheduler:** Implement a new system for creating tasks that repeat on a flexible schedule (e.g., "Publish article every 3 days").
+-   [ ] **Visual Task Calendar:** A dedicated calendar view will automatically plot all past and future instances of recurring tasks. Users can see their entire schedule at a glance and quickly mark a task as complete, which updates its next due date.
+-   [ ] **The "Pacing Score":** Introduce a new daily metric that gamifies consistency. This score calculates whether the user is ahead of, on track with, or behind schedule across all their recurring tasks.
+-   [ ] **Dynamic Point System:** The Pacing Score will directly influence the user's daily Productivity Points. Being ahead of schedule will provide a daily point bonus, rewarding proactive work. Falling behind will apply a small daily penalty, encouraging users to stay on track.
 
 ### 📊 New Trackers & Integrations
 -   [ ] **Task Modification History:** Log all changes to tasks (creations, edits, deletions) into a separate, viewable "Task History" log, with an option to clear this history in the settings.
@@ -128,6 +138,7 @@ This section outlines the planned features and improvements for the application,
 ### 🔧 Technical & Administrative
 -   [ ] **Custom Authentication Domain:** Configure Firebase Auth to display the app's name during the Google Sign-In flow, replacing the default `productivity-pwa-3e780a.firebaseapp.com` URL.
 -   [ ] **Public Legal Pages:** Refactor the routing to make the Privacy Policy and Terms of Service pages accessible to users *before* they sign in, ensuring compliance and transparency.
+-   [ ] **Encrypt Location Data:** Ensure that user location data is encrypted in firebase in case of data leak.
 
 ---
 
