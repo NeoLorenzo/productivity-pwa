@@ -88,10 +88,34 @@ Comprehensive tools for reviewing and managing session data.
 
 This section outlines the planned features and improvements for the application, serving as a public roadmap.
 
-- Add a way to toggle between daily, weekly, monthly, and all time view for average day chart and harmony score.
-- Improve heatmap modal when user clicks on heatmap, hoinestly we could just toss it and allow the user to scroll/select different months/years.
+### 📊 Analytics & Insights
+-   [ ] **Dashboard Timeframe Toggle:** Add controls to the Dashboard to toggle the "Average Day" chart and "Harmony Score" display between different time windows (e.g., Today, Last 7 Days, Last 30 Days, All Time).
+-   [ ] **Interactive Heatmaps:** Overhaul the heatmap experience by removing the modal. Instead, the main heatmap on the dashboard will become scrollable, allowing users to navigate through their entire activity history directly.
 
----
+### 🗓️ Rhythms & Pacing System
+*A new system to track and gamify consistency for recurring habits and tasks.*
+-   [ ] **The "Rhythms" Manager:** On the `Strategy` page, users will be able to define "Rhythms"—tasks or habits that repeat on a flexible schedule (e.g., "Publish article every 3 days," "Journal every 1 day"). Each Rhythm will have a name, frequency, and associated point value.
+-   [ ] **Visual Rhythm Calendar:** The `Dashboard` will feature a new calendar view that automatically plots all past and future due dates for every Rhythm. Users can see their entire schedule at a glance and mark tasks as complete directly on the calendar.
+-   [ ] **The "Pacing Score":** A new daily metric that gamifies consistency. This score will calculate whether the user is ahead of, on track with, or behind schedule across all their Rhythms. Being ahead will provide a daily point bonus to Productivity Points, while falling behind will apply a small daily penalty, encouraging users to stay on track.
+-   [ ] **Integrated Journaling:** The journaling feature will be built into this system. A user can simply create a "Journal" Rhythm that repeats every 1 day to track their consistency and have it contribute to their Pacing Score.
+
+### 💪 Wellness & Manual Logging
+*A dedicated system for manually logging daily activities that happen outside the app.*
+-   [ ] **New "Log" Page:** A new top-level page will be created to serve as the central hub for all manual data entry, giving these important metrics the prominence they deserve.
+-   [ ] **Customizable Wellness Activities:** On the `Strategy` page, users will be able to define any wellness activity they want to track. They can specify the `Activity Name` (e.g., "Workout," "Meditation," "Daily Steps"), the `Unit` to track (e.g., "sets," "minutes," "steps"), and the `Points per Unit`. This makes the system incredibly flexible.
+-   [ ] **Daily Wellness Logger:** The new `Log` page will feature a dynamic form where users can input their daily numbers for all the Wellness Activities they've defined. These logged activities will contribute to their daily Productivity Points.
+-   [ ] **Screentime Logger:** The `Log` page will also feature a simple input for users to manually log their daily screen time. This value will be automatically converted into Play Points using the user's defined formula, encouraging mindfulness about digital consumption.
+
+### 🔌 Integrations & Automation
+*A new system for connecting to external services to automate point tracking.*
+-   [ ] **Centralized "Integrations" Hub:** A new "Integrations" section will be added to the `Settings` modal, creating a logical home for all third-party connections.
+-   [ ] **GitHub Integration:** The first integration will allow users to securely connect their GitHub account via OAuth.
+-   [ ] **Automated Contribution Tracking:** Once connected, a daily background process (via Firebase Cloud Functions) will automatically fetch the user's commit activity, calculate metrics like lines of code written, and award Productivity Points, which will appear seamlessly in their daily totals.
+
+### ✨ UI/UX Enhancements
+-   [ ] **Navigation Refactor:** The app's main navigation will be streamlined. The "History" link will be removed from the main navigation and placed as a direct link on the `Timer` page. The `Programming` page will be removed in favor of the new `Log` page and the "Integrations" section in Settings.
+-   [ ] **Visual Polish & Theming:** Continue replacing text-based buttons with intuitive icons, refine the overall color scheme, and implement a dark/light mode switch in the settings.
+-   [ ] **PWA Onboarding Prompt:** For users on a mobile browser, implement a non-intrusive UI element that explains the benefits of installing the app to their home screen and provides simple instructions.
 
 ### 👥 Social & Profile Features
 -   [ ] **User Profiles & Identity:** Allow users to set a customizable display name and a unique username, moving beyond the default Google account name.
@@ -100,37 +124,11 @@ This section outlines the planned features and improvements for the application,
 -   [ ] **Social Sharing:** Add a button to the profile that allows users to generate and share a summary of their stats or achievements to social media.
 -   [ ] **Friend System:** Implement functionality to send friend requests and view the (privacy-controlled) profiles and stats of friends.
 
-### ✍️ Journaling & Reflections
--   [ ] **Post-Session Reflection Prompt:** After completing a session, prompt the user with optional fields to reflect on their experience, including rating their sleep, energy, mood, and focus on a 1-5 scale.
--   [ ] **Structured Note-Taking:** Evolve the "notes" field into two distinct prompts: "Note about self" (to capture feelings and mental state) and "Note to self" (to capture ideas and information to remember).
--   [ ] **Dedicated Journaling Feature:** Create a separate, more robust journaling tracker for daily entries, independent of timed sessions.
-
-### 📱 Mindful Tech Usage
--   [ ] **Manual Screen Time Logging:** Introduce a dedicated page for users to manually log their daily screen time. This feature turns a technical limitation (inability to auto-track) into a tool for mindfulness, requiring users to consciously confront their digital habits.
--   [ ] **Frictionless Entry:** The UI will be optimized for speed. At the end of the day, the user can open their device's native screen time report, check the screen time, and input it into the PWA.
--   [ ] **Categorization & Integration:** Users can log their total screen time or optionally break it down by specific apps they wish to monitor (e.g., Instagram, YouTube). This logged time will be categorized as 'Play,' directly impacting the Harmony Score and the "Average Day" visualization.
-
-### 🗓️ Scheduling & Pacing
--   [ ] **Recurring Task Scheduler:** Implement a new system for creating tasks that repeat on a flexible schedule (e.g., "Publish article every 3 days").
--   [ ] **Visual Task Calendar:** A dedicated calendar view will automatically plot all past and future instances of recurring tasks. Users can see their entire schedule at a glance and quickly mark a task as complete, which updates its next due date.
--   [ ] **The "Pacing Score":** Introduce a new daily metric that gamifies consistency. This score calculates whether the user is ahead of, on track with, or behind schedule across all their recurring tasks.
--   [ ] **Dynamic Point System:** The Pacing Score will directly influence the user's daily Productivity Points. Being ahead of schedule will provide a daily point bonus, rewarding proactive work. Falling behind will apply a small daily penalty, encouraging users to stay on track.
-
-### 📊 New Trackers & Integrations
--   [ ] **Task Modification History:** Log all changes to tasks (creations, edits, deletions) into a separate, viewable "Task History" log, with an option to clear this history in the settings.
--   [ ] **GitHub Integration:** Implement an optional feature to connect a GitHub account and automatically award points or log tasks based on commit activity (e.g., lines of code written).
--   [ ] **Basic Fitness Tracker:** Add a simple module to log workouts or physical activities, contributing to the overall life balance.
-
 ### 🌐 Data, Offline & Location Services
 -   [ ] **Full Offline Mode:** Implement a "local-first" data strategy. All data will be saved to the device's local storage immediately and then synced with Firebase in the background when a connection is available.
 -   [ ] **Sign-in Flexibility:** Allow users to use the app in a limited, local-only mode without signing in. The option to sign in and sync data will be available on the profile page.
 -   [ ] **Location Intelligence:** Integrate a reverse geocoding API to convert raw location coordinates (latitude, longitude) into human-readable place names (e.g., "City Park Library") in the session history.
 -   [ ] **Location Heatmap:** Create a new map-based visualization that shows the locations where the user is most productive.
-
-### ✨ UI/UX Enhancements
--   [ ] **Central Action Button:** Replace the static bottom navigation with a central `+` button (Floating Action Button style). Tapping it will reveal more pages like "Timer" and the rest of the new pages.
--   [ ] **Visual Polish & Theming:** Continue replacing text-based buttons with intuitive icons, refine the overall color scheme, and implement a dark/light mode switch in the settings.
--   [ ] **PWA Onboarding Prompt:** For users on a mobile browser, implement a non-intrusive UI element that explains the benefits of installing the app to their home screen and provides simple instructions.
 
 ### 🔔 Notifications & Nudges
 -   [ ] **Customizable Push Notifications:** Implement opt-in push notifications for reminders. Users will be able to choose a "motivator persona" that changes the tone of the notifications.
