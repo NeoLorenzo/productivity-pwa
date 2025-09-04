@@ -1,7 +1,6 @@
 // src/pages/TimerPage.jsx
 
 import React, { useState } from 'react';
-import Header from '../components/Header';
 import TimerDisplay from '../features/Timer/TimerDisplay';
 import TimerControls from '../features/Timer/TimerControls';
 import SessionNotesModal from '../components/SessionNotesModal';
@@ -11,7 +10,7 @@ import QuickAddSessionModal from '../components/QuickAddSessionModal';
 /**
  * @description The main timer page, serving as the app's landing page.
  */
-export default function TimerPage({ timer, tasks, onOpenSettings, timerMode, onTimerModeChange }) {
+export default function TimerPage({ timer, tasks, timerMode, onTimerModeChange }) {
   const [isQuickAddModalOpen, setIsQuickAddModalOpen] = useState(false);
 
   const {
@@ -42,7 +41,6 @@ export default function TimerPage({ timer, tasks, onOpenSettings, timerMode, onT
   return (
     <>
       <div className={getTimerPageClassName()}>
-        <Header onOpenSettings={onOpenSettings} title="Timer" />
         <div className="timer-page-content">
           <TimerModeToggle
             mode={timerMode}

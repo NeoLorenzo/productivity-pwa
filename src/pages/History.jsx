@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
 import Card from '../components/Card';
 import DailySummary from '../features/Timer/DailySummary';
 import SessionLog from '../features/Timer/SessionLog';
@@ -19,7 +18,6 @@ export default function History({
   timeFormat,
   tasks,
   isMobile,
-  onOpenSettings,
   deleteSessions,
   updateSession,
 }) {
@@ -70,41 +68,38 @@ export default function History({
 
   return (
     <>
-      <div className="app-container">
-        <Header onOpenSettings={onOpenSettings} title="History" />
-        <div className="app-layout" style={{ maxWidth: '1000px' }}>
-          <Card title="Session History">
-            {!isMobile && (
-              <div className="history-page-controls">
-                <Link to="/" className="button-secondary">
-                  ← Back to Timer
-                </Link>
-                {selectedSessions.size > 0 && (
-                  <button onClick={handleDeleteSelected} className="button-danger">
-                    Delete Selected ({selectedSessions.size})
-                  </button>
-                )}
-              </div>
-            )}
-            <DailySummary
-              dailySummary={dailySummary}
+      <div className="app-layout" style={{ maxWidth: '1000px' }}>
+        <Card title="Session History">
+          {!isMobile && (
+            <div className="history-page-controls">
+              <Link to="/" className="button-secondary">
+                ← Back to Timer
+              </Link>
+              {selectedSessions.size > 0 && (
+                <button onClick={handleDeleteSelected} className="button-danger">
+                  Delete Selected ({selectedSessions.size})
+                </button>
+              )}
+            </div>
+          )}
+          <DailySummary
+            dailySummary={dailySummary}
+            dateFormat={dateFormat}
+            isMobile={isMobile}
+            onDayClick={(day) => setDetailDay(day)}
+          />
+          {!isMobile && (
+            <SessionLog
+              sessions={sessions}
               dateFormat={dateFormat}
-              isMobile={isMobile}
-              onDayClick={(day) => setDetailDay(day)}
+              timeFormat={timeFormat}
+              selectedSessions={selectedSessions}
+              onSessionSelect={handleSessionSelect}
+              onSelectAll={handleSelectAll}
+              onEditSession={setSessionToEdit}
             />
-            {!isMobile && (
-              <SessionLog
-                sessions={sessions}
-                dateFormat={dateFormat}
-                timeFormat={timeFormat}
-                selectedSessions={selectedSessions}
-                onSessionSelect={handleSessionSelect}
-                onSelectAll={handleSelectAll}
-                onEditSession={setSessionToEdit}
-              />
-            )}
-          </Card>
-        </div>
+          )}
+        </Card>
       </div>
 
       {/* Modals are rendered outside the main layout */}

@@ -88,7 +88,8 @@ Comprehensive tools for reviewing and managing session data.
 
 This section outlines the planned features and improvements for the application, serving as a public roadmap.
 
-Add a way to toggle between daily, weekly, monthly, and all time view for average day chart and harmony score.
+- Add a way to toggle between daily, weekly, monthly, and all time view for average day chart and harmony score.
+- Improve heatmap modal when user clicks on heatmap, hoinestly we could just toss it and allow the user to scroll/select different months/years.
 
 ---
 
@@ -127,7 +128,7 @@ Add a way to toggle between daily, weekly, monthly, and all time view for averag
 -   [ ] **Location Heatmap:** Create a new map-based visualization that shows the locations where the user is most productive.
 
 ### ✨ UI/UX Enhancements
--   [ ] **Central Action Button:** Replace the static bottom navigation with a central `+` button (Floating Action Button style). Tapping it will reveal primary actions like "Start Focus," "Start Play," and "Log Activity," making core functions more accessible.
+-   [ ] **Central Action Button:** Replace the static bottom navigation with a central `+` button (Floating Action Button style). Tapping it will reveal more pages like "Timer" and the rest of the new pages.
 -   [ ] **Visual Polish & Theming:** Continue replacing text-based buttons with intuitive icons, refine the overall color scheme, and implement a dark/light mode switch in the settings.
 -   [ ] **PWA Onboarding Prompt:** For users on a mobile browser, implement a non-intrusive UI element that explains the benefits of installing the app to their home screen and provides simple instructions.
 

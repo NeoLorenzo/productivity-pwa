@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { generateHeatmapData } from '../utils/heatmapUtils';
 
-import Header from '../components/Header';
 import Card from '../components/Card';
 import Heatmap from '../components/Heatmap';
 import HeatmapModal from '../components/HeatmapModal';
@@ -13,7 +12,6 @@ import TimeDistributionChart from '../components/TimeDistributionChart';
 
 export default function Dashboard({
   dailySummary,
-  onOpenSettings,
   harmonyScore,
   totalProductivityPoints,
   totalPlayPoints,
@@ -43,55 +41,50 @@ export default function Dashboard({
 
   return (
     <>
-      <div className="app-container">
-        <Header onOpenSettings={onOpenSettings} title="Dashboard" />
-        <div className="app-layout">
-          <div className="main-content" style={{ flex: '1' }}>
-            <div className="dashboard-grid">
-              <Card title="Harmony Score">
-                <HarmonyScoreDisplay
-                  harmonyScore={harmonyScore}
-                  productivityPoints={totalProductivityPoints}
-                  playPoints={totalPlayPoints}
-                />
-              </Card>
-              <Card title="Average Day">
-                <TimeDistributionChart
-                  avgProductivitySeconds={avgProductivitySeconds}
-                  avgPlaySeconds={avgPlaySeconds}
-                />
-              </Card>
-            </div>
-            <Card title="Activity Overview">
-              <div className="activity-heatmaps">
-                <div className="productivity-heatmap">
-                  <Heatmap
-                    title="Productivity Duration"
-                    data={durationHeatmapData}
-                    valueKey="totalDuration"
-                    onClick={() => handleHeatmapClick('Productivity Duration', 'totalDuration')}
-                  />
-                </div>
-                <div className="play-heatmap">
-                  <Heatmap
-                    title="Play Duration"
-                    data={playHeatmapData}
-                    valueKey="totalPlayDuration"
-                    onClick={() => handleHeatmapClick('Play Duration', 'totalPlayDuration')}
-                  />
-                </div>
-                <div className="harmony-heatmap">
-                  <Heatmap
-                    title="Daily Harmony"
-                    data={harmonyHeatmapData}
-                    valueKey="dailyHarmonyScore"
-                    onClick={() => handleHeatmapClick('Daily Harmony', 'dailyHarmonyScore')}
-                  />
-                </div>
-              </div>
-            </Card>
-          </div>
+      <div className="app-layout">
+        <div className="dashboard-grid">
+          <Card title="Harmony Score">
+            <HarmonyScoreDisplay
+              harmonyScore={harmonyScore}
+              productivityPoints={totalProductivityPoints}
+              playPoints={totalPlayPoints}
+            />
+          </Card>
+          <Card title="Average Day">
+            <TimeDistributionChart
+              avgProductivitySeconds={avgProductivitySeconds}
+              avgPlaySeconds={avgPlaySeconds}
+            />
+          </Card>
         </div>
+        <Card title="Activity Overview">
+          <div className="activity-heatmaps">
+            <div className="productivity-heatmap">
+              <Heatmap
+                title="Productivity Duration"
+                data={durationHeatmapData}
+                valueKey="totalDuration"
+                onClick={() => handleHeatmapClick('Productivity Duration', 'totalDuration')}
+              />
+            </div>
+            <div className="play-heatmap">
+              <Heatmap
+                title="Play Duration"
+                data={playHeatmapData}
+                valueKey="totalPlayDuration"
+                onClick={() => handleHeatmapClick('Play Duration', 'totalPlayDuration')}
+              />
+            </div>
+            <div className="harmony-heatmap">
+              <Heatmap
+                title="Daily Harmony"
+                data={harmonyHeatmapData}
+                valueKey="dailyHarmonyScore"
+                onClick={() => handleHeatmapClick('Daily Harmony', 'dailyHarmonyScore')}
+              />
+            </div>
+          </div>
+        </Card>
       </div>
       <HeatmapModal
         isOpen={isHeatmapModalOpen}
