@@ -8,7 +8,67 @@ const axios = require("axios");
 admin.initializeApp();
 const db = admin.firestore();
 
-exports.dailyGitHubScout = onSchedule("every day 00:05", async (event) => {
+// Gemini Note: Sanity check limit for lines in a single commit.
+const COMMIT_LINE_LIMIT = 2500;
+
+// Gemini Note: Regex patterns to ignore commits containing certain files.
+const IGNORED_PATTERNS = [
+  /package-lock\.json$/,
+  /yarn\.lock$/,
+  /pnpm-lock\.yaml$/,
+  /\.min\.js$/,
+  /\.svg$/,
+  /\.png$/,
+  /\.jpg$/,
+  /\.jpeg$/,
+  /\.gif$/,
+  /\.webp$/,
+  /node_modules\//,
+  /dist\//,
+  /build\//,
+];
+
+/**
+ * @description Fetches all pages from a paginated GitHub API endpoint.
+ * @param {string} url - The initial URL to fetch.
+ * @param {string} accessToken - The user's GitHub access token.
+ * @returns {Promise<Array<object>>} - A promise that resolves to an array of all items.
+ */
+const fetchAllPages = async (url, accessToken) => {
+  let results = [];
+  let nextUrl = url;
+
+  while (nextUrl) {
+    try {
+      const response = await axios.get(nextUrl, {
+        headers: {
+          Authorization: `token ${accessToken}`,
+          "Accept": "application/vnd.github.v3+json",
+        },
+      });
+
+      results = results.concat(response.data);
+
+      const linkHeader = response.headers.link;
+      if (linkHeader) {
+        const nextLink = linkHeader.split(',').find((s) => s.includes('rel="next"'));
+        nextUrl = nextLink ? nextLink.match(/<(.+)>/)[1] : null;
+      } else {
+        nextUrl = null;
+      }
+    } catch (error) {
+      logger.error(`Failed to fetch page: ${nextUrl}`, { errorMessage: error.message });
+      break;
+    }
+  }
+  return results;
+};
+
+exports.dailyGitHubScout = onSchedule({
+  schedule: "every day 00:05",
+  timeoutSeconds: 540,
+  memory: "512MiB",
+}, async (event) => {
   logger.info("Starting daily GitHub scout...");
 
   const privateDataSnapshot = await db.collectionGroup("private").where("username", "!=", null).get();
@@ -18,107 +78,129 @@ exports.dailyGitHubScout = onSchedule("every day 00:05", async (event) => {
     return null;
   }
 
-  const processingPromises = [];
-
-  privateDataSnapshot.forEach((doc) => {
-    const userData = doc.data();
+  for (const doc of privateDataSnapshot.docs) {
+    const privateData = doc.data();
     const userId = doc.ref.parent.parent.id;
-    const { username, accessToken } = userData;
+    const { username, accessToken, lastGithubScoutTimestamp } = privateData;
 
-    // Gemini Note: This is the new logic block. We are wrapping it in a self-calling
-    // async function to use await inside the forEach loop.
-    const promise = (async () => {
-      try {
-        logger.info(`Fetching events for user: ${username}`);
+    const nowTimestamp = new Date().toISOString();
 
-        // This API endpoint fetches public events performed by a user.
-        const apiUrl = `https://api.github.com/users/${username}/events/public`;
+    try {
+      const userDoc = await db.collection('users').doc(userId).get();
+      const githubSettings = userDoc.data()?.githubSettings || { linesOfCodeScore: 0.1 };
+      const scorePerLine = githubSettings.linesOfCodeScore;
 
-        const response = await axios.get(apiUrl, {
+      logger.info(`Processing user: ${username}. Last scout: ${lastGithubScoutTimestamp || 'Never'}`);
+
+      const reposUrl = `https://api.github.com/users/${username}/repos?per_page=100`;
+      const repos = await fetchAllPages(reposUrl, accessToken);
+      logger.info(`Found ${repos.length} repositories for ${username}.`);
+
+      const dailyStats = {};
+
+      let commitsUrlModifier = "";
+      if (lastGithubScoutTimestamp) {
+        commitsUrlModifier = `&since=${lastGithubScoutTimestamp}`;
+      }
+
+      const allCommitsPromises = repos.map(repo => {
+        const commitsUrl = `https://api.github.com/repos/${repo.full_name}/commits?author=${username}&per_page=100${commitsUrlModifier}`;
+        return fetchAllPages(commitsUrl, accessToken);
+      });
+      const allCommitsArrays = await Promise.all(allCommitsPromises);
+      const allCommits = allCommitsArrays.flat();
+
+      if (allCommits.length === 0) {
+        logger.info(`No new commits found for ${username} since last scout. Updating timestamp.`);
+        await doc.ref.update({ lastGithubScoutTimestamp: nowTimestamp });
+        continue;
+      }
+
+      logger.info(`Found ${allCommits.length} new commits to process for ${username}.`);
+
+      const commitDetailsPromises = allCommits.map(commit =>
+        axios.get(commit.url, {
           headers: {
-            // We authenticate using the user's stored OAuth token.
             Authorization: `token ${accessToken}`,
             "Accept": "application/vnd.github.v3+json",
           },
-        });
+        }).catch(err => {
+          logger.warn(`Could not fetch details for commit ${commit.url}. Skipping.`, { errorMessage: err.message });
+          return null;
+        })
+      );
+      const allCommitDetails = await Promise.all(commitDetailsPromises);
 
-        // We calculate the timestamp for 24 hours ago to fetch recent events.
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-
-        // Filter for events that are commits (PushEvent) and occurred in the last day.
-        const recentPushEvents = response.data.filter(
-          (e) => e.type === "PushEvent" && new Date(e.created_at) > yesterday
-        );
-
-        if (recentPushEvents.length === 0) {
-          logger.info(`User ${username} has no new push events. Nothing to process.`);
-          return `Processed ${userId} with no new events.`;
+      // Gemini Note: Process each commit individually to sanitize its line counts.
+      allCommitDetails.forEach(details => {
+        if (!details || !details.data || !details.data.files) {
+          return; // Skip malformed commit details.
         }
 
-        let totalLinesAdded = 0;
-        const commitUrls = new Set(); // Use a Set to avoid processing the same commit twice
-
-        // Extract all unique commit URLs from the push events
-        recentPushEvents.forEach(event => {
-          event.payload.commits.forEach(commit => {
-            if (commit.distinct) { // Only count distinct commits
-              commitUrls.add(commit.url);
-            }
-          });
-        });
-
-        // Fetch details for each unique commit
-        for (const url of commitUrls) {
-          try {
-            const commitDetails = await axios.get(url, {
-              headers: {
-                Authorization: `token ${accessToken}`,
-                "Accept": "application/vnd.github.v3+json",
-              },
-            });
-            totalLinesAdded += commitDetails.data.stats.additions;
-          } catch (commitError) {
-            logger.warn(`Could not fetch details for commit ${url}. Skipping.`, { errorMessage: commitError.message });
+        // Gemini Note: Calculate lines added by summing up only the valid files.
+        let sanitizedLinesAdded = 0;
+        for (const file of details.data.files) {
+          const isIgnored = IGNORED_PATTERNS.some(pattern => pattern.test(file.filename));
+          if (!isIgnored) {
+            sanitizedLinesAdded += file.additions;
           }
         }
 
-        if (totalLinesAdded === 0) {
-          logger.info(`User ${username} had commits, but total lines added was zero.`);
-          return `Processed ${userId} with zero lines added.`;
+        // Apply the sanity check limit to the *sanitized* total.
+        if (sanitizedLinesAdded > COMMIT_LINE_LIMIT) {
+          logger.info(`Ignoring commit ${details.data.sha} (sanitized total exceeds line limit: ${sanitizedLinesAdded})`);
+          return;
         }
 
-        // Create a new session object in Firestore
-        const session = {
-          startTime: yesterday.getTime(),
-          endTime: yesterday.getTime(),
-          duration: 0,
-          sessionScore: totalLinesAdded, // Using lines added directly as the score
-          notes: `GitHub Activity: ${totalLinesAdded} lines added across ${commitUrls.size} commit(s).`,
-          type: 'productivity',
-          completedTasks: [],
-          location: null,
-          breaks: [],
-        };
+        if (sanitizedLinesAdded > 0) {
+          const date = new Date(details.data.commit.author.date);
+          const dateString = date.toISOString().split('T')[0];
 
-        await db.collection('users').doc(userId).collection('sessions').add(session);
+          if (!dailyStats[dateString]) {
+            dailyStats[dateString] = { linesAdded: 0, commitCount: 0 };
+          }
+          dailyStats[dateString].linesAdded += sanitizedLinesAdded;
+          dailyStats[dateString].commitCount += 1;
+        }
+      });
 
-        logger.info(`Successfully created GitHub session for ${username} with ${totalLinesAdded} lines added.`);
-        return `Processed ${userId}`;
-      } catch (error) {
-        logger.error(`Failed to fetch GitHub data for ${username}`, {
-          // We log the error message without logging the user's token.
-          errorMessage: error.message,
-          apiUrl: `https://api.github.com/users/${username}/events/public`,
-        });
-        return `Failed for ${userId}`;
+      if (Object.keys(dailyStats).length > 0) {
+        const batch = db.batch();
+        for (const dateString in dailyStats) {
+          const stats = dailyStats[dateString];
+          const sessionScore = stats.linesAdded * scorePerLine;
+          const sessionId = `github-${dateString}`;
+          const sessionRef = db.collection('users').doc(userId).collection('sessions').doc(sessionId);
+          const date = new Date(dateString);
+          const timestamp = date.getTime() + (12 * 60 * 60 * 1000);
+
+          const session = {
+            startTime: timestamp,
+            endTime: timestamp,
+            duration: 0,
+            sessionScore: parseFloat(sessionScore.toFixed(2)),
+            notes: `GitHub Activity: ${stats.linesAdded} lines added across ${stats.commitCount} valid commit(s).`,
+            type: 'productivity',
+            completedTasks: [],
+            location: null,
+            breaks: [],
+          };
+          batch.set(sessionRef, session, { merge: true });
+        }
+        await batch.commit();
+        logger.info(`Successfully created/updated ${Object.keys(dailyStats).length} daily GitHub sessions for ${username}.`);
       }
-    })();
 
-    processingPromises.push(promise);
-  });
+      await doc.ref.update({ lastGithubScoutTimestamp: nowTimestamp });
 
-  await Promise.all(processingPromises);
-  logger.info(`GitHub scout finished. Processed ${processingPromises.length} users.`);
+    } catch (error) {
+      logger.error(`Failed to process GitHub data for ${username}`, {
+        errorMessage: error.message,
+        stack: error.stack,
+      });
+    }
+  }
+
+  logger.info(`GitHub scout finished. Processed ${privateDataSnapshot.size} users.`);
   return null;
 });

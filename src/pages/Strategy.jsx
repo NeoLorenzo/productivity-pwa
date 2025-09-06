@@ -5,6 +5,7 @@ import TaskManager from '../features/Strategy';
 import FormulaSettings from '../features/Strategy/FormulaSettings';
 import GoalManagerModal from '../features/Strategy/GoalManagerModal';
 import GoalProgress from '../features/Strategy/GoalProgress';
+import GitHubSettings from '../features/Strategy/GitHubSettings'; // New Import
 import { calculateGoalProgress } from '../utils/goalUtils';
 
 /**
@@ -16,6 +17,9 @@ export default function Strategy({
   goals,
   updateGoals,
   dailySummary,
+  integrations,
+  githubSettings,
+  updateGithubSettings,
 }) {
   const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
   const goalProgress = calculateGoalProgress(goals, dailySummary);
@@ -33,6 +37,12 @@ export default function Strategy({
               onEdit={() => setIsGoalModalOpen(true)}
             />
             <FormulaSettings formula={formula} updateFormula={updateFormula} />
+            {integrations?.github?.linked && (
+              <GitHubSettings
+                githubSettings={githubSettings}
+                updateGithubSettings={updateGithubSettings}
+              />
+            )}
           </aside>
         </div>
       </div>
