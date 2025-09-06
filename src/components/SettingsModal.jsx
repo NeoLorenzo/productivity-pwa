@@ -5,6 +5,7 @@ import Card from './Card';
 import DisplaySettings from './DisplaySettings';
 import SettingsManager from './SettingsManager';
 import SessionImporter from '../features/Timer/SessionImporter';
+import IntegrationsManager from './IntegrationsManager';
 
 /**
  * @description A modal for managing all application settings.
@@ -16,7 +17,10 @@ import SessionImporter from '../features/Timer/SessionImporter';
  *   updateTimeFormat: (format: string) => void,
  *   onClearSessions: () => void,
  *   onExportSessions: () => void,
- *   onImportSessions: (csvText: string) => void
+ *   onImportSessions: (csvText: string) => void,
+ *   integrations: object,
+ *   onLinkGitHub: () => void,
+ *   onUnlinkGitHub: () => void
  * }} props
  * @returns {JSX.Element | null}
  */
@@ -29,6 +33,9 @@ export default function SettingsModal({
   onClearSessions,
   onExportSessions,
   onImportSessions,
+  integrations,
+  onLinkGitHub,
+  onUnlinkGitHub,
 }) {
   if (!isOpen) {
     return null;
@@ -58,6 +65,14 @@ export default function SettingsModal({
 
           <Card title="Import Data">
             <SessionImporter onImport={onImportSessions} />
+          </Card>
+
+          <Card title="Integrations">
+            <IntegrationsManager
+              integrations={integrations}
+              onLinkGitHub={onLinkGitHub}
+              onUnlinkGitHub={onUnlinkGitHub}
+            />
           </Card>
         </div>
 

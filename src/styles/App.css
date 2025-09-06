@@ -1252,6 +1252,38 @@ a[class*='button-']:hover {
   gap: var(--spacing-sm);
 }
 
+/* Integrations Manager */
+.integrations-manager {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+.integration-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+.integration-details h4 {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: 1rem;
+}
+.integration-details p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+}
+.integration-status {
+  margin-top: var(--spacing-sm);
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  background-color: var(--color-bg);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
+  display: inline-block;
+}
+
 /* === KEYFRAMES FOR ANIMATION === */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }

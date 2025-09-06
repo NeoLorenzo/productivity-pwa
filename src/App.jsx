@@ -11,6 +11,7 @@ import { useMediaQuery } from './hooks/useMediaQuery';
 import { useFormula } from './hooks/useFormula';
 import { useGoals } from './hooks/useGoals';
 import { useTimerMode } from './hooks/useTimerMode';
+import { useIntegrations } from './hooks/useIntegrations';
 import { aggregateSessionsByDay } from './utils/sessionAggregators';
 import { exportSessionsToCSV } from './utils/csvGenerator';
 
@@ -55,6 +56,7 @@ function AppLayout() {
   const { formula, updateFormula } = useFormula(userId);
   const { goals, updateGoals } = useGoals(userId);
   const { timerMode, updateTimerMode } = useTimerMode(userId);
+  const { integrations, linkGitHub, unlinkGitHub } = useIntegrations(userId);
   const isMobile = useMediaQuery('(max-width: 768px)');
   const location = useLocation();
 
@@ -121,7 +123,19 @@ function AppLayout() {
         </div>
       </div>
       {isMobile && <BottomNav />}
-      <SettingsModal isOpen={isSettingsModalOpen} onClose={() => setIsSettingsModalOpen(false)} settings={settings} updateDateFormat={updateDateFormat} updateTimeFormat={updateTimeFormat} onClearSessions={timer.clearSessions} onExportSessions={handleExportSessions} onImportSessions={timer.importSessions} />
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        settings={settings}
+        updateDateFormat={updateDateFormat}
+        updateTimeFormat={updateTimeFormat}
+        onClearSessions={timer.clearSessions}
+        onExportSessions={handleExportSessions}
+        onImportSessions={timer.importSessions}
+        integrations={integrations}
+        onLinkGitHub={linkGitHub}
+        onUnlinkGitHub={unlinkGitHub}
+      />
     </>
   );
 }

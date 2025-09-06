@@ -106,14 +106,8 @@ This section outlines the planned features and improvements for the application,
 -   [ ] **Daily Wellness Logger:** The new `Log` page will feature a dynamic form where users can input their daily numbers for all the Wellness Activities they've defined. These logged activities will contribute to their daily Productivity Points.
 -   [ ] **Screentime Logger:** The `Log` page will also feature a simple input for users to manually log their daily screen time. This value will be automatically converted into Play Points using the user's defined formula, encouraging mindfulness about digital consumption.
 
-### 🔌 Integrations & Automation
-*A new system for connecting to external services to automate point tracking.*
--   [ ] **Centralized "Integrations" Hub:** A new "Integrations" section will be added to the `Settings` modal, creating a logical home for all third-party connections.
--   [ ] **GitHub Integration:** The first integration will allow users to securely connect their GitHub account via OAuth.
--   [ ] **Automated Contribution Tracking:** Once connected, a daily background process (via Firebase Cloud Functions) will automatically fetch the user's commit activity, calculate metrics like lines of code written, and award Productivity Points, which will appear seamlessly in their daily totals.
-
 ### ✨ UI/UX Enhancements
--   [ ] **Navigation Refactor:** The app's main navigation will be streamlined. The "History" link will be removed from the main navigation and placed as a direct link on the `Timer` page. The `Programming` page will be removed in favor of the new `Log` page and the "Integrations" section in Settings.
+-   [ ] **Navigation Refactor:** The app's main navigation will be streamlined. The "History" link will be removed from the main navigation and placed as a direct link on the `Timer` page.
 -   [ ] **Visual Polish & Theming:** Continue replacing text-based buttons with intuitive icons, refine the overall color scheme, and implement a dark/light mode switch in the settings.
 -   [ ] **PWA Onboarding Prompt:** For users on a mobile browser, implement a non-intrusive UI element that explains the benefits of installing the app to their home screen and provides simple instructions.
 
