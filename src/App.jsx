@@ -12,6 +12,7 @@ import { useFormula } from './hooks/useFormula';
 import { useGoals } from './hooks/useGoals';
 import { useTimerMode } from './hooks/useTimerMode';
 import { useIntegrations } from './hooks/useIntegrations';
+import { useGithubSettings } from './hooks/useGithubSettings'; // New Import
 import { aggregateSessionsByDay } from './utils/sessionAggregators';
 import { exportSessionsToCSV } from './utils/csvGenerator';
 
@@ -57,6 +58,7 @@ function AppLayout() {
   const { goals, updateGoals } = useGoals(userId);
   const { timerMode, updateTimerMode } = useTimerMode(userId);
   const { integrations, linkGitHub, unlinkGitHub } = useIntegrations(userId);
+  const { githubSettings, updateGithubSettings } = useGithubSettings(userId); // New Hook
   const isMobile = useMediaQuery('(max-width: 768px)');
   const location = useLocation();
 
@@ -114,7 +116,21 @@ function AppLayout() {
               <Route path="/" element={<TimerPage timer={timer} tasks={tasks} timerMode={timerMode} onTimerModeChange={updateTimerMode} />} />
               <Route path="/dashboard" element={<Dashboard dailySummary={dailySummary} harmonyScore={harmonyScore} totalProductivityPoints={totalProductivityPoints} totalPlayPoints={totalPlayPoints} />} />
               <Route path="/history" element={<History sessions={timer.sessions} dailySummary={dailySummary} dateFormat={settings.dateFormat} timeFormat={settings.timeFormat} tasks={tasks} isMobile={isMobile} deleteSessions={timer.deleteSessions} updateSession={timer.updateSession} />} />
-              <Route path="/strategy" element={<Strategy formula={formula} updateFormula={updateFormula} goals={goals} updateGoals={updateGoals} dailySummary={dailySummary} />} />
+              <Route
+                path="/strategy"
+                element={
+                  <Strategy
+                    formula={formula}
+                    updateFormula={updateFormula}
+                    goals={goals}
+                    updateGoals={updateGoals}
+                    dailySummary={dailySummary}
+                    integrations={integrations}
+                    githubSettings={githubSettings}
+                    updateGithubSettings={updateGithubSettings}
+                  />
+                }
+              />
               <Route path="/profile" element={<Profile />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
